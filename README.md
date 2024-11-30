@@ -9,10 +9,9 @@ Este projeto está em processo de desenvolvimento. Trata-se de uma aplicação p
 Nota: Para executar a aplicação, é necessário entrar em contato com o desenvolvedor e obter uma chave serial.
 
 
-<video controls width="250">
+
   <source src=" https://github.com/user-attachments/assets/63ee3aff-a20c-4b80-a653-a207c4bee5df">
-  Seu navegador não suporta vídeos. Baixe o vídeo [aqui](https://github.com/user-attachments/assets/b39880c8-1a48-4bb5-b902-1c5b60e44af8).
-</video>
+
 
 
 ## Tecnologias Utilizadas
