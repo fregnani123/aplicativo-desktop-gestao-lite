@@ -44,7 +44,7 @@ Este projeto é uma aplicação para gerenciar estoque e vendas, desenvolvida co
 ### Passos para Executar
 1. **Clonar o Repositório**
 
-[📋 Copiar Comando](https://github.com/fregnani123/aplicativo-desktop-gestao-lite.git)
+[📋 Copiar Comando](https://github.com/fregnani123/aplicativo-desktop-gestao-lite.git):https://github.com/fregnani123/aplicativo-desktop-gestao-lite.git
 
 Instalar Dependências do Frontend
 
