@@ -86,7 +86,7 @@ Este projeto está licenciado sob a licença MIT. Veja o arquivo LICENSE para ma
 Contato
 Para mais informações, entre em contato:
 
-Nome: Seu Nome
+Nome: Fabiano
 
 Email: fabianofregnani@hotmail.com
 
