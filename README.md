@@ -18,10 +18,14 @@ Nota: Para executar a aplicação, é necessário entrar em contato com o desenv
 <img src="https://github.com/user-attachments/assets/d2b41ac4-2011-411e-a6dc-1fbd93d590f5" width="500"/>
 
 ## Gerenciamento de Estoque**: Controle de produtos, quantidades e movimentações.
+
  <img src="https://github.com/user-attachments/assets/2fcb59a2-4d28-4816-9e14-eae47201e104" width="500"/>
+ 
 ## Gestão de Vendas**: Registro de vendas, clientes e relatórios.
-## Relatórios**: Geração de relatórios detalhados de estoque e vendas.
-## Autenticação**: Sistema de login e permissões de acesso.
+
+## Relatórios: Geração de relatórios detalhados de estoque e vendas.
+
+## Autenticação: Sistema de login e permissões de acesso.
 
 ## Estrutura do Projeto
 /
