@@ -13,10 +13,10 @@ Nota: Para executar a aplicação, é necessário entrar em contato com o desenv
 - **Backend**: Servidor em Node.js com APIs
 - **Banco de Dados**: MySQL
 
-## Funcionalidades
+## Funcionalidades que o projeto terá ao final do desenvolvimento
 
 <img src="https://github.com/user-attachments/assets/d2b41ac4-2011-411e-a6dc-1fbd93d590f5" width="500"/>
-<<br/>
+_________________________________________________________________________________________________________
 - **Gerenciamento de Estoque**: Controle de produtos, quantidades e movimentações.
 - **Gestão de Vendas**: Registro de vendas, clientes e relatórios.
 - 
