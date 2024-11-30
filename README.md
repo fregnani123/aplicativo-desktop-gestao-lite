@@ -19,7 +19,6 @@ Nota: Para executar a aplicação, é necessário entrar em contato com o desenv
 
 - **Gerenciamento de Estoque**: Controle de produtos, quantidades e movimentações.
 - **Gestão de Vendas**: Registro de vendas, clientes e relatórios.
-- 
 - **Relatórios**: Geração de relatórios detalhados de estoque e vendas.
 - **Autenticação**: Sistema de login e permissões de acesso.
 
