@@ -18,7 +18,21 @@ Este projeto é uma aplicação para gerenciar estoque e vendas, desenvolvida co
 - **Autenticação**: Sistema de login e permissões de acesso.
 
 ## Estrutura do Projeto
-/ ├── frontend/ │ ├── public/ │ ├── src/ │ └── package.json├── backend/ │ ├── controllers/ │ ├── models/ │ ├── routes/ │ └── server.js└── README.md
+/
+├── config/                  # Configurações gerais do projeto
+├── db/                      # Arquivos relacionados ao banco de dados
+│ ├── projetoBD.mwb          # Modelo do banco de dados (MySQL Workbench)
+│ ├── projetoBD.mwb.bak      # Backup do modelo do banco de dados
+├── dist/                    # Arquivos finais de build/distribuição
+├── img/produtos/            # Imagens de produtos
+├── public/                  # Arquivos públicos acessíveis (frontend)
+├── services/                # Serviços e lógica de backend
+├── src/                     # Código-fonte principal (frontend e backend)
+├── style/                   # Arquivos de estilo (CSS)
+├── .gitignore               # Arquivo de configuração do Git
+├── package-lock.json        # Arquivo de controle de dependências do Node.js
+├── package.json             # Descrição do projeto e dependências
+├── README.md                # Documentação principal do projeto
 
 
 ## Como Executar o Projeto
