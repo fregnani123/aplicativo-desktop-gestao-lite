@@ -42,8 +42,8 @@ Este projeto é uma aplicação para gerenciar estoque e vendas, desenvolvida co
 - **MySQL** (versão 5.7 ou superior)
 
 ### Passos para Executar
-1. **Clonar o Repositório**
-   ```sh [ git clone https://seu-repositorio.git](https://github.com/fregnani123/aplicativo-desktop-gestao-lite.git)
+1. **Clonar o Repositório** [ git clone https://seu-repositorio.git](https://github.com/fregnani123/aplicativo-desktop-gestao-lite.git)
+   ```sh
  
 Instalar Dependências do Frontend
 
