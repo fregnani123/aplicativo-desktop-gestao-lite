@@ -1,5 +1,7 @@
 
 # Gestão Lite
+<img src="https://github.com/user-attachments/assets/3dc67efb-89f5-446c-abdd-8cb714a2c2bd" alt="Captura de Tela" width="500"/>
+
 
 ## Visão Geral
 Este projeto é uma aplicação para gerenciar estoque e vendas, desenvolvida com tecnologias modernas para garantir eficiência e escalabilidade.
