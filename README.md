@@ -16,7 +16,7 @@ Nota: Para executar a aplicação, é necessário entrar em contato com o desenv
 ## Funcionalidades
 
 <img src="https://github.com/user-attachments/assets/d2b41ac4-2011-411e-a6dc-1fbd93d590f5" width="500"/>
-
+<<br/>
 - **Gerenciamento de Estoque**: Controle de produtos, quantidades e movimentações.
 - **Gestão de Vendas**: Registro de vendas, clientes e relatórios.
 - 
