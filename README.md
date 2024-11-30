@@ -38,8 +38,8 @@ Este projeto é uma aplicação para gerenciar estoque e vendas, desenvolvida co
 ## Como Executar o Projeto
 
 ### Pré-requisitos
-- **Node.js** (versão X.X.X ou superior)
-- **MySQL** (versão X.X ou superior)
+- **Node.js** (versão 18 ou superior)
+- **MySQL** (versão 5.7 ou superior)
 
 ### Passos para Executar
 1. **Clonar o Repositório**
