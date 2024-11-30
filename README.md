@@ -8,6 +8,10 @@ Este projeto está em processo de desenvolvimento. Trata-se de uma aplicação p
 
 Nota: Para executar a aplicação, é necessário entrar em contato com o desenvolvedor e obter uma chave serial.
 
+
+https://github.com/user-attachments/assets/b39880c8-1a48-4bb5-b902-1c5b60e44af8
+
+
 ## Tecnologias Utilizadas
 - **Frontend**: Electron.js
 - **Backend**: Servidor em Node.js com APIs
