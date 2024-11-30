@@ -4,7 +4,9 @@
 
 
 ## Visão Geral
-Este projeto é uma aplicação para gerenciar estoque e vendas, desenvolvida com tecnologias modernas para garantir eficiência e escalabilidade.
+Este projeto está em processo de desenvolvimento. Trata-se de uma aplicação para gerenciar estoque e vendas, utilizando tecnologias modernas para garantir eficiência e escalabilidade.
+
+Nota: Para executar a aplicação, é necessário entrar em contato com o desenvolvedor e obter uma chave serial.
 
 ## Tecnologias Utilizadas
 - **Frontend**: Electron.js
