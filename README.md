@@ -83,7 +83,5 @@ Para mais informações, entre em contato:
 
 Nome: Seu Nome
 
-Email: seuemail@dominio.com
+Email: fabianofregnani@hotmail.com
 
-
-Agora você pode copiar e colar isso diretamente no seu README.md. Se precisar de mais alguma coisa, estou aqui para ajudar! 😊
