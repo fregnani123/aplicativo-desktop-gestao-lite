@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style/css/register_produto.css">
+    <title>Cadastro de Produto</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul id="ul-Menu">
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Não excluir este container, aqui renderiza o cadastro dos novos fornecedores -->
+    <div class="container-register">
+        <div class="div-fornecedor">
+            <!-- Botão de Fechar -->
+            <button id="btn-exit" class="btn-exit">X</button>
+        
+            <!-- Título do Formulário -->
+            <div class="labelText">Cadastrar Fornecedor</div>
+        
+            <!-- Formulário -->
+            <div class="linha-inputs">
+                <div>
+                    <label class="labelFornecedor" for="cnpj">CNPJ</label>
+                    <input type="text" id="cnpj" placeholder="Digite o CNPJ">
+                </div>
+                <div>
+                    <label class="labelFornecedor" for="ie">Inscrição Estadual / IE</label>
+                    <input type="text" id="ie" placeholder="Digite a Inscrição Estadual">
+                </div>
+                <div>
+                    <label class="labelFornecedor" for="razaoSocial">Razão Social</label>
+                    <input type="text" id="razaoSocial" placeholder="Digite a Razão Social">
+                </div>
+            </div>
+        
+            <div class="linha-inputs">
+                <div>
+                    <label class="labelFornecedor" for="nomeFantasia">Nome Fantasia</label>
+                    <input type="text" id="nomeFantasia" placeholder="Digite o Nome Fantasia">
+                </div>
+                <div>
+                    <label class="labelFornecedor" for="cep">Cep</label>
+                    <input type="text" id="cep" placeholder="Digite o CEP">
+                </div>
+            </div>
+        
+            <div class="linha-inputs">
+                <div>
+                    <label class="labelFornecedor" for="endereco">Endereço</label>
+                    <input type="text" id="endereco" placeholder="Digite o Endereço">
+                </div>
+                <div>
+                    <label class="labelFornecedor" for="bairro">Bairro</label>
+                    <input type="text" id="bairro" placeholder="Digite o Bairro">
+                </div>
+                <div>
+                    <label class="labelFornecedor" for="uf">UF</label>
+                    <select id="uf">
+                        <option value="selecione">Selecione</option>
+                        <!-- Adicionar as opções de UF dinamicamente se necessário -->
+                    </select>
+                </div>
+                <div>
+                    <label class="labelFornecedor" for="cidade">Cidade</label>
+                    <select id="cidade">
+                        <option value="selecione">Selecione</option>
+                        <!-- Adicionar as opções de cidades dinamicamente -->
+                    </select>
+                </div>
+            </div>
+        
+            <div class="linha-inputs">
+                <div>
+                    <label class="labelFornecedor" for="telefone">Telefone</label>
+                    <input type="text" id="telefone" placeholder="Digite o Telefone">
+                </div>
+                <div>
+                    <label class="labelFornecedor" for="email">Email</label>
+                    <input type="email" id="email" placeholder="Digite o Email">
+                </div>
+            </div>
+        
+            <!-- Botão de Cadastro -->
+            <button id="btn-cad-fornecedor">Cadastrar</button>
+        </div>
+        
+    </div>
+
+
+    <div class="divForm">
+        
+        <ul class="menu-secundario">
+            <li id="cadastro-produto" class="li-menu2">
+                <a class="a2">Cadastro de Produtos</a>
+            </li>
+            <li class="li-menu2">
+                <a class="a2" href="">Alterar Informações do Produto</a>
+            </li>
+            <li class="li-menu2">
+                <a class="a2" href="">Excluir Produto</a>
+            </li>
+            <li class="li-menu2">
+                <a class="a2" href="">Informações Produtos</a>
+            </li>
+            <li class="menu-item-8">
+                <a class="a2"  href="">Cadastro de Fornecedor</a>
+            </li>
+        </ul>
+        <!-- <p class="barra">Cadastrar Novo Produto</p> -->
+        <div class="div-form-container">
+            <form>
+                <div class="form-group">
+                    <div class="div-codigoDeBarras">
+                        <label for="codigoDeBarras">Código / Cód. Barras</label>
+                        <input type="number" id="codigoDeBarras" name="codigoDeBarras" autocomplete="off">
+                    </div>
+                    <div class="div-nomeProduto">
+                        <label for="nomeProduto">Marca do Produto (Nome) - Descrição</label>
+                        <input type="text" id="nomeProduto" name="nome" autocomplete="off">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="select-wrapper">
+                        <label for="categoria-produto">Grupo:</label>
+                        <div class="input-select-wrapper">
+                            <select id="grupo" name="grupo">
+                                <option value="">Selecione</option>
+                            </select>
+                            <button id="add-grupo"add-grupo><span class="cad">Cad</span></button>
+                        </div>
+                    </div>
+                    <div class="select-wrapper">
+                        <label for="grupo">Sub-Grupo</label>
+                        <div class="input-select-wrapper">
+                            <select id="sub-grupo" name="grupo" >
+                                <option value="">Selecione</option>
+                            </select>
+                            <button id="add-subGrupo"><span class="cad">Cad</span></button>
+                        </div>
+                    </div>
+                    <div class="select-wrapper">
+                        <label for="fornecedor">Fornecedor:</label>
+                        <div class="input-select-wrapper">
+                            <select id="fornecedor" name="fornecedor">
+                                <option value="">Selecione</option>
+                            </select>
+                            <!-- <button id="add-fornecedor"><span class="cad">Cad</span></button> -->
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-group">
+
+                    <div>
+                        <label for="precoCusto">Preço de Custo</label>
+                        <input placeholder="0,00" id="precoCusto" name="preco" autocomplete="off">
+                    </div>
+                  
+                     <div class="input-wrapper">
+                        <label for="markup">Markup % </label>
+                        <input type="number" id="inputMarkup">
+                        <span class="percent-symbol">%</span>
+                    </div>
+                    
+                    <div class="select-wrapper">
+                        <label for="markup">Lucro (R$)</label>
+                        <input placeholder="0,00" id="lucro" name="markup" autocomplete="off" readonly>
+                    </div>
+
+                    <div class="select-wrapper">
+                        <label for="precoVenda">Preço de Venda</label>
+                        <input placeholder="0,00" id="precoVenda" name="preco" autocomplete="off">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div>
+                        <label for="tamanho">Tamanho - P/GG:</label>
+                        <select id="tamanhoLetras" name="tamanhoLetras">
+                            <option value="">Selecione</option>
+                        </select>
+                    </div>
+                    <div class="select-wrapper">
+                        <label for="tamanhoNumeros">Tamanho/Numeração:</label>
+                        <select id="tamanhoNumeros" name="tamanho">
+                            <option value="">Selecione</option>
+                        </select>
+                    </div>
+
+                    <div class="select-wrapper">
+                        <label for="cor">Cor do Produto:</label>
+                        <select id="corProduto" name="corProduto">
+                            <option value="">Selecione</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div>
+                        <label for="volumeNumero">Medida de Volume:</label>
+                        <div class="input-select-wrapper">
+
+                            <input id="volumeNumero" type="number" value="">
+                            <select id="medidaVolume" name="medidaVolume">
+                                <option value="">Selecione</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="select-wrapper">
+                        <label for="unidadeComprimento">Unidade Comprimento:</label>
+                        <div class="input-select-wrapper">
+
+                            <input id="comprimento" type="number" value="">
+                            <select id="unidadeComprimento" name="unidadeComprimento">
+                                <option value="">Selecione</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="select-wrapper">
+                        <label for="massaNumero">Unidade de Massa:</label>
+                        <div class="input-select-wrapper">
+                            <input id="massaNumero" type="number" value="">
+                            <select id="unidadeDeMassa" name="unidadeMassa">
+                                <option value="">Selecione</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="label-Observacoes" for="Observações">Observações:</label>
+                    <textarea id="observacoes" name="observacoes" autocomplete="off"></textarea>
+                    <div class="select-wrapper">
+                        <label for="estoque1">Estoque Inicial:</label>
+                        <div class="input-select-wrapper">
+                            <input value="" type="number" id="estoqueQtd" name="estoqueQtd" autocomplete="off">
+                            <select id="unidadeEstoque" name="unidadeEstoque">
+                                <option value="">Selecione</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button id="btn-cadastrar"><img class="img-disquete" src="../style//img/disquete.png" alt=""><br>Gravar Produto</button>
+                </div>
+            </form>
+
+            <div class="div-img-produto">
+                <p class="title-foto-produto">Foto Produto</p>
+                <div class="quadro-img">
+                    <img class="img-produto" src="../style/img/produto.png" alt="imagem produto">
+                </div>
+                <input type="file" id="produto-imagem" accept="image/*">
+                <!-- <button id="salvar-imagem">Salvar Imagem</button> -->
+            </div>
+
+        </div>
+    </div>
+    <script src="../Renderer/renderer_menu.js"></script>
+    <script src="../Renderer/apiEndpoints.js"></script>
+    <script src="../Renderer/cidadesPorEstados.js"></script>
+    <script src="../Renderer/renderer.js"></script>
+</body>
+
+</html>

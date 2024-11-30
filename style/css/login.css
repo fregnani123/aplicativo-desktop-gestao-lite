@@ -1,0 +1,158 @@
+:root {
+    --primary-color: #007bff;
+    --primary-color-hover: #0056b3;
+    --background-color: #f4f4f4;
+    --text-color: rgb(0, 38, 87);
+    --text-color-light: #fff;
+    --border-color: #ddd;
+    --link-color: #1E90FF;
+    --link-color-hover: #1E90FF;
+}
+
+/* Reset básico */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+li,
+table,
+tr,
+td,
+th,
+input,
+select,
+button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Fonte e cor do texto padrão */
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* Estilização do container principal */
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    max-width: 1200px;
+    padding: 20px;
+}
+
+/* Imagem do logotipo */
+.img-logo {
+    margin-bottom: 20px;
+    width: 600px;
+    height: auto;
+}
+
+/* Container de login */
+.login-container {
+    background: var(--text-color-light);
+    padding: 50px 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: var(--text-color);
+}
+
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1.4rem;
+    color: var(--text-color);
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1.4rem;
+}
+
+button {
+    background-color: var(--primary-color);
+    color: var(--text-color-light);
+    border: none;
+    padding: 15px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 1.5rem;
+}
+
+button:hover {
+    background-color: var(--primary-color-hover);
+}
+
+/* Estilização do rodapé */
+.footer {
+    background-color: var(--text-color);
+    color: var(--text-color-light);
+    text-align: center;
+    padding: 20px 10px;
+    font-size: 14px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1.1rem;
+}
+
+.footer a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+/* Estilos responsivos */
+@media (min-width: 768px) {
+    .login-container {
+        width: 400px;
+    }
+
+    .container {
+        padding: 40px;
+    }
+
+    .footer {
+        padding: 20px 50px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .login-container {
+        width: 500px;
+    }
+}

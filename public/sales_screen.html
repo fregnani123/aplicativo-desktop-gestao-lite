@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style/css/sales_screen.css">
+    <title>Tela de Vendas</title>
+</head>
+
+<body>
+    <div class="container-sales">
+
+        <div class="div-sales">
+            <div class="square-1">
+                <div class="square-1-1">
+                    <div class="square-titulo">
+                        <p class="p-titulo-caixa">Caixa Aberto</p>
+                    </div>
+                    <div class="square-inputs">
+                        <label for="">Nº Pedido:</label><input type="text" id="numero-pedido" value="01" readonly>
+                        <label for="">Data da Venda:</label><input type="text" id="data-venda" autocomplete="off" readonly>
+                        <label for="">Cliente:</label> <input id="select-cliente" value="Consumidor Final">
+                    </div>
+                </div>
+                <div class="square-1-2"></div>
+                <div>
+                    <p class="square-time"><p class="square-day"></p></p>
+                </div>
+            </div>
+    
+            <div class="square-2">
+                <div class="square-2-1">
+                    <label  for="">Inserir quantidade (Qtd) </label>
+                    <input type="text" id="input-qtd">
+                    <p class="p-qtd">ENTER= Adicionar / voltar</p>
+                </div>
+                <div class="square-2-1-1"> 
+                    <label for="" class="label-medida">.</label>
+                    <input type="text" id="medidaEstoque" readonly>
+                </div>
+                <div class="square-2-2">
+                    <label for="" class="label-descricao">Descrição</label>
+                    <input type="text" id="input-descricao" readonly>
+                </div>
+            </div>
+
+            <div class="square-2-2-2"> 
+                <div class="div-limpar">
+                    <p>Confirmar início de nova venda?</p>
+                    <p><span>S / Sim</span><span>N / Não</span></p>
+                </div>
+            </div>
+    
+            <div class="square-3">
+                <div class="square-3-1">
+                    <div class="square-3-1-1">
+                        <div class="square-img-produto">
+                            <img class="img-produto" src="../style/img/produto.png" alt="">
+                        </div>
+                        <div class="square-codigo">
+                            <p class="label-codigo"><label for="" class="label-codigo">Código Barras</label></p>
+                            <input type="text" id="codigo">
+                            <div class="qtd-selecionada"><p class="qtd-p">Quantidade<span class="qtd-span">(F1)</span></p><p class="qtd-p-1"></p></div>
+                            <p class="valor-unitario"><label for="" class="valor-unitario">Valor Unitário</label></p>
+                            <input type="text" id="valor-unitario" readonly>
+                        </div>
+                    </div>
+                    <div class="forma-pagamento">
+                        <div class="p-forma-pag">
+                            <label class="label-pag" for="">Forma de Pgto (1):</label>
+                            <select id="forma-pagamento">
+                                <option value="">À Vista</option>
+                                <option value="">Cartão de Crédito</option>
+                            </select>
+                            <input type="text" id="dinheiro-cli-1">
+                        </div>
+                        <div class="p-forma-pag-2">
+                            <label for="" class="label-pag">Forma de Pgto (2):</label>
+                            <select id="forma-pagamento-2"></select>
+                            <input type="text" id="dinheiro-cli-2">
+                        </div>
+                    </div>
+                    <div class="finalizar-venda">
+                        <div class="atalhos">
+                            <div class="div-atalhos">
+                                <div class="atalhos-1">
+                                    <p class="p-atalhos">F1= Alterar Qtd</p>
+                                    <p class="p-atalhos">Enter = retornar EAN</p>
+                                    <p class="p-atalhos">F2= Alterar Cliente</p>
+                                    <p class="p-atalhos">F3= Forma Pagamento </p>
+                                </div>
+                                <div class="atalhos-2">
+                                    <p class="p-atalhos">F4= Alterar tabela</p>
+                                    <p class="p-atalhos">F5= Cancelar Item</p>
+                                    <p class="p-atalhos">F6= Nova Venda</p>
+                                    <p class="p-atalhos">F7= finalizar venda</p>
+                                </div>
+                                <div class="atalhos-3">
+                                    
+                                    <p class="p-atalhos">ESC= Sair</p>
+                                    <p class="p-atalhos">S= Sim</p>
+                                    <p class="p-atalhos">N= Não</p>
+                                </div>
+                            </div>
+                            <!-- //Disponivel para habilitar btns para uso de mouse. -->
+                            <!-- <div class="btn-finalizar-venda">
+                                <button id="btn-finalizar">Finalizar Venda</button>
+                                <button id="btn-nova-venda">Nova Venda</button>
+                                <button id="btn-sair">Sair</button>
+                            </div> -->
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="square-3-2">
+                    <div class="square-3-2-1">
+                        <ul class="ul-descricao">
+                            <li>
+                                <span class="spanIndex-1">Item</span>
+                                <span class="spanEan-1">código/EAN</span>
+                                <span class="spanDescricao-1">Descrição</span>
+                            </li>
+                        </ul>
+                        <ul class="ul-descricao-produto"></ul>
+                    </div>
+                    <div class="square-3-2-2">
+                        <div class="div-total">
+                            <label for="" class="total-liquido">Subtotal</label><input id="total-liquido" value="0,00" type="text" readonly>
+                        </div>
+                        <div class="pag-troco">
+                            <div class="total-pago"><label for="" class="total">Total Pago</label><input id="total-pago"  value="R$ 0,00" type="text"></div>
+                            <div class="pag-troco-1"><label for="" class="total">Troco</label><input id="troco" value="R$ 0,00" type="text" readonly ></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+        </div>
+    </div>
+    
+</body>
+
+<script src="../Renderer/converte_moeda.js"></script>
+<script src="../Renderer/apiEndpoints.js"></script>
+<script src="../Renderer/renderer_menu.js"></script>
+<script src="../Renderer/renderer_relogio.js"></script>
+<script src="../Renderer/renderer_vendas.js"></script>
+
+
+</html>

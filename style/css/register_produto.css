@@ -1,0 +1,652 @@
+/* Definindo variáveis de cores */
+:root {
+    --background-color: #f4f4f4;
+    --header-background-color: rgb(0, 38, 87);
+    --menu-background-color: rgb(0, 38, 87);
+    --text-color: #171717;
+    --link-color: rgb(0, 0, 0);
+    --link-hover-border-color: rgb(255, 255, 255);
+    --form-background-color: #ffffff;
+    --form-shadow-color: rgba(0, 0, 0, 0.1);
+    --input-border-color: #030303;
+    --label-text-color: #000000;
+    --white: rgb(255, 255, 255);
+    --border-radius: 5px;
+    --bg-input:#f2f7ff;
+}
+  #cadastro-produto a {
+      color: rgb(0, 0, 0);
+      padding: 8px;
+      border-radius: 5px;
+      background-color: #ffffff;
+  }
+  .menu-item-4 a {
+      color: rgb(0, 0, 0);
+      padding: 8px;
+      border-radius: 5px;
+      background-color: #ffffff;
+      width: 100%;
+  }
+  .menu-item-8-active a {
+      color: rgb(0, 0, 0);
+      padding: 8px;
+      border-radius: 5px;
+      background-color: #ffffff;
+      width: 100%;
+  }
+
+  input{
+    font-size: 1.4rem;
+  }
+
+/* Reset styles */
+body,
+h1,
+p,
+ul,
+li,
+a,
+input,
+select,
+form,
+label {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Estilo geral do corpo */
+body {
+    background-color: var(--background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    color: var(--text-color);
+    /* Cor do texto mais suave */
+}
+
+/* Estilo do cabeçalho */
+header {
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    top: 0;
+    left: 0;
+    background-color: var(--header-background-color);
+    display: flex;
+}
+
+/* Estilo da navegação */
+nav {
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    
+}
+
+/* Estilo dos links */
+a {
+    text-decoration: none;
+    font-size: 1rem;
+    color: var(--link-color);
+    width: 100%;
+    padding: 0px 0px;
+    display: block;
+}
+.div-form-container{
+    display: flex;
+    border: 1px solid black;
+}
+
+.divForm {
+    margin-top: 50px;
+    background-color: var(--form-background-color);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 8px var(--form-shadow-color);
+    box-sizing: border-box;
+    border: 2px solid black;
+}
+
+.btn-exit{
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    font-weight: 700;
+    cursor: pointer;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+/* Estilo do menu principal */
+#ul-Menu {
+    list-style-type: none;
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    margin-bottom: 0px;
+    gap: 3px;
+}
+
+/* Estilo do menu secundário */
+.menu-secundario {
+    list-style-type: none;
+    padding: 5px;
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 15px;
+    gap: 3px;
+    max-width: 100%;
+    height: 60px;
+    align-items: center;
+    background-color: var(--menu-background-color);
+}
+
+.li-menu2 {
+    padding: 5px;
+    border-radius: var(--border-radius);
+    font-weight: 100;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.li-menu2:hover a:hover {
+    color: var(--white);
+    background-color: var(--menu-background-color);
+}
+
+.menu-secundario li a {
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: var(--border-radius);
+    color: var(--white);
+    font-size: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0);
+    transition: border 0.3s;
+}
+
+.menu-secundario li a:hover {
+    border: 1px solid var(--link-hover-border-color);
+}
+
+/* .barra {
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    padding: 5px;
+    text-align: center;
+    width: 100%;
+} */
+
+.qtd {
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+/* Estilo do formulário */
+form {
+    gap: 8px;
+    padding: 5px;
+    box-sizing: border-box;
+    overflow: hidden;
+    max-width: 1000px;
+    position: relative;
+}
+
+/* Alinhamento dos labels e inputs */
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    /* background-color: red; */
+    text-align: center;
+}
+
+label {
+    font-weight: bold;
+    font-size: 1rem;
+    text-align: right;
+    color: var(--label-text-color);
+    /* Cor do texto dos labels */
+}
+textarea,
+input[type="text"],
+input[type="number"],
+input,
+select {
+    padding: 7px;
+    border: 1px solid var(--input-border-color);
+    border-radius: 2px;
+    font-size: 1rem;
+    text-align: center;
+    flex: 1;
+    background-color:var(--bg-input);
+    color: var(--text-color);
+    margin-top: 5px;
+    width: 100%;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.input-wrapper {
+    margin-left: 15px;
+    position: relative;
+    display: inline-block;
+}
+
+.input-wrapper input {
+    padding-right: 20px; /* Espaço para o símbolo de % */
+}
+
+.percent-symbol {
+    position: absolute;
+    right: 50px;
+    top: 70%;
+    transform: translateY(-50%);
+    pointer-events: none; /* Para garantir que não interfira no clique */
+    color: #000; /* Cor do símbolo de % */
+}
+
+#lucro {
+    outline: none;
+    cursor: auto;
+}
+
+#lucro:focus {
+    outline: none;
+}
+
+/* Ajuste de largura específica para inputs */
+#codigoDeBarras,
+#categoria,
+#massa,
+#volume,
+#tamanho,
+#massaNumero,
+#volumeNumero,
+#tamanhoNumero {
+    width: 100%;
+}
+
+.select-wrapper{
+    margin-left: 20px;
+}
+
+.div-codigoDeBarras{
+    width: 350px;
+    margin-right: 20px;
+}
+.div-nomeProduto{
+width: 100%;
+ 
+}
+
+.input-select-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    
+}
+#fornecedor{
+    width: 392px;
+}
+
+.input-select-wrapper input {
+    flex: 1;
+    
+}
+
+.input-select-wrapper select {
+    flex: 1;
+}
+
+.input-select-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+}
+
+.input-select-wrapper select {
+    flex: 1;
+}
+
+.input-select-wrapper button {
+    flex-shrink: 0;
+
+}
+
+#nomeProduto {
+    width: 100%;
+}
+.input-select-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.qtd {
+    margin-right: 5px;
+}
+
+#descricao {
+    width: 100%;
+}
+
+/* Estilo dos itens do menu */
+.menu-item-1,
+.menu-item-2,
+.menu-item-3,
+.menu-item-4,
+.menu-item-5,
+.menu-item-6,
+.menu-item-7,
+.menu-item-8, 
+.menu-item-9 {
+    padding: 8px;
+    border-radius: var(--border-radius);
+    font-weight: 100;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+a {
+    color: var(--white);
+    font-size: 1.2rem;
+    text-wrap: nowrap;
+    padding: 8px;
+    font-weight: bold;
+    border: 1px solid rgba(255, 255, 255, 0);
+    border-radius: var(--border-radius);
+    transition: border 0.3s;
+    width: 100%;
+}
+
+a:hover {
+    border: 1px solid var(--link-hover-border-color);
+}
+#btn-cadastrar{
+    font-size: 1.2rem;
+    margin-left: 20px;
+    cursor: pointer;
+    background-color: transparent;
+    padding: 4px
+}
+
+#add-fornecedor,#add-grupo, #add-subGrupo {
+    padding: 6px 10px;
+    font-size: 1rem;
+    margin-left: -5px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.cad{
+    border-bottom: 1px solid black;
+}
+
+.label-Observacoes{
+    margin-right: 20px;
+}
+
+.div-img-produto{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 1.2rem;
+    text-align: center;
+    width: 250px;
+    height: 350px;
+    padding: 10px;
+    align-items: center;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+.quadro-img{
+    width: 220px;
+    height: 250px;
+    border-left: 2px solid black;
+    border-bottom: 2px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5px;
+}
+
+.form-container{
+display: flex;
+}
+
+/* Customizar o input como um botão */
+input[type="file"] {
+    
+    padding: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    background-color: #f0f0f0;
+    color: transparent;
+    /* Esconde o texto padrão do botão */
+    margin-bottom: 5px;
+    width: 220px;
+    position: relative;
+}
+
+/* Adicionar texto personalizado no botão */
+input[type="file"]::before {
+    content: 'Escolher arquivo';
+    /* Texto personalizado */
+    color: black;
+    border-bottom: 1px solid black;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    margin-left: 22%;
+    font-weight: bold;
+}
+
+/* Esconder o ícone do botão */
+input[type="file"]::file-selector-button {
+    display: none;
+}
+
+#file-name {
+    font-size: 14px;
+    color: #333;
+}
+
+.img-produto{
+    width: 200px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.img-disquete{
+width: 2.5rem;
+}
+
+.title-foto-produto{
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.div-grupo,.div-subGrupo,.div-fornecedor{
+    border: 1px solid black;
+    padding: 40px;
+    text-align: center;
+    position: relative;
+    background: white;
+}
+
+.container-register {
+    position: absolute;
+    width: 900px;
+    height: 470px;
+    background-color: rgba(255, 255, 255, 0);
+    z-index: 1;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* border: 1px solid black; */
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    
+}
+#btn-cad-grupo,#btn-cad-subGrupo,#btn-cad-fornecedor{
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 1rem;
+}
+#grupo{
+    margin-left: -20px;
+    width: 220px;
+}
+#sub-grupo{
+    width: 220px;
+}
+
+
+/* Estilo do container principal */
+.div-fornecedor {
+    width:1200px ;
+    position:absolute;
+    margin: 0 auto;
+    height: 485px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 80px;
+    border:1px solid black;
+    border-radius: 10px;
+    padding-top: 50px;
+    padding-right: 53px;
+}
+
+.div-grupo{background-color: red;}
+
+#razaoSocial,#nomeFantasia{
+    width:700px;
+}
+
+#endereco,#email{
+    width:600px;
+}
+
+#cnpj,#ie,#cep{
+    width: 100%;
+}
+/* Estilo do título */
+.labelText, .labelFornecedor{
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.labelText{
+    color: white;
+    padding: 10px;
+    background-color: var(--header-background-color);
+}
+
+/* Estilo do botão de saída */
+.btn-exit {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    background-color: #ff5c5c;
+    border: none;
+    color: white;
+    font-size: 16px;
+    padding: 5px 10px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.btn-exit:hover {
+    background-color: #ff1c1c;
+}
+
+/* Estilo das linhas de inputs */
+.linha-inputs {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+/* Estilo das divs que envolvem cada input */
+.linha-inputs div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+}
+
+.linha-inputs div:last-child {
+    margin-right: 0;
+}
+
+/* Estilo para os rótulos (labels) */
+.linha-inputs label {
+    font-size: 1rem;
+    margin-bottom: 0px;
+    color: #333;
+}
+
+/* Estilo para os inputs */
+.linha-inputs input {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #050505;
+    border-radius: 2px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+/* Estilo para os inputs quando recebem foco */
+.linha-inputs input:focus {
+    outline: 1px solid #000000; /* Adiciona uma borda verde, por exemplo */
+    border-color: #000000; /* Muda a cor da borda também, se necessário */
+}
+
+/* Estilo do botão de cadastro */
+#btn-cad-fornecedor {
+    width: 200px;
+    padding: 12px;
+    font-size: 1.2rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+#btn-cad-fornecedor:hover {
+    background-color: #0056b3;
+}
+
+

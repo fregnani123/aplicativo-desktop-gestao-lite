@@ -1,0 +1,25 @@
+directories:
+  output: dist
+  buildResources: build
+appId: com.gestaolite
+files:
+  - filter:
+      - config/**/*
+      - db/**/*
+      - img/**/*
+      - node_modules/**/*
+      - public/**/*
+      - Renderer/**/*
+      - Server/**/*
+      - services/**/*
+      - src/**/*
+      - style/**/*
+      - package.json
+asar: true
+win:
+  icon: ./img/menu-aberto.png
+mac:
+  icon: ./img/menu-aberto.png
+linux:
+  icon: ./img/menu-aberto.png
+electronVersion: 31.2.1
