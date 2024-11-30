@@ -67,13 +67,16 @@ Instalar Dependências do Backend
 sh
 cd backend
 npm install
-Configurar o Banco de Dados
 
-Criar um banco de dados MySQL
+verificar se o mysql esta instalado no seu sistema.
+
+Configurar o Banco de Dados
 
 Configurar as credenciais no arquivo .env
 
 Iniciar o Servidor Backend
+
+<img src="https://github.com/user-attachments/assets/e95a6fc1-3fc1-4186-8584-5825ddbc42dc" alt="Captura de Tela" width="500"/>
 
 sh
 cd backend
