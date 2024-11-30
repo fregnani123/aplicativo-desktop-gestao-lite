@@ -8,20 +8,18 @@ Este projeto está em processo de desenvolvimento. Trata-se de uma aplicação p
 
 Nota: Para executar a aplicação, é necessário entrar em contato com o desenvolvedor e obter uma chave serial.
 
-
-
-https://github.com/user-attachments/assets/25bf5372-1cad-4cb4-beec-e2d7f10ad0aa
-
-
-
 ## Tecnologias Utilizadas
 - **Frontend**: Electron.js
 - **Backend**: Servidor em Node.js com APIs
 - **Banco de Dados**: MySQL
 
 ## Funcionalidades
+
+<img src="https://github.com/user-attachments/assets/d2b41ac4-2011-411e-a6dc-1fbd93d590f5" width="500"/>
+
 - **Gerenciamento de Estoque**: Controle de produtos, quantidades e movimentações.
 - **Gestão de Vendas**: Registro de vendas, clientes e relatórios.
+- 
 - **Relatórios**: Geração de relatórios detalhados de estoque e vendas.
 - **Autenticação**: Sistema de login e permissões de acesso.
 
