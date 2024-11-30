@@ -1,4 +1,4 @@
-markdown
+
 # Gestão Lite
 
 ## Visão Geral
