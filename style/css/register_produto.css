@@ -110,18 +110,74 @@ a {
     box-shadow: 0 0 8px var(--form-shadow-color);
     box-sizing: border-box;
     border: 2px solid black;
+    height: auto;
 }
-
+.div-form{
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    padding: 10px;
+}
+.div-container-form{
+    display: flex;
+}
 .btn-exit{
     position: absolute;
     right: 5px;
     top: 5px;
     font-weight: 700;
     cursor: pointer;
-    padding-left: 5px;
     padding-right: 5px;
+    
+}
+.img-fornecedor{
+    width: 170px;
+    margin-right: 10px;
+    border-left: 2px solid black;
+    border-bottom: 2px solid black;
+    padding: 10px;
+    margin-left: 10px;
+    margin-top: 50px;
+}
+.div-img{
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+}
+#observacoes{
+    width: 400px;
+}
+#botaoSair {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.005);
+    border-radius: 0;
+    padding: 8px 20px;
+    box-sizing: border-box; /* Inclui a borda no tamanho total */
+    border: 1px solid transparent; /* Cria uma borda inicial transparente */
+    right: 10px;
+    top: 10px;
+    font-size: 1rem;
+    cursor: pointer;
 }
 
+#botaoSair:hover {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.005);
+    border: 1px solid rgb(255, 255, 255); /* Altera a cor da borda */
+    padding: 8px 20px; /* Mantém o padding */
+    border-radius: 5px;
+    
+}
+
+#menu-secundario-fornecedor {
+    justify-content: start;
+    position: relative;
+    display: flex;
+}
+.li-sair{
+    position: absolute;
+    right: 10px; 
+}
 /* Estilo do menu principal */
 #ul-Menu {
     list-style-type: none;
@@ -386,15 +442,37 @@ a {
 a:hover {
     border: 1px solid var(--link-hover-border-color);
 }
-#btn-cadastrar{
+
+
+/* Estilos básicos para os botões */
+button {
     font-size: 1.2rem;
     margin-left: 20px;
     cursor: pointer;
     background-color: transparent;
-    padding: 4px
+    border: 2px solid black;
+    color:black;
+    padding: 30px 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.2s, background-color 0.2s, color 0.2s; /* Suaviza transformações */
+    flex-direction: column;
 }
 
-#add-fornecedor,#add-grupo, #add-subGrupo {
+button img {
+    width: 30px;
+    height: 30px;
+}
+
+
+/* Efeito ao clicar no botão */
+button:active {
+    transform: scale(0.95); /* Encolhe levemente */
+}
+
+#add-fornecedor,#add-grupo, #add-subGrupo{
     padding: 6px 10px;
     font-size: 1rem;
     margin-left: -5px;
@@ -517,11 +595,29 @@ width: 2.5rem;
     font-size: 1.5rem;
     
 }
-#btn-cad-grupo,#btn-cad-subGrupo,#btn-cad-fornecedor{
+.container-register-form {
+    position: absolute;
+    width: 900px;
+    height: 490px;
+    background-color: rgba(255, 255, 255, 0);
+    z-index: 1;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* border: 1px solid black; */
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;  
+    background-color: red;
+}
+
+#btn-cad-grupo,#btn-cad-subGrupo{
     padding: 10px 20px;
     cursor: pointer;
     margin-top: 10px;
     font-size: 1rem;
+    margin-left: 150px;
 }
 #grupo{
     margin-left: -20px;
@@ -534,10 +630,10 @@ width: 2.5rem;
 
 /* Estilo do container principal */
 .div-fornecedor {
-    width:1200px ;
+    width:1250px ;
     position:absolute;
     margin: 0 auto;
-    height: 485px;
+    height:550px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 80px;
     border:1px solid black;
@@ -546,19 +642,26 @@ width: 2.5rem;
     padding-right: 53px;
 }
 
-.div-grupo{background-color: red;}
 
-#razaoSocial,#nomeFantasia{
-    width:700px;
+
+#razaoSocial{
+    width:550px;
 }
-
+#nomeFantasia{
+    width: 800px;
+}
 #endereco,#email{
-    width:600px;
+    width:550px;
+}
+#cnpj {
+    width: 270px;
 }
 
-#cnpj,#ie,#cep{
-    width: 100%;
+ #ie, #cep {
+    max-width: 300px; /* Define um limite máximo */
+    width: 100%; /* Permite responsividade dentro do limite */
 }
+
 /* Estilo do título */
 .labelText, .labelFornecedor{
     text-align: center;
@@ -632,21 +735,8 @@ width: 2.5rem;
     border-color: #000000; /* Muda a cor da borda também, se necessário */
 }
 
-/* Estilo do botão de cadastro */
-#btn-cad-fornecedor {
-    width: 200px;
-    padding: 12px;
-    font-size: 1.2rem;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 20px;
+
+#btn-flex{
+    background-color: rgb(255, 255, 255);
+    color: black;
 }
-
-#btn-cad-fornecedor:hover {
-    background-color: #0056b3;
-}
-
-

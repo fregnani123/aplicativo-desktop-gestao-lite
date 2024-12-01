@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../style/css/register_produto.css">
     <title>Cadastro de Produto</title>
 </head>
+
 <body>
     <header>
         <nav>
@@ -15,20 +16,35 @@
         </nav>
     </header>
 
-    <!-- Não excluir este container, aqui renderiza o cadastro dos novos fornecedores -->
-    <div class="container-register">
+    <!-- Não excluir este container, aqui renderiza o grupo e subgrupo -->
+    <div class="container-register"></div>
+
+
+    <div class="container-register-form">
+
         <div class="div-fornecedor">
-            <!-- Botão de Fechar -->
-            <button id="btn-exit" class="btn-exit">X</button>
         
             <!-- Título do Formulário -->
-            <div class="labelText">Cadastrar Fornecedor</div>
-        
+            <ul class="menu-secundario" id="menu-secundario-fornecedor">
+                <li >
+                    <a id="btn-flex">Cadastro de Fornecedor</a>
+                </li>
+                <li >
+                    <a >Alterar Cadastro de Fornecedor</a>
+                </li>
+                <li class="li-sair">
+                    <!-- Botão de Fechar -->
+                   <button id="botaoSair" >Sair</button>
+                </li>
+               
+            </ul>
             <!-- Formulário -->
+            <div class="div-container-form"> 
+                <div class="div-form">
             <div class="linha-inputs">
                 <div>
                     <label class="labelFornecedor" for="cnpj">CNPJ</label>
-                    <input type="text" id="cnpj" placeholder="Digite o CNPJ">
+                    <input type="text"  id="cnpj" placeholder="Digite o CNPJ">
                 </div>
                 <div>
                     <label class="labelFornecedor" for="ie">Inscrição Estadual / IE</label>
@@ -39,7 +55,7 @@
                     <input type="text" id="razaoSocial" placeholder="Digite a Razão Social">
                 </div>
             </div>
-        
+
             <div class="linha-inputs">
                 <div>
                     <label class="labelFornecedor" for="nomeFantasia">Nome Fantasia</label>
@@ -50,7 +66,7 @@
                     <input type="text" id="cep" placeholder="Digite o CEP">
                 </div>
             </div>
-        
+
             <div class="linha-inputs">
                 <div>
                     <label class="labelFornecedor" for="endereco">Endereço</label>
@@ -75,7 +91,7 @@
                     </select>
                 </div>
             </div>
-        
+
             <div class="linha-inputs">
                 <div>
                     <label class="labelFornecedor" for="telefone">Telefone</label>
@@ -86,16 +102,31 @@
                     <input type="email" id="email" placeholder="Digite o Email">
                 </div>
             </div>
-        
-            <!-- Botão de Cadastro -->
-            <button id="btn-cad-fornecedor">Cadastrar</button>
+            <div class="linha-inputs">
+                <div>
+                    <label for="observacoes">Observações</label>
+                    <textarea id="observacoes" name="observacoes" rows="4"
+                        placeholder="Informações adicionais sobre o cliente"></textarea>
+                   
+                </div>
+                <div>
+                   <!-- Botão de Cadastro -->
+                   <button id="btn-cad-fornecedor"><img class="img-disquete" src="../style//img/disquete.png">Gravar Fornecedor</button>
+                </div>
+            </div>
+           
         </div>
+        <div class="div-img">
+            <img class="img-fornecedor" src="../style/img/pacotes.png" alt="">
+        </div>
+    </div>
         
     </div>
-
+   
+    </div>
 
     <div class="divForm">
-        
+
         <ul class="menu-secundario">
             <li id="cadastro-produto" class="li-menu2">
                 <a class="a2">Cadastro de Produtos</a>
@@ -110,7 +141,7 @@
                 <a class="a2" href="">Informações Produtos</a>
             </li>
             <li class="menu-item-8">
-                <a class="a2"  href="">Cadastro de Fornecedor</a>
+                <a class="a2" href="">Cadastro de Fornecedor</a>
             </li>
         </ul>
         <!-- <p class="barra">Cadastrar Novo Produto</p> -->
@@ -134,13 +165,13 @@
                             <select id="grupo" name="grupo">
                                 <option value="">Selecione</option>
                             </select>
-                            <button id="add-grupo"add-grupo><span class="cad">Cad</span></button>
+                            <button id="add-grupo" add-grupo><span class="cad">Cad</span></button>
                         </div>
                     </div>
                     <div class="select-wrapper">
                         <label for="grupo">Sub-Grupo</label>
                         <div class="input-select-wrapper">
-                            <select id="sub-grupo" name="grupo" >
+                            <select id="sub-grupo" name="grupo">
                                 <option value="">Selecione</option>
                             </select>
                             <button id="add-subGrupo"><span class="cad">Cad</span></button>
@@ -163,13 +194,13 @@
                         <label for="precoCusto">Preço de Custo</label>
                         <input placeholder="0,00" id="precoCusto" name="preco" autocomplete="off">
                     </div>
-                  
-                     <div class="input-wrapper">
+
+                    <div class="input-wrapper">
                         <label for="markup">Markup % </label>
                         <input type="number" id="inputMarkup">
                         <span class="percent-symbol">%</span>
                     </div>
-                    
+
                     <div class="select-wrapper">
                         <label for="markup">Lucro (R$)</label>
                         <input placeholder="0,00" id="lucro" name="markup" autocomplete="off" readonly>
@@ -245,7 +276,8 @@
                             </select>
                         </div>
                     </div>
-                    <button id="btn-cadastrar"><img class="img-disquete" src="../style//img/disquete.png" alt=""><br>Gravar Produto</button>
+                    <button id="btn-cadastrar"><img class="img-disquete" src="../style//img/disquete.png"
+                            alt="">Gravar Produto</button>
                 </div>
             </form>
 

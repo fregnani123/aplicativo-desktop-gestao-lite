@@ -25,6 +25,7 @@ const inputPrecoVenda = document.querySelector('#precoVenda');
 
 const inputPathImg = document.querySelector('#produto-imagem');
 const divImgProduct = document.querySelector('.quadro-img');
+const btnExit = document.querySelector('#botaoSair')
 
 //Metodos criado por mim que renderizam os values iniciais padrões ou cadastrados no DB.
 
@@ -42,7 +43,7 @@ getunidadeDeMassa(selectUnidadeMassa);
 inputMaxCaracteres(inputNomeProduto, 150); //max caracteres input
 inputMaxCaracteres(inputObservacoes, 150);
 
-const btnFornecedorMenu = document.querySelector('.menu-item-8')
+const btnFornecedorMenu = document.querySelector('.menu-item-8');
 
 
 // Formatação do campo de preço de compra
@@ -176,12 +177,12 @@ async function postNewGrupoProduto(newGrupoData) {
 
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+
     const containerRegister = document.querySelector('.container-register');
 
     const btnCadGrupo = document.querySelector('#add-grupo');
     const btnCadSubGrupo = document.querySelector('#add-subGrupo');
-    const btnCadFornecedor = document.querySelector('#add-fornecedor');
+  
 
     btnCadGrupo.addEventListener('click', (e) => {
         e.preventDefault();
@@ -195,19 +196,6 @@ document.addEventListener('DOMContentLoaded', () => {
         renderizarInputsSubGrupo();
     });
 
-    //btn lateral ao input fonecedor, caso queira ativa-lo novamente tem que descomentar HTML.
-    // btnCadFornecedor.addEventListener('click', (e) => {
-    //     e.preventDefault();
-    //     containerRegister.style.display = 'flex';
-    //     renderizarInputsFornecedor();
-    // });
-
-    btnFornecedorMenu.addEventListener('click', (e) => {
-        e.preventDefault();
-        containerRegister.style.display = 'flex';
-        renderizarInputsFornecedor();
-        btnFornecedorMenu.classList.add('menu-item-8-active');
-    });
 
     // Função para criar o formulário de cadastro de grupo
     function renderizarInputsGrupo() {
@@ -296,6 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderizarInputsSubGrupo() {
+        
         containerRegister.innerHTML = '';
 
         const divSubGrupo = document.createElement('div');
@@ -431,185 +420,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+
+    //Renderizar Div Fornecedor
+   
+    const containerRegisterForm = document.querySelector('.container-register-form')
+
+    btnExit.addEventListener('click',(e)=>{
+        containerRegisterForm.style.display = 'none';
+        btnFornecedorMenu.classList.remove('menu-item-8-active');
+    })
+
+    btnFornecedorMenu.addEventListener('click', (e) => {
+        e.preventDefault();
+        containerRegisterForm.style.display = 'flex';
+        renderizarDivFornecedor();
+        btnFornecedorMenu.classList.add('menu-item-8-active');
+    });
+
     // Renderiza form cadastro Fornecedor
-    function renderizarInputsFornecedor() {
-        containerRegister.innerHTML = '';
-
-        const divFornecedor = document.createElement('div');
-        divFornecedor.className = 'div-fornecedor';
-
-        const exitButton = document.createElement('button');
-        exitButton.id = 'btn-exit';
-        exitButton.className = 'btn-exit';
-        exitButton.textContent = 'X';
-        divFornecedor.appendChild(exitButton);
-
-        // Título do formulário
-        const labelText = document.createElement('div');
-        labelText.classList = 'labelText';
-        labelText.textContent = 'Cadastrar Fornecedor';
-        divFornecedor.appendChild(labelText);
-
-        // Adiciona o formulário ao container principal
-        containerRegister.appendChild(divFornecedor);
-
-        // Função para fechar o formulário
-        exitButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            containerRegister.style.display = 'none';
-            btnFornecedorMenu.classList.remove('menu-item-8-active');
-        });
-
-        // Cria as linhas do formulário fornecedor
-        const linhaDiv1 = document.createElement('div');
-        const linhaDiv2 = document.createElement('div');
-        const linhaDiv3 = document.createElement('div');
-        const linhaDiv4 = document.createElement('div');
-        linhaDiv1.className = 'linha-inputs';
-        linhaDiv2.className = 'linha-inputs';
-        linhaDiv3.className = 'linha-inputs';
-        linhaDiv4.className = 'linha-inputs';
-
-        function createSelectElement(labelText, selectId, options) {
-            const div = document.createElement('div');
-            const label = document.createElement('label');
-            label.className = 'labelFornecedor';
-            label.textContent = labelText;
-            label.setAttribute('for', selectId);
-            div.appendChild(label);
-
-            const select = document.createElement('select');
-            select.id = selectId;
-
-            // Adicionando opções ao select
-            options.forEach(optionText => {
-                const option = document.createElement('option');
-                option.value = optionText.toLowerCase();
-                option.textContent = optionText;
-                select.appendChild(option);
-            });
-
-            // Adicionando o select dentro do div
-            div.appendChild(select);
-
-            // Retorna o select e o div separadamente
-            return { div, select }; // Modificação aqui para retornar o select separado
-        }
-
-
-        // Função para criar um par de label e input
-        function createInputElement(labelText, inputId, placeholder, type) {
-            const div = document.createElement('div');
-            const label = document.createElement('label');
-            label.className = 'labelFornecedor';
-            label.textContent = labelText;
-            label.setAttribute('for', inputId);
-            div.appendChild(label);
-
-            const input = document.createElement('input');
-            input.id = inputId;
-            input.type = type;
-            input.placeholder = placeholder;
-            div.appendChild(input);
-
-            return div;
-        }
-
-        // Create elements for the form
-        linhaDiv1.appendChild(createInputElement('CNPJ', 'cnpj', '', 'text'));
-        linhaDiv1.appendChild(createInputElement('Inscrição Estadual / IE', 'ie', '', 'text'));
-        linhaDiv1.appendChild(createInputElement('Razão Social', 'razaoSocial', '', 'text'));
-        divFornecedor.appendChild(linhaDiv1);
-
-        linhaDiv2.appendChild(createInputElement('Nome Fantasia', 'nomeFantasia', '', 'text'));
-        linhaDiv2.appendChild(createInputElement('Cep', 'cep', '', 'text'));
-        divFornecedor.appendChild(linhaDiv2);
-
-        linhaDiv3.appendChild(createInputElement('Endereço', 'endereco', '', 'text'));
-        linhaDiv3.appendChild(createInputElement('Bairro', 'bairro', '', 'text'));
-
-        // Create the UF select element
-        const { div: divUF, select: selectUF } = createSelectElement('UF', 'uf', optionsUF);
-        linhaDiv3.appendChild(divUF);
-
-        // Create the city select element with no initial options
-        const { div: divCidade, select: selectCidade } = createSelectElement('cidade', 'cidade', []);
-        linhaDiv3.appendChild(divCidade);
-        divFornecedor.appendChild(linhaDiv3);
-
-        // Add event listener to the UF select element
-        selectUF.addEventListener('change', (e) => {
-            let selectedEstado = e.target.value; // Capture the selected UF
-
-            // Clear the existing options in the city select element
-            selectCidade.innerHTML = '';
-
-            // Get cities for the selected state and populate the selectCidade
-            if (selectedEstado !== "Selecione") {
-                const cidades = cidadesPorEstado[selectedEstado.toUpperCase()] || [];
-                cidades.forEach(cidade => {
-                    const option = document.createElement('option');
-                    option.value = cidade;
-                    option.textContent = cidade;
-                    selectCidade.appendChild(option);
-                });
-            }
-        });
-
-        linhaDiv4.appendChild(createInputElement('Telefone', 'telefone', '', 'text'));
-        linhaDiv4.appendChild(createInputElement('Email', 'email', '', 'email'));
-        divFornecedor.appendChild(linhaDiv4);
-
-
-        // Botão de cadastro
-        const cadButton = document.createElement('button');
-        cadButton.id = 'btn-cad-fornecedor';
-        cadButton.textContent = 'Cadastrar';
-        divFornecedor.appendChild(cadButton);
-
-        // Função para capturar os valores dos inputs
-        cadButton.addEventListener('click', (e) => {
-            e.preventDefault();
-
-            // Captura os valores dos inputs
-            const fornecedorData = {
-                cnpj: document.getElementById('cnpj').value,
-                inscricao_estadual: document.getElementById('ie').value,
-                razao_social: document.getElementById('razaoSocial').value,
-                nome_fantasia: document.getElementById('nomeFantasia').value,
-                cep: document.getElementById('cep').value,
-                cidade: document.getElementById('cidade').value,
-                bairro: document.getElementById('bairro').value,
-                uf: document.getElementById('uf').value,
-                endereco: document.getElementById('endereco').value,
-                telefone: document.getElementById('telefone').value,
-                email: document.getElementById('email').value
-            };
-
-            document.getElementById('cnpj').value = '';
-            document.getElementById('ie').value = '';
-            document.getElementById('razaoSocial').value = '';
-            document.getElementById('nomeFantasia').value = '';
-            document.getElementById('cep').value = '';
-            document.getElementById('cidade').value = '';
-            document.getElementById('bairro').value = '';
-            document.getElementById('uf').value = '';
-            document.getElementById('endereco').value = '';
-            document.getElementById('telefone').value = '';
-            document.getElementById('email').value = '';
-
-
-            // Função para enviar os dados
-            postNewFornecedor(fornecedorData);
-            // Limpa as opções existentes no select
-            selectFornecedor.innerHTML = '';
-            selectFornecedor.innerHTML = '<option value="">Selecione</option>';
-            // Adiciona as novas opções do fornecedor
-            getFornecedor(selectFornecedor);
-            
-
-        });
-
+    function renderizarDivFornecedor() {
+       
         // Função para formatar o campo telefone 
         const inputTelefone = document.getElementById('telefone');
         formatarTelefone(inputTelefone);
@@ -650,8 +480,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     }
-
-});
 
 
 // Função para exibir a imagem do produto
