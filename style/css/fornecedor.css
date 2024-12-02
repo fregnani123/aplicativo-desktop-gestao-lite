@@ -1,0 +1,14 @@
+.menu-item-4 a {
+    color: rgb(255, 255, 255);
+    padding: 8px;
+    border-radius: 5px;
+    background-color: #ffffff00;
+    width: 100%;
+}
+.menu-item-8 a {
+    color: rgb(0, 0, 0);
+    padding: 8px;
+    border-radius: 5px;
+    background-color: #ffffff;
+    width: 100%;
+}

@@ -43,7 +43,7 @@ getunidadeDeMassa(selectUnidadeMassa);
 inputMaxCaracteres(inputNomeProduto, 150); //max caracteres input
 inputMaxCaracteres(inputObservacoes, 150);
 
-const btnFornecedorMenu = document.querySelector('.menu-item-8');
+const btnFornecedorMenu = document.querySelector('.li-fornecedor');
 
 
 // Formatação do campo de preço de compra
@@ -176,7 +176,6 @@ async function postNewGrupoProduto(newGrupoData) {
         });
 
 }
-
 
     const containerRegister = document.querySelector('.container-register');
 
@@ -427,14 +426,14 @@ async function postNewGrupoProduto(newGrupoData) {
 
     btnExit.addEventListener('click',(e)=>{
         containerRegisterForm.style.display = 'none';
-        btnFornecedorMenu.classList.remove('menu-item-8-active');
+        btnFornecedorMenu.classList.remove('li-fornecedor-active');
     })
 
     btnFornecedorMenu.addEventListener('click', (e) => {
         e.preventDefault();
         containerRegisterForm.style.display = 'flex';
         renderizarDivFornecedor();
-        btnFornecedorMenu.classList.add('menu-item-8-active');
+        btnFornecedorMenu.classList.add('li-fornecedor-active');
     });
 
     // Renderiza form cadastro Fornecedor

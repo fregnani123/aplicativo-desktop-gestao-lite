@@ -3,11 +3,11 @@ const menuPainel1 = [
     { id: '2', texto: 'Realizar venda', src: '../style/img/carrinho-de-compras.png', to: '../public/sales_screen.html' },
     { id: '3', texto: 'Detalhes de venda', src: '../style/img/detalhes vendas.png', to: '../public/detalhes-venda.html' },
     { id: '4', texto: 'Produto', src: '../style/img/cadastro de produtos.png', to: '../public/register_product.html' },
-    { id: '5', texto: 'Cadastro de Fornecedor', src: '../style/img/pacotes.png', to: '../public/alterar-produto.html' },
+    { id: '5', texto: 'Cadastro de Fornecedor', src: '../style/img/pacotes.png', to: '../public/fornecedor.html' },
 ];
 const menuPainel2 = [
     { id: '6', texto: 'Excluir Produto', src: '../style/img/excluir-produto.png', to: '../public/excluir-produtos.html' },
-    { id: '7', texto: 'Cadastro de cliente', src: '../style/img/cadastroCliente.png', to: '../public/cadastro-cliente.html' },
+    { id: '7', texto: 'Cadastro de cliente', src: '../style/img/cadastroCliente.png', to: '../public/register_client.html' },
     { id: '8', texto: 'Controle de entrada ', src: '../style/img/caixa-de-entrada.png', to: '../public/controle-entrada.html' },
     { id: '9', texto: 'Suporte', src: '../style/img/suporte.png', to: 'https://api.whatsapp.com/send?phone=5548996607600' },
     { id: '10', texto: 'Sair', src: '../style/img/sair.png', to: '../public/index.html' },

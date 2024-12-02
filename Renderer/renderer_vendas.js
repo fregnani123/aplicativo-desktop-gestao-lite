@@ -176,6 +176,15 @@ document.addEventListener('keydown', function (event) {
         }
         
     }
+
+    // Tecla ESC - voltar para o tela Menu-Painel
+    // if (event.key === 'Escape') {
+    //     event.preventDefault();
+    //     if( divSelecionarQtd.style.display !== 'flex'){
+    //         alertLimparVenda.style.display = 'flex';
+    //     }
+        
+    // }
     
     if (event.key === 'n') {
         event.preventDefault();

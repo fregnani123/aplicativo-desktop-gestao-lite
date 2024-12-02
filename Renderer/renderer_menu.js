@@ -4,6 +4,7 @@ const menuPainel1 = [
     { id: '3', texto: 'Detalhes de venda', to: '../public/detalhe_vendas.html' },
     { id: '4', texto: 'Produto', to: '../public/register_product.html' },
     { id: '7', texto: 'Cadastro de cliente', to: '../public/register_client.html' },
+    { id: '8', texto: 'Cadastro de Fornecedor', to: '../public/fornecedor.html' },
     { id: '9', texto: 'Controle de entrada ', to: '../public/controle-entrada.html' },
 ];
 

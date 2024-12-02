@@ -32,9 +32,8 @@
                 <li >
                     <a >Alterar Cadastro de Fornecedor</a>
                 </li>
-                <li class="li-sair">
-                    <!-- Botão de Fechar -->
-                   <button id="botaoSair" >Sair</button>
+                 <li class="li-sair">
+                    <button class="botaoSair" id="botaoSair">Voltar</button>
                 </li>
                
             </ul>
@@ -44,37 +43,37 @@
             <div class="linha-inputs">
                 <div>
                     <label class="labelFornecedor" for="cnpj">CNPJ</label>
-                    <input type="text"  id="cnpj" placeholder="Digite o CNPJ">
+                    <input type="text"  id="cnpj" >
                 </div>
                 <div>
                     <label class="labelFornecedor" for="ie">Inscrição Estadual / IE</label>
-                    <input type="text" id="ie" placeholder="Digite a Inscrição Estadual">
+                    <input type="text" id="ie" >
                 </div>
                 <div>
                     <label class="labelFornecedor" for="razaoSocial">Razão Social</label>
-                    <input type="text" id="razaoSocial" placeholder="Digite a Razão Social">
+                    <input type="text" id="razaoSocial">
                 </div>
             </div>
 
             <div class="linha-inputs">
                 <div>
                     <label class="labelFornecedor" for="nomeFantasia">Nome Fantasia</label>
-                    <input type="text" id="nomeFantasia" placeholder="Digite o Nome Fantasia">
+                    <input type="text" id="nomeFantasia">
                 </div>
                 <div>
                     <label class="labelFornecedor" for="cep">Cep</label>
-                    <input type="text" id="cep" placeholder="Digite o CEP">
+                    <input type="text" id="cep" >
                 </div>
             </div>
 
             <div class="linha-inputs">
                 <div>
                     <label class="labelFornecedor" for="endereco">Endereço</label>
-                    <input type="text" id="endereco" placeholder="Digite o Endereço">
+                    <input type="text" id="endereco" >
                 </div>
                 <div>
                     <label class="labelFornecedor" for="bairro">Bairro</label>
-                    <input type="text" id="bairro" placeholder="Digite o Bairro">
+                    <input type="text" id="bairro" >
                 </div>
                 <div>
                     <label class="labelFornecedor" for="uf">UF</label>
@@ -95,21 +94,20 @@
             <div class="linha-inputs">
                 <div>
                     <label class="labelFornecedor" for="telefone">Telefone</label>
-                    <input type="text" id="telefone" placeholder="Digite o Telefone">
+                    <input type="text" id="telefone" >
                 </div>
                 <div>
                     <label class="labelFornecedor" for="email">Email</label>
-                    <input type="email" id="email" placeholder="Digite o Email">
+                    <input type="email" id="email">
                 </div>
             </div>
             <div class="linha-inputs">
-                <div>
-                    <label for="observacoes">Observações</label>
-                    <textarea id="observacoes" name="observacoes" rows="4"
+                <div class="text-area">
+                    <label class="label" for="observacoes">Observações</label>
+                    <textarea id="observacoes" name="observacoes"
                         placeholder="Informações adicionais sobre o cliente"></textarea>
-                   
                 </div>
-                <div>
+                <div class="div-btnFornecedor">
                    <!-- Botão de Cadastro -->
                    <button id="btn-cad-fornecedor"><img class="img-disquete" src="../style//img/disquete.png">Gravar Fornecedor</button>
                 </div>
@@ -140,7 +138,7 @@
             <li class="li-menu2">
                 <a class="a2" href="">Informações Produtos</a>
             </li>
-            <li class="menu-item-8">
+            <li class="li-fornecedor">
                 <a class="a2" href="">Cadastro de Fornecedor</a>
             </li>
         </ul>
@@ -292,10 +290,13 @@
 
         </div>
     </div>
-    <script src="../Renderer/renderer_menu.js"></script>
-    <script src="../Renderer/apiEndpoints.js"></script>
     <script src="../Renderer/cidadesPorEstados.js"></script>
+    <script src="../Renderer/apiEndpoints.js"></script>
     <script src="../Renderer/renderer.js"></script>
+    <script src="../Renderer/renderer_menu.js"></script>
+    
+
+    
 </body>
 
 </html>
