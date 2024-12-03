@@ -1217,3 +1217,25 @@ padding-bottom: 0px;
     margin-left: -190px;
     display: none;    
 }
+.square-2-2-2-3{
+    align-items: center;
+    width: 120%;
+    height: 120vh;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.516);
+    position: absolute;
+    margin-top: -250px;
+    margin-left: -190px;
+    display: none;   
+}
+.div-exit{
+    background-color: var(--header-background-color);
+    color: white;
+    border-radius: 10px;
+    margin-right: 260px;
+    font-size: 1.2rem;
+}
+
+#numero-Item{
+    font-size: 1.2rem;
+}

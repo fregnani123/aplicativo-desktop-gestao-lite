@@ -54,7 +54,17 @@
                 <div class="div-exit">
                     <p>Digite a senha para sair da tela de vendas.</p>
                     <p><input id="exit-key" type="text"></p>
-                    <p>S / Sair</p>
+                    <p>V / Voltar</p>
+                    <!-- <p><span>S / Sim</span><span>N / Não</span></p> -->
+                </div>
+            </div>
+            <div class="square-2-2-2-3"> 
+                <div class="div-exit">
+                    <p class="titulo-delete-item">Digite o número do item que deseja remover do carrinho.</p>
+                    <p><input id="numero-Item" type="number"></p>
+                    <p id="mensagem"></p>
+                    <p>Tecla C / Confirmar</p>
+                    <p>Tecla V / Voltar</p>
                     <!-- <p><span>S / Sim</span><span>N / Não</span></p> -->
                 </div>
             </div>
@@ -94,18 +104,18 @@
                                 <div class="atalhos-1">
                                     <p class="p-atalhos">F1= Alterar Qtd</p>
                                     <p class="p-atalhos">Enter = retornar EAN</p>
-                                    <p class="p-atalhos">F2= Alterar Cliente</p>
-                                    <p class="p-atalhos">F3= Forma Pagamento </p>
+                                    <p class="p-atalhos" style="color:red">F2= Alterar Cliente</p>
+                                    <p class="p-atalhos"  style="color:red">F3= Forma Pagamento </p>
                                 </div>
                                 <div class="atalhos-2">
                                     <p class="p-atalhos">F4= Alterar tabela</p>
                                     <p class="p-atalhos">F5= Cancelar Item</p>
                                     <p class="p-atalhos">F6= Nova Venda</p>
-                                    <p class="p-atalhos">F7= finalizar venda</p>
+                                    <p class="p-atalhos"  style="color:red">F7= finalizar venda</p>
                                 </div>
                                 <div class="atalhos-3">
-                                    
                                     <p class="p-atalhos">ESC= Sair</p>
+                                    <p class="p-atalhos">V= Voltar</p>
                                     <p class="p-atalhos">S= Sim</p>
                                     <p class="p-atalhos">N= Não</p>
                                 </div>
@@ -148,11 +158,11 @@
     
 </body>
 
+<script src="../Renderer/renderer_vendas.js"></script>
 <script src="../Renderer/converte_moeda.js"></script>
 <script src="../Renderer/apiEndpoints.js"></script>
-<script src="../Renderer/renderer_menu.js"></script>
 <script src="../Renderer/renderer_relogio.js"></script>
-<script src="../Renderer/renderer_vendas.js"></script>
+
 
 
 </html>

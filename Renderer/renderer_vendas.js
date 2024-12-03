@@ -14,12 +14,31 @@ const divSelecionarQtd = document.querySelector('.square-2');
 const textSelecionarQtd = document.querySelector('.qtd-p-1');
 const alertLimparVenda = document.querySelector('.square-2-2-2');
 const alertExit= document.querySelector('.square-2-2-2-2');
+const alertRemoverItem= document.querySelector('.square-2-2-2-3');
 const inputExitVenda= document.querySelector('#exit-key');
-
+const inputExcluiItem= document.querySelector('#numero-Item');
+const mensagemDiv = document.querySelector('#mensagem');
 
 codigoEan.focus(); // Define o foco no input
 
 let carrinho = [];
+
+document.addEventListener('keydown', function (event) {
+    if (event.key === 'F8') {
+        if( alertRemoverItem.style.display !== 'flex'){
+            alertRemoverItem.style.display = 'flex';
+            inputExcluiItem.focus();
+        }
+    }
+    if (event.key === 'v') {
+        if( alertRemoverItem.style.display !== 'none'){
+            alertRemoverItem.style.display = 'none';
+            inputExcluiItem.value='';
+            mensagemDiv.innerHTML = '';
+        }
+    }
+});
+
 
 function rendererCarrinho() {
     ulDescricaoProduto.innerHTML = '';
@@ -49,6 +68,7 @@ function rendererCarrinho() {
 
         // Adiciona o item à lista
         ulDescricaoProduto.appendChild(produto);
+
     });
 }
 
@@ -94,7 +114,6 @@ function pushProdutoCarrinho() {
         inputQtd.value = '';
         codigoEan.value = '';
         unidadeEstoqueRender.value = '';
-
     }
     calCarrinho();
 }
@@ -136,6 +155,34 @@ codigoEan.addEventListener('input', (e) => {
         inputQtd.value = '';
     }
 });
+
+inputExcluiItem.addEventListener('keypress', function (event) {
+    // Verifica se a tecla pressionada foi Enter
+    if (event.key === 'c') {
+      const indexParaRemover = Number(inputExcluiItem.value) - 1; // Ajusta para índice do array
+
+      if (indexParaRemover >= 0 && indexParaRemover < carrinho.length) {
+        // Remove o item do índice especificado
+        const itemRemovido = carrinho.splice(indexParaRemover, 1);
+
+        // Mostra a mensagem de confirmação
+        mensagemDiv.textContent = `Item "${indexParaRemover + 1}" removido com sucesso.`;
+        mensagemDiv.style.color = "green";
+        console.log("Carrinho atualizado:", carrinho);
+      } else {
+        // Índice inválido
+        mensagemDiv.textContent = "Índice inválido! Por favor, tente novamente.";
+        mensagemDiv.style.color = "red";
+      }
+
+      // Limpa o valor do input após a exclusão ou erro
+      inputExcluiItem.value = '';
+      rendererCarrinho()
+      calCarrinho();
+    }
+  });
+ 
+
 
 codigoEan.addEventListener('keydown', function (event) {
     if (event.key === 'Enter') {
@@ -180,22 +227,23 @@ document.addEventListener('keydown', function (event) {
         
     }
 
-    //Tecla ESC - voltar para o tela Menu-Painel
+    //Tecla ESC - voltar para o tela Menu-Painel  -  Alterar senha para o servidor - aqui esta apenas para testes
     if (event.key === 'Escape') {
         event.preventDefault();
         if( alertExit.style.display !== 'flex'){
             alertExit.style.display = 'flex';
+            inputExitVenda.focus()
         };
         
     }
-    if (event.key === 's') {
+    if (event.key === 'v') {
         event.preventDefault();
         alertExit.style.display = 'none';
     }
 
     const handleInputExit = (e) => {
         const checkkeyExit = e.target.value;
-        if (checkkeyExit === 'adm') {
+        if (checkkeyExit === 'a') {
             // Redireciona para o menu
             window.location.href = '../public/menu.html';
             console.log('Login successful');
@@ -226,7 +274,7 @@ document.addEventListener('keydown', function (event) {
             }
         }
     });
-    
+
     document.addEventListener('keydown', function (event) {
         if (event.key === 'n') {
             event.preventDefault();
