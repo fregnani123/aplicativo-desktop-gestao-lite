@@ -13,6 +13,9 @@ const unidadeEstoqueRender = document.querySelector('#medidaEstoque');
 const divSelecionarQtd = document.querySelector('.square-2');
 const textSelecionarQtd = document.querySelector('.qtd-p-1');
 const alertLimparVenda = document.querySelector('.square-2-2-2');
+const alertExit= document.querySelector('.square-2-2-2-2');
+const inputExitVenda= document.querySelector('#exit-key');
+
 
 codigoEan.focus(); // Define o foco no input
 
@@ -177,20 +180,41 @@ document.addEventListener('keydown', function (event) {
         
     }
 
-    // Tecla ESC - voltar para o tela Menu-Painel
-    // if (event.key === 'Escape') {
-    //     event.preventDefault();
-    //     if( divSelecionarQtd.style.display !== 'flex'){
-    //         alertLimparVenda.style.display = 'flex';
-    //     }
+    //Tecla ESC - voltar para o tela Menu-Painel
+    if (event.key === 'Escape') {
+        event.preventDefault();
+        if( alertExit.style.display !== 'flex'){
+            alertExit.style.display = 'flex';
+        };
         
-    // }
+    }
+    if (event.key === 's') {
+        event.preventDefault();
+        alertExit.style.display = 'none';
+    }
+
+    const handleInputExit = (e) => {
+        const checkkeyExit = e.target.value;
+        if (checkkeyExit === 'adm') {
+            // Redireciona para o menu
+            window.location.href = '../public/menu.html';
+            console.log('Login successful');
+
+            // Remove o evento para evitar múltiplas adições
+            inputExitVenda.removeEventListener('input', handleInputExit);
+        }
+    };
+
+    inputExitVenda.addEventListener('input', handleInputExit, { once: true });
+
     
     if (event.key === 'n') {
         event.preventDefault();
          alertLimparVenda.style.display = 'none';
          EanFocus(); // Chamar a função relacionada
     }
+    
+
 
     // Evento de tecla `s`
     document.addEventListener('keydown', function (event) {
@@ -200,6 +224,14 @@ document.addEventListener('keydown', function (event) {
                 event.preventDefault();
                 resetDefaults();
             }
+        }
+    });
+    
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'n') {
+            event.preventDefault();
+             alertLimparVenda.style.display = 'none';
+             EanFocus(); // Chamar a função relacionada
         }
     });
     

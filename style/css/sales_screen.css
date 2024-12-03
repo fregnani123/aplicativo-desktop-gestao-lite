@@ -776,6 +776,19 @@ label{
     margin-left: -190px;
     display: none;
 }
+.square-exit{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 120vh;
+    margin: auto;
+    justify-content: center;
+    background-color: rgba(255, 0, 0, 0);
+    position: absolute;
+    margin-top: -250px;
+    margin-left: -190px;
+    display: none;
+}
 
 .square-2-1 {
     background-color: rgb(255, 255, 255);
@@ -1153,6 +1166,20 @@ padding-bottom: 0px;
     border: 2px solid black;
     flex-direction: column;
 }
+.div-exit{
+    width: 310px;
+    height: 280px;
+    padding: 0 10px;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    border: 2px solid black;
+    flex-direction: column;
+    font-size: 1.5rem;
+    text-align: center;
+}
 
 .div-limpar span{
     color: white;
@@ -1177,6 +1204,16 @@ padding-bottom: 0px;
     position: absolute;
     margin-top: -250px;
     margin-left: -190px;
-    display: none;
-    
+    display: none;    
+}
+.square-2-2-2-2{
+    align-items: center;
+    width: 120%;
+    height: 120vh;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.516);
+    position: absolute;
+    margin-top: -250px;
+    margin-left: -190px;
+    display: none;    
 }
