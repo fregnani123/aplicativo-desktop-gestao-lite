@@ -775,6 +775,7 @@ label{
     margin-top: -250px;
     margin-left: -190px;
     display: none;
+    font-size: 1.2rem;
 }
 .square-exit{
     display: flex;
@@ -791,7 +792,7 @@ label{
 }
 
 .square-2-1 {
-    background-color: rgb(255, 255, 255);
+    background-color: var(--header-background-color);
     display: flex;
     flex-direction: column; /* Organiza os itens em linha */
     text-align: center;
@@ -801,6 +802,7 @@ label{
     height: 280px;
     border: 2px solid black;
     padding: 5px;
+    color: white;
 }
 .qtd-selecionada{
     margin-top: 10px;
@@ -848,7 +850,10 @@ label{
 }
 .p-qtd{
     margin-top: 20px;
+    color: white;
+   
 }
+
 #medidaEstoque{
     width: 100px;
     height: 50px;
@@ -867,9 +872,9 @@ label{
 }
 
 .square-2-1 label,.square-2-2 label{
- font-size: 1.5rem;
- color: black;
+ color: rgb(255, 253, 253);
  margin-left: -5px;
+ font-size: 1.2rem;
 }
 .square-2-1-1 label,.square-2-2-1 label{
  font-size: 2rem;

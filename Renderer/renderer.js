@@ -150,6 +150,7 @@ inputMarkup.addEventListener('input', (e) => {
 
 // Eventos para exibir o formulário de cadastro de grupo, subgrupo e fornecedor
 
+
 async function postNewGrupoProduto(newGrupoData) {
     const postNewGrupoProdutoData = apiEndpoints.postNewGrupoProduto;
     fetch(postNewGrupoProdutoData, {
@@ -481,76 +482,174 @@ async function postNewGrupoProduto(newGrupoData) {
     }
 
 
-// Função para exibir a imagem do produto
-inputPathImg.onchange = function (event) {
-    const file = event.target.files[0];
-    if (file) {
-        const rendererImgProduct = document.createElement('img');
-        rendererImgProduct.style.maxWidth = '100%';
 
-        const reader = new FileReader();
 
-        reader.onload = function (e) {
-            rendererImgProduct.src = e.target.result;
-            divImgProduct.innerHTML = '';
-            divImgProduct.appendChild(rendererImgProduct);
-        };
 
-        reader.readAsDataURL(file);
 
-        const relativePath = file.name.replace(/\.[^/.]+$/, "");
-        inputPathImg.setAttribute('data-relative-path', relativePath);
-    }
-};
 
-// Evento para cadastrar um novo produto
-document.querySelector('#btn-cadastrar').addEventListener('click', function (e) {
-    e.preventDefault();
-    const file = document.querySelector('input[type="file"]').files[0];
-    let relativePath = null;
 
-    if (file) {
-        const extension = file.name.split('.').pop();
-        relativePath = `${inputPathImg.getAttribute('data-relative-path')}-${inputCodigoEAN.value}.${extension}`;
-        uploadImage(relativePath);
-    }
-    const produtoData = {
-        codigo_ean: inputCodigoEAN.value,
-        nome_produto: inputNomeProduto.value,
-        observacoes: inputObservacoes.value,
-        categoria_id: selectGrupo.value,
-        grupo_produto_id: selectSubGrupo.value,
-        fornecedor_id: selectFornecedor.value,
-        tamanho_letras_id: selectTamanhoLetras.value,
-        tamanho_num_id: selectTamanhoNumeros.value,
-        unidade_massa_id: selectUnidadeMassa.value,
-        unidade_comprimento_id: selectUnidadeComprimento.value,
-        medida_volume_id: selectMedidaVolume.value,
-        quantidade_estoque: inputQuantidadeEstoque.value,
-        preco_compra: inputPrecoCompra.value.replace(",", "."),
-        markup: inputMarkup.value,
-        preco_venda: inputPrecoVenda.value.replace(",", "."),
-        unidade_estoque_id: selectUnidadeEstoque.value,
-        cor_produto: selectCorProduto.value,
-        caminho_imagem: relativePath,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Espera o DOM carregar completamente
+document.addEventListener('DOMContentLoaded', (event) => {
+    const inputPathImg = document.querySelector('#produto-imagem');
+    const divImgProduct = document.querySelector('.quadro-img');
+
+    inputPathImg.onchange = function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            // Verifica se já existe uma imagem com a classe .img-produto e a remove
+            let imgProduto = divImgProduct.querySelector('.img-produto');
+            if (imgProduto) {
+                divImgProduct.removeChild(imgProduto);
+            }
+            
+            // Cria um novo elemento de imagem
+            imgProduto = document.createElement('img');
+            imgProduto.className = 'img-produto';
+            
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                imgProduto.src = e.target.result;
+            };
+
+            reader.readAsDataURL(file);
+
+            // Adiciona a nova imagem à div.quadro-img
+            divImgProduct.appendChild(imgProduto);
+
+            const relativePath = file.name.replace(/\.[^/.]+$/, "");
+            inputPathImg.setAttribute('data-relative-path', relativePath);
+        }
+    };
+});
+
+
+
+
+         inputPathImg.onchange = function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const produtoImg = document.getElementById('produtoImg');
+            
+            const reader = new FileReader();
+            
+            reader.onload = function (e) {
+                produtoImg.src = e.target.result;
+            };
+            
+            reader.readAsDataURL(file);
+            
+            const relativePath = file.name.replace(/\.[^/.]+$/, "");
+            document.querySelector('#inputPathImg').setAttribute('data-relative-path', relativePath);
+        }
     };
     
-    postNewProduto(produtoData);
 
-    // Limpar todos os campos
+
+
+    document.querySelector('#btn-cadastrar').addEventListener('click', async function (e) {
+        e.preventDefault();
+        const file = document.querySelector('input[type="file"]').files[0];
+        let relativePath = null;
+    
+        if (file) {
+            const extension = file.name.split('.').pop();
+            relativePath = `${inputPathImg.getAttribute('data-relative-path')}-${inputCodigoEAN.value}.${extension}`;
+        }
+    
+        const produtoData = {
+            codigo_ean: inputCodigoEAN.value,
+            nome_produto: inputNomeProduto.value,
+            observacoes: inputObservacoes.value,
+            categoria_id: selectGrupo.value,
+            grupo_produto_id: selectSubGrupo.value,
+            fornecedor_id: selectFornecedor.value,
+            tamanho_letras_id: selectTamanhoLetras.value,
+            tamanho_num_id: selectTamanhoNumeros.value,
+            unidade_massa_id: selectUnidadeMassa.value,
+            unidade_comprimento_id: selectUnidadeComprimento.value,
+            medida_volume_id: selectMedidaVolume.value,
+            quantidade_estoque: inputQuantidadeEstoque.value,
+            preco_compra: inputPrecoCompra.value.replace(",", "."),
+            markup: inputMarkup.value,
+            preco_venda: inputPrecoVenda.value.replace(",", "."),
+            unidade_estoque_id: selectUnidadeEstoque.value,
+            cor_produto: selectCorProduto.value,
+            caminho_img_produto: relativePath,
+        };
+    
+        console.log('Dados do Produto Enviados:', produtoData);
+    
+        if (!produtoData.codigo_ean || !produtoData.nome_produto || !produtoData.categoria_id || !produtoData.grupo_produto_id) {
+            alert('Erro: Todos os campos obrigatórios devem ser preenchidos.');
+            return;
+        }
+    
+        try {
+            await postNewProdutoWithImage(produtoData, file);
+            alert('Produto cadastrado com sucesso!');
+        } catch (error) {
+            console.error('Erro ao cadastrar o produto:', error);
+            alert('Erro ao cadastrar o produto. Tente novamente.');
+        }
+    
+        limparCampos();
+        limparImagem();
+    });
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Função para limpar campos
+function limparCampos() {
     inputCodigoEAN.value = '';
     inputNomeProduto.value = '';
     inputObservacoes.value = '';
-    inputMassa.value = '';
-    inputVolume.value = '';
-    inputComprimento.value = '';
     inputQuantidadeEstoque.value = '';
     inputPrecoCompra.value = '';
     inputMarkup.value = '';
-    outputLucro.value = '';
     inputPrecoVenda.value = '';
 
-    // Resetar as seleções dos dropdowns
     selectGrupo.selectedIndex = 0;
     selectSubGrupo.selectedIndex = 0;
     selectFornecedor.selectedIndex = 0;
@@ -561,29 +660,11 @@ document.querySelector('#btn-cadastrar').addEventListener('click', function (e) 
     selectUnidadeComprimento.selectedIndex = 0;
     selectUnidadeEstoque.selectedIndex = 0;
     selectCorProduto.selectedIndex = 0;
+}
 
-    // Limpar pré-visualização da imagem
-    divImgProduct.innerHTML = ` <img class="img-produto" src="../style/img/produto.png" alt="imagem produto">`;
+// Função para limpar a pré-visualização da imagem
+function limparImagem() {
+    divImgProduct.innerHTML = `<img class="img-produto" src="../style/img/produto.png" alt="imagem produto">`;
     inputPathImg.value = '';
+}
 
-});
-
-
-// Função para enviar a imagem
-async function uploadImage(filePath) {
-    const fileInput = document.querySelector('input[type="file"]');
-    const formData = new FormData();
-    formData.append('image', fileInput.files[0], filePath);
-
-    fetch('/api/upload', {
-        method: 'POST',
-        body: formData
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Imagem enviada com sucesso:', data);
-        })
-        .catch(error => {
-            console.error('Erro ao enviar a imagem:', error);
-        });
-} 

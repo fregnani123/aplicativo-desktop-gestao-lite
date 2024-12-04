@@ -358,7 +358,7 @@ async function postNewProduct(produto) {
             produto.preco_venda || 0,
             produto.unidade_estoque_id || null,
             produto.fornecedor_id || null,
-            produto.caminho_img_produto || null
+            produto.caminho_img_produto || ''
         ];
 
         const [result] = await connection.query(insertQuery, values);

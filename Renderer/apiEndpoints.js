@@ -13,7 +13,6 @@ const apiEndpoints = {
     getunidadeEstoque: 'http://localhost:3000/unidadeEstoque',
     getCorProduto: 'http://localhost:3000/corProduto',
     postNewProduto: 'http://localhost:3000/postNewProduto',
-    postImgProduto: 'http://localhost:3000/uploadImagem',
     postNewGrupoProduto: 'http://localhost:3000/newGrupo',
     postNewSubGrupoProduto: 'http://localhost:3000/newSubGrupo',
     postNewFornecedor: 'http://localhost:3000/newFornecedor',
@@ -34,60 +33,91 @@ function inputMaxCaracteres(input, max) {
     )
 }
 
-async function uploadImage(fileName) {
-    const fileInput = document.querySelector('input[type="file"]');
-    const formData = new FormData();
-    const file = fileInput.files[0];
-    const extension = file.name.split('.').pop();
-    formData.append('image', file, `${fileName}`);
 
-    try {
-        const response = await fetch(apiEndpoints.postImgProduto, {
-            method: 'POST',
-            body: formData
-        });
 
-        if (response.ok) {
-            const data = await response.json();
-            console.log('Upload bem-sucedido:', data);
 
-        } else {
-            console.error('Falha no upload');
-        }
-    } catch (error) {
-        console.error('Erro ao fazer upload do arquivo:', error);
+
+
+
+
+
+
+
+
+
+
+
+document.querySelector('#inputPathImg').onchange = function (event) {
+    const file = event.target.files[0];
+    if (file) {
+        const imgFornecedor = document.querySelector('.img-fornecedor');
+
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            imgFornecedor.src = e.target.result;
+        };
+
+        reader.readAsDataURL(file);
+
+        const relativePath = file.name.replace(/\.[^/.]+$/, "");
+        document.querySelector('#inputPathImg').setAttribute('data-relative-path', relativePath);
     }
-}
+};
 
-async function postNewProduto(produtoData) {
-    const postNewProdutoData = apiEndpoints.postNewProduto;
+
+
+
+
+async function postNewProdutoWithImage(produtoData, selectedFile) {
+    const apiEndpoint = apiEndpoints.postNewProduto;
 
     if (!produtoData.codigo_ean || !produtoData.nome_produto) {
         console.error('Erro: código EAN e nome do produto são obrigatórios.');
         alert('Erro: código EAN e nome do produto são obrigatórios.');
         return;
     }
-    fetch(postNewProdutoData, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(produtoData),
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json();
 
-        })
-        .then(data => {
-            console.log('Produto added successfully:', data);
-        })
-        .catch(error => {
-            console.error('Error adding produto:', error);
+    const formData = new FormData();
+    formData.append('image', selectedFile);
+    formData.append('produtoData', JSON.stringify(produtoData)); // Dados do produto como string JSON
+
+    try {
+        const response = await fetch(apiEndpoint, {
+            method: 'POST',
+            body: formData,
         });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('Produto e imagem adicionados com sucesso:', data);
+    } catch (error) {
+        console.error('Erro ao adicionar produto e imagem:', error);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 async function postNewFornecedor(fornecedorData) {
     const postNewFornecedorData = apiEndpoints.postNewFornecedor;
