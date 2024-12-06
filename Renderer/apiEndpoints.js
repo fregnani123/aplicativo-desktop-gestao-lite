@@ -47,24 +47,6 @@ function inputMaxCaracteres(input, max) {
 
 
 
-document.querySelector('#inputPathImg').onchange = function (event) {
-    const file = event.target.files[0];
-    if (file) {
-        const imgFornecedor = document.querySelector('.img-fornecedor');
-
-        const reader = new FileReader();
-
-        reader.onload = function (e) {
-            imgFornecedor.src = e.target.result;
-        };
-
-        reader.readAsDataURL(file);
-
-        const relativePath = file.name.replace(/\.[^/.]+$/, "");
-        document.querySelector('#inputPathImg').setAttribute('data-relative-path', relativePath);
-    }
-};
-
 
 
 
@@ -184,7 +166,7 @@ async function getunidadeEstoqueVendas(id, renderer) {
         });
 }
 
-function getProduto(descricaoElement, codigoDeBarras, precoVendaElement) {
+function getProduto(descricaoElement, codigoDeBarras, precoVendaElement, unidadeEstoqueID) {
     const getOneProduct = `${apiEndpoints.findOneProduct}/${codigoDeBarras}`;
     fetch(getOneProduct, {
         method: 'GET',
@@ -206,7 +188,7 @@ function getProduto(descricaoElement, codigoDeBarras, precoVendaElement) {
 
                 descricaoElement.value = produto.nome_produto;
                 precoVendaElement.value = produto.preco_venda;
-
+                unidadeEstoqueID = produto.unidadeEstoqueID;
 
                 let value = precoVendaElement.value;
                 value = value.replace(/\D/g, '');

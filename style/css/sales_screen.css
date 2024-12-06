@@ -1240,6 +1240,30 @@ padding-bottom: 0px;
     margin-right: 260px;
     font-size: 1.2rem;
 }
+.square-2-2-2-4{
+    align-items: center;
+    width: 120%;
+    height: 120vh;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.516);
+    position: absolute;
+    margin-top: -250px;
+    margin-left: -190px;
+    display: none;
+}
+.div-pagamento{
+    background-color: var(--header-background-color);
+    color: white;
+    border-radius: 10px;
+    margin-right: 260px;
+    font-size: 1.2rem;
+    width: 800px;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
 
 #numero-Item{
     font-size: 1.2rem;

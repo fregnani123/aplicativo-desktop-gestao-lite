@@ -59,12 +59,13 @@ function rendererCarrinho() {
         // Descrição do produto
         const descricao = document.createElement('span');
         descricao.classList.add('spanDescricao');
-        descricao.textContent = `${item.descricao} R$${item.preco} x${item.Qtd}`;
+        descricao.textContent = `${item.descricao} R$${item.preco} x ${item.Qtd}${item.unidadeEstoqueID}`;
 
         // Adiciona cada elemento ao `produto`
         produto.appendChild(indexProduto);
         produto.appendChild(codigoEan);
         produto.appendChild(descricao);
+        
 
         // Adiciona o item à lista
         ulDescricaoProduto.appendChild(produto);
@@ -141,7 +142,7 @@ codigoEan.addEventListener('input', (e) => {
             inputQtd.value = '1';
         }
 
-        getProduto(descricao, EAN, precoVenda);  // Preenche os detalhes do produto
+        getProduto(descricao, EAN, precoVenda, unidadeEstoqueRender);  // Preenche os detalhes do produto
 
         setTimeout(() => {
             pushProdutoCarrinho();  // Adiciona o produto ao carrinho
@@ -182,8 +183,6 @@ inputExcluiItem.addEventListener('keypress', function (event) {
     }
   });
  
-
-
 codigoEan.addEventListener('keydown', function (event) {
     if (event.key === 'Enter') {
         event.preventDefault();

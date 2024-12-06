@@ -85,7 +85,6 @@ function calcularMarkup() {
     }
 }
 
-
 // Adiciona ouvintes de eventos para os campos de entrada
 inputPrecoCompra.addEventListener('input', calcularMarkup);
 inputMarkup.addEventListener('input', calcularMarkup);
@@ -149,8 +148,6 @@ inputMarkup.addEventListener('input', (e) => {
 });
 
 // Eventos para exibir o formulário de cadastro de grupo, subgrupo e fornecedor
-
-
 async function postNewGrupoProduto(newGrupoData) {
     const postNewGrupoProdutoData = apiEndpoints.postNewGrupoProduto;
     fetch(postNewGrupoProdutoData, {
@@ -481,31 +478,7 @@ async function postNewGrupoProduto(newGrupoData) {
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // Espera o DOM carregar completamente
+    // Espera o DOM carregar completamente - função que renderiza a img durante o cadastro feito pelo usuário.
 document.addEventListener('DOMContentLoaded', (event) => {
     const inputPathImg = document.querySelector('#produto-imagem');
     const divImgProduct = document.querySelector('.quadro-img');
@@ -539,10 +512,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
     };
 });
-
-
-
-
          inputPathImg.onchange = function (event) {
         const file = event.target.files[0];
         if (file) {
@@ -562,7 +531,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     };
     
 
-
+//função que envia os dados do produto e img para cadastro das informações no db e inserção da img na pasta (caso o usuário envie a img)
 
     document.querySelector('#btn-cadastrar').addEventListener('click', async function (e) {
         e.preventDefault();
@@ -614,31 +583,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
         limparImagem();
     });
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Função para limpar campos
 function limparCampos() {
