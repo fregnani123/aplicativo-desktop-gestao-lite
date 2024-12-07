@@ -15,30 +15,15 @@ const textSelecionarQtd = document.querySelector('.qtd-p-1');
 const alertLimparVenda = document.querySelector('.square-2-2-2');
 const alertExit= document.querySelector('.square-2-2-2-2');
 const alertRemoverItem= document.querySelector('.square-2-2-2-3');
+const formaPagamento= document.querySelector('.square-2-2-2-4');
 const inputExitVenda= document.querySelector('#exit-key');
 const inputExcluiItem= document.querySelector('#numero-Item');
 const mensagemDiv = document.querySelector('#mensagem');
 
+
 codigoEan.focus(); // Define o foco no input
 
 let carrinho = [];
-
-document.addEventListener('keydown', function (event) {
-    if (event.key === 'F8') {
-        if( alertRemoverItem.style.display !== 'flex'){
-            alertRemoverItem.style.display = 'flex';
-            inputExcluiItem.focus();
-        }
-    }
-    if (event.key === 'v') {
-        if( alertRemoverItem.style.display !== 'none'){
-            alertRemoverItem.style.display = 'none';
-            inputExcluiItem.value='';
-            mensagemDiv.innerHTML = '';
-        }
-    }
-});
-
 
 function rendererCarrinho() {
     ulDescricaoProduto.innerHTML = '';
@@ -157,133 +142,108 @@ codigoEan.addEventListener('input', (e) => {
     }
 });
 
-inputExcluiItem.addEventListener('keypress', function (event) {
-    // Verifica se a tecla pressionada foi Enter
-    if (event.key === 'c') {
-      const indexParaRemover = Number(inputExcluiItem.value) - 1; // Ajusta para índice do array
-
-      if (indexParaRemover >= 0 && indexParaRemover < carrinho.length) {
-        // Remove o item do índice especificado
-        const itemRemovido = carrinho.splice(indexParaRemover, 1);
-
-        // Mostra a mensagem de confirmação
-        mensagemDiv.textContent = `Item "${indexParaRemover + 1}" removido com sucesso.`;
-        mensagemDiv.style.color = "green";
-        console.log("Carrinho atualizado:", carrinho);
-      } else {
-        // Índice inválido
-        mensagemDiv.textContent = "Índice inválido! Por favor, tente novamente.";
-        mensagemDiv.style.color = "red";
-      }
-
-      // Limpa o valor do input após a exclusão ou erro
-      inputExcluiItem.value = '';
-      rendererCarrinho()
-      calCarrinho();
-    }
-  });
- 
-codigoEan.addEventListener('keydown', function (event) {
-    if (event.key === 'Enter') {
-        event.preventDefault();
-        pushProdutoCarrinho();
-    }
-});
-
-
 document.addEventListener('keydown', function (event) {
-    // Tecla F1 - Abrir divSelecionarQtd
-    if (event.key === 'F1') {
-        event.preventDefault();
-        // Verificar se o alertLimparVenda está visível
-        if (alertLimparVenda.style.display !== 'flex') {
-            divSelecionarQtd.style.display = 'flex';
-            QtdFocus(); // Chamar a função relacionada
-        }
+    // Verifica se alguma div está visível
+    const isAnyDivVisible = [
+        alertRemoverItem,
+        formaPagamento,
+        alertLimparVenda,
+        divSelecionarQtd,
+        alertExit
+    ].some(div => div.style.display === 'flex');
+
+    // Tecla F8 - Mostrar alertRemoverItem
+    if (event.key === 'F8' && !isAnyDivVisible) {
+        alertRemoverItem.style.display = 'flex';
+        inputExcluiItem.focus();
     }
 
-    // Tecla Enter - Fechar divSelecionarQtd e atualizar texto
+    // Tecla F3 - Mostrar formaPagamento
+    if (event.key === 'F3' && !isAnyDivVisible) {
+        formaPagamento.style.display = 'flex';
+        formaPagamento.focus();
+    }
+
+    // Tecla F1 - Abrir divSelecionarQtd
+    if (event.key === 'F1' && !isAnyDivVisible) {
+        event.preventDefault();
+        divSelecionarQtd.style.display = 'flex';
+        QtdFocus();
+    }
+
+    // Tecla F6 - Mostrar alertLimparVenda
+    if (event.key === 'F6' && !isAnyDivVisible) {
+        event.preventDefault();
+        alertLimparVenda.style.display = 'flex';
+    }
+
+    // Tecla Enter - Verificar se deve focar ou atualizar
     if (event.key === 'Enter') {
         event.preventDefault();
-        // Verificar se o alertLimparVenda está visível antes de fechar divSelecionarQtd
-        if (alertLimparVenda.style.display !== 'flex') {
+        if (alertRemoverItem.style.display === 'flex') {
+            inputExcluiItem.focus();
+        } else if (divSelecionarQtd.style.display === 'flex') {
             divSelecionarQtd.style.display = 'none';
             if (inputQtd.value === '') {
                 textSelecionarQtd.innerHTML = '';
             } else {
                 textSelecionarQtd.innerHTML = `${inputQtd.value}x`;
             }
-            EanFocus(); // Chamar a função relacionada
+            EanFocus();
         }
     }
 
-    // Tecla F6 - Mostrar alertLimparVenda
-    if (event.key === 'F6') {
+    // Tecla ESC - Mostrar alertExit
+    if (event.key === 'Escape' && !isAnyDivVisible) {
         event.preventDefault();
-        if( divSelecionarQtd.style.display !== 'flex'){
-            alertLimparVenda.style.display = 'flex';
-        }
-        
+        alertExit.style.display = 'flex';
+        inputExitVenda.focus();
     }
 
-    //Tecla ESC - voltar para o tela Menu-Painel  -  Alterar senha para o servidor - aqui esta apenas para testes
-    if (event.key === 'Escape') {
-        event.preventDefault();
-        if( alertExit.style.display !== 'flex'){
-            alertExit.style.display = 'flex';
-            inputExitVenda.focus()
-        };
-        
-    }
+    // Tecla 'v' - Fechar alertRemoverItem ou alertExit
     if (event.key === 'v') {
         event.preventDefault();
-        alertExit.style.display = 'none';
+        if (alertRemoverItem.style.display === 'flex') {
+            alertRemoverItem.style.display = 'none';
+            inputExcluiItem.value = '';
+            mensagemDiv.innerHTML = '';
+            EanFocus();
+        } else if (alertExit.style.display === 'flex') {
+            alertExit.style.display = 'none';
+            EanFocus();
+        }
+
+        if ( formaPagamento.style.display === 'flex') {
+            formaPagamento.style.display = 'none';
+            formaPagamento.value = '';
+            mensagemDiv.innerHTML = '';
+            EanFocus();
+        } 
     }
 
-    const handleInputExit = (e) => {
-        const checkkeyExit = e.target.value;
-        if (checkkeyExit === 'a') {
-            // Redireciona para o menu
-            window.location.href = '../public/menu.html';
-            console.log('Login successful');
+    // Tecla 'n' - Fechar alertLimparVenda
+    if (event.key === 'n' && alertLimparVenda.style.display === 'flex') {
+        event.preventDefault();
+        alertLimparVenda.style.display = 'none';
+        EanFocus();
+    }
 
-            // Remove o evento para evitar múltiplas adições
+    // Tecla 's' - Resetar alertLimparVenda
+    if (event.key === 's' && alertLimparVenda.style.display === 'flex') {
+        event.preventDefault();
+        resetDefaults();
+    }
+
+    // Lógica para redirecionamento no alertExit
+    const handleInputExit = (e) => {
+        if (e.target.value === 'a') {
+            window.location.href = '../public/menu.html';
             inputExitVenda.removeEventListener('input', handleInputExit);
         }
     };
-
     inputExitVenda.addEventListener('input', handleInputExit, { once: true });
-
-    
-    if (event.key === 'n') {
-        event.preventDefault();
-         alertLimparVenda.style.display = 'none';
-         EanFocus(); // Chamar a função relacionada
-    }
-    
-
-
-    // Evento de tecla `s`
-    document.addEventListener('keydown', function (event) {
-        if (event.key === 's') {
-            // Só executa se alertLimparVenda estiver visível
-            if (alertLimparVenda.style.display === 'flex') {
-                event.preventDefault();
-                resetDefaults();
-            }
-        }
-    });
-
-    document.addEventListener('keydown', function (event) {
-        if (event.key === 'n') {
-            event.preventDefault();
-             alertLimparVenda.style.display = 'none';
-             EanFocus(); // Chamar a função relacionada
-        }
-    });
-    
-
 });
+
 
 function resetDefaults() {
     // Esconde os elementos necessários
@@ -335,3 +295,13 @@ inputQtd.addEventListener('input', function (e) {
 });
 
 
+
+
+const escolherformaPagamento= [
+    {id:1,  pagamento:'À Vista'},
+    {id: 2, pagamento: 'PIX' },
+    {id: 2, pagamento: 'Cartao Credito' },
+    {id: 2, pagamento: 'Cartao Debito' },
+    {id: 2, pagamento: 'Boleto' },
+    {id: 2, pagamento: 'Crediario' },
+]

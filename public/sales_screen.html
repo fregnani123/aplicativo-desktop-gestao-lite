@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,23 +19,26 @@
                     </div>
                     <div class="square-inputs">
                         <label for="">Nº Pedido:</label><input type="text" id="numero-pedido" value="01" readonly>
-                        <label for="">Data da Venda:</label><input type="text" id="data-venda" autocomplete="off" readonly>
+                        <label for="">Data da Venda:</label><input type="text" id="data-venda" autocomplete="off"
+                            readonly>
                         <label for="">Cliente:</label> <input id="select-cliente" value="Consumidor Final">
                     </div>
                 </div>
                 <div class="square-1-2"></div>
                 <div>
-                    <p class="square-time"><p class="square-day"></p></p>
+                    <p class="square-time">
+                    <p class="square-day"></p>
+                    </p>
                 </div>
             </div>
-    
+
             <div class="square-2">
                 <div class="square-2-1">
-                    <p  >Inserir quantidade (Qtd) </p>
+                    <p>Inserir quantidade (Qtd) </p>
                     <input type="text" id="input-qtd">
                     <p class="p-qtd">Tecla ENTER= Adicionar / voltar</p>
                 </div>
-                <div class="square-2-1-1"> 
+                <div class="square-2-1-1">
                     <input type="text" id="medidaEstoque" readonly>
                 </div>
                 <div class="square-2-2">
@@ -43,13 +47,13 @@
                 </div>
             </div>
 
-            <div class="square-2-2-2"> 
+            <div class="square-2-2-2">
                 <div class="div-limpar">
                     <p>Confirmar início de nova venda?</p>
                     <p><span>S / Sim</span><span>N / Não</span></p>
                 </div>
             </div>
-            <div class="square-2-2-2-2"> 
+            <div class="square-2-2-2-2">
                 <div class="div-exit">
                     <p>Digite a senha para sair da tela de vendas.</p>
                     <p><input id="exit-key" type="text"></p>
@@ -57,7 +61,7 @@
                     <!-- <p><span>S / Sim</span><span>N / Não</span></p> -->
                 </div>
             </div>
-            <div class="square-2-2-2-3"> 
+            <div class="square-2-2-2-3">
                 <div class="div-exit">
                     <p class="titulo-delete-item">Digite o número do item que deseja remover do carrinho.</p>
                     <p><input id="numero-Item" type="number"></p>
@@ -67,17 +71,38 @@
                     <!-- <p><span>S / Sim</span><span>N / Não</span></p> -->
                 </div>
             </div>
-            <div class="square-2-2-2-4"> 
+            <div class="square-2-2-2-4">
                 <div class="div-pagamento">
-                    <p class="titulo-delete-item">Selecionar Forma de Pagamento</p>
-                    <p><input id="numero-Item" type="number"></p>
+                    <p class="titulo-choose-item">Digite o numero para selecionar o Pagamento</p>
+                    <div class="div-choose">
+                      <div>
+                        <p>
+                            1 : À Vista
+                        </p>
+                        <p>
+                            2 : PIX
+                        </p>
+                        <p>
+                            3: Cartão Credito
+                        </p>
+                      </div>
+                      <div>
+                        <p>
+                            4: Cartão Debito
+                        </p>
+                        <!-- <p>
+                            5: Boleto
+                        </p> -->
+                        <!-- <p>
+                            6: Crediário
+                        </p> -->
+                      </div> 
+                    </div>
+                    <div class="pagamento-default"><p>À Vista (Dinheiro) : <input type="text" placeholder="Digite o valor pago cliente"></p></div>
                     <p id="mensagem"></p>
-                    <p>Tecla C / Confirmar</p>
-                    <p>Tecla V / Voltar</p>
-                    <!-- <p><span>S / Sim</span><span>N / Não</span></p> -->
                 </div>
             </div>
-    
+
             <div class="square-3">
                 <div class="square-3-1">
                     <div class="square-3-1-1">
@@ -87,7 +112,10 @@
                         <div class="square-codigo">
                             <p class="label-codigo"><label for="" class="label-codigo">Código Barras</label></p>
                             <input type="text" id="codigo">
-                            <div class="qtd-selecionada"><p class="qtd-p">Quantidade<span class="qtd-span">(F1)</span></p><p class="qtd-p-1"></p></div>
+                            <div class="qtd-selecionada">
+                                <p class="qtd-p">Quantidade<span class="qtd-span">(F1)</span></p>
+                                <p class="qtd-p-1"></p>
+                            </div>
                             <p class="valor-unitario"><label for="" class="valor-unitario">Valor Unitário</label></p>
                             <input type="text" id="valor-unitario" readonly>
                         </div>
@@ -114,13 +142,13 @@
                                     <p class="p-atalhos">F1= Alterar Qtd</p>
                                     <p class="p-atalhos">Enter = retornar EAN</p>
                                     <p class="p-atalhos" style="color:red">F2= Alterar Cliente</p>
-                                    <p class="p-atalhos"  style="color:red">F3= Forma Pagamento </p>
+                                    <p class="p-atalhos" style="color:red">F3= Forma Pagamento </p>
                                 </div>
                                 <div class="atalhos-2">
                                     <p class="p-atalhos">F4= Alterar tabela</p>
                                     <p class="p-atalhos">F6= Nova Venda</p>
                                     <p class="p-atalhos">F8= Cancelar Item</p>
-                                    <p class="p-atalhos"  style="color:red">F7= finalizar venda</p>
+                                    <p class="p-atalhos" style="color:red">F7= finalizar venda</p>
                                 </div>
                                 <div class="atalhos-3">
                                     <p class="p-atalhos">ESC= Sair</p>
@@ -136,7 +164,7 @@
                                 <button id="btn-sair">Sair</button>
                             </div> -->
                         </div>
-                        
+
                     </div>
                 </div>
                 <div class="square-3-2">
@@ -152,19 +180,22 @@
                     </div>
                     <div class="square-3-2-2">
                         <div class="div-total">
-                            <label for="" class="total-liquido">Subtotal</label><input id="total-liquido" value="0,00" type="text" readonly>
+                            <label for="" class="total-liquido">Subtotal</label><input id="total-liquido" value="0,00"
+                                type="text" readonly>
                         </div>
                         <div class="pag-troco">
-                            <div class="total-pago"><label for="" class="total">Total Pago</label><input id="total-pago"  value="R$ 0,00" type="text"></div>
-                            <div class="pag-troco-1"><label for="" class="total">Troco</label><input id="troco" value="R$ 0,00" type="text" readonly ></div>
+                            <div class="total-pago"><label for="" class="total">Total Pago</label><input id="total-pago"
+                                    value="R$ 0,00" type="text"></div>
+                            <div class="pag-troco-1"><label for="" class="total">Troco</label><input id="troco"
+                                    value="R$ 0,00" type="text" readonly></div>
                         </div>
                     </div>
                 </div>
             </div>
-    
+
         </div>
     </div>
-    
+
 </body>
 
 <script src="../Renderer/renderer_vendas.js"></script>

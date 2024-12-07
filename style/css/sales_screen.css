@@ -736,6 +736,7 @@ width: 2.5rem;
 #numero-pedido{
 max-width: 150px;
 margin-left: 5px;
+border: none;
 }
 #numero-pedido{
     outline: none;
@@ -745,7 +746,7 @@ margin-left: 5px;
 max-width: 150px;
 margin-left: 5px;
 outline: none;
-
+border: none;
 }
 #select-cliente{
 max-width: 370px;
@@ -1245,11 +1246,12 @@ padding-bottom: 0px;
     width: 120%;
     height: 120vh;
     justify-content: center;
-    background-color: rgba(255, 255, 255, 0.516);
+    background-color: rgba(255, 255, 255, 0.002);
     position: absolute;
-    margin-top: -250px;
-    margin-left: -190px;
+    margin-top: -160px;
+    margin-left: -307px;
     display: none;
+    /* display: flex; */
 }
 .div-pagamento{
     background-color: var(--header-background-color);
@@ -1257,14 +1259,46 @@ padding-bottom: 0px;
     border-radius: 10px;
     margin-right: 260px;
     font-size: 1.2rem;
-    width: 800px;
-    height: 500px;
+    width: 602px;
+    height:490px;
     display: flex;
     align-items: center;
     flex-direction: column;
+    background-color:var(--header-background-color);
+    padding: 20px;
+    box-sizing: border-box;
 }
 
-
+.titulo-choose-item{
+    margin-bottom: 0px;
+    font-size: 1.3rem;
+}
 #numero-Item{
     font-size: 1.2rem;
+}
+
+.div-choose{
+margin-top: 15px;
+display: flex;
+gap: 30px;
+border: 1px solid white;
+padding: 10px;
+}
+
+.pagamento-default {
+    display: flex;
+    align-items: center; /* Alinha verticalmente os elementos */
+    text-align: center;
+    gap: 8px; /* Espaço entre os elementos */
+    margin-top: 30px;
+}
+
+.pagamento-default p {
+    margin: 0; /* Remove margens indesejadas */
+}
+
+.pagamento-default input {
+    flex: 1; /* Ajusta o tamanho do input conforme necessário */
+    max-width: 250px; /* Define um tamanho máximo */
+    padding: 10px; /* Para melhorar a aparência */
 }
