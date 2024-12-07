@@ -19,6 +19,7 @@ const formaPagamento= document.querySelector('.square-2-2-2-4');
 const inputExitVenda= document.querySelector('#exit-key');
 const inputExcluiItem= document.querySelector('#numero-Item');
 const mensagemDiv = document.querySelector('#mensagem');
+const inputTroco = document.querySelector('#troco');
 
 
 codigoEan.focus(); // Define o foco no input
@@ -73,9 +74,12 @@ function calCarrinho() {
 
     // Exibe o valor formatado no campo inputTotalLiquido
     inputTotalLiquido.value = `R$ ${totalConvertido}`;
+   
 
     return total;
 }
+
+
 
 function pushProdutoCarrinho() {
     const produto = {
@@ -297,11 +301,70 @@ inputQtd.addEventListener('input', function (e) {
 
 
 
+
+
+
+valorDinheiro.addEventListener('input', (e) => {
+    let value = e.target.value;
+
+    // Remove qualquer caractere que não seja número
+    value = value.replace(/\D/g, '');
+
+    // Converte para um número com duas casas decimais
+    value = (parseFloat(value) / 100).toFixed(2);
+
+    // Atualiza o valor do campo, substitui o ponto por vírgula
+    value = value.replace('.', ','); // Substitui o ponto decimal por vírgula
+
+    // Adiciona ponto como separador de milhar
+    value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.'); // Adiciona o ponto como separador de milhar
+
+    // Define o valor formatado no campo
+    e.target.value = value;
+
+    // Captura o valor de inputTotalLiquido e valorDinheiro corretamente
+    let totalLiquido = parseFloat(inputTotalLiquido.value.replace(/[^\d,-]/g, '').replace(',', '.')) || 0;
+    let valorPago = parseFloat(value.replace(/[^\d,-]/g, '').replace(',', '.')) || 0;
+
+    if (totalLiquido === 0) {
+        valorDinheiro.value = '0,00'; // Define o valor como 0,00
+        valorDinheiro.readOnly = true; // Bloqueia o campo
+    } else {
+        valorDinheiro.readOnly = false; // Desbloqueia o campo
+    }
+
+    // Verifica se os valores são válidos antes de calcular o troco
+    if (!isNaN(totalLiquido) && !isNaN(valorPago)) {
+        // Calcula o troco
+        let troco = valorPago - totalLiquido;
+
+        // Formata o troco para "0,00" caso seja negativo
+        if (troco < 0) {
+            troco = 0;
+        }
+
+        // Atualiza os campos
+        inputTroco.value = converteMoeda(troco);
+        inputTotalPago.value = valorDinheiro.value;
+
+        // Log de teste
+        console.log('Troco: ', troco.toFixed(2)); // Exemplo de uso
+    } else {
+        inputTotalPago.value = '0,00';
+        inputTroco.value = '0,00';
+        console.log('Valores inválidos para o cálculo.');
+    }
+});
+
+
+
 const escolherformaPagamento= [
-    {id:1,  pagamento:'À Vista'},
+    {id: 1,  pagamento:'À Vista'},
     {id: 2, pagamento: 'PIX' },
     {id: 2, pagamento: 'Cartao Credito' },
     {id: 2, pagamento: 'Cartao Debito' },
     {id: 2, pagamento: 'Boleto' },
     {id: 2, pagamento: 'Crediario' },
 ]
+
+

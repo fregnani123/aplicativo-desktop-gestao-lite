@@ -73,34 +73,30 @@
             </div>
             <div class="square-2-2-2-4">
                 <div class="div-pagamento">
-                    <p class="titulo-choose-item">Digite o numero para selecionar o Pagamento</p>
+                    <p class="titulo-choose-item">Digite o número para selecionar o Pagamento</p>
                     <div class="div-choose">
-                      <div>
-                        <p>
-                            1 : À Vista
-                        </p>
-                        <p>
-                            2 : PIX
-                        </p>
-                        <p>
-                            3: Cartão Credito
-                        </p>
-                      </div>
-                      <div>
-                        <p>
-                            4: Cartão Debito
-                        </p>
-                        <!-- <p>
-                            5: Boleto
-                        </p> -->
-                        <!-- <p>
-                            6: Crediário
-                        </p> -->
-                      </div> 
+                        <div>
+                            <p>1: À Vista</p>
+                            <p>2: PIX</p>
+                            <p>3: Cartão Crédito</p>
+                        </div>
+                        <div>
+                            <p>4: Cartão Débito</p>
+                            <!-- <p>5: Boleto</p> -->
+                            <!-- <p>6: Crediário</p> -->
+                        </div>
                     </div>
-                    <div class="pagamento-default"><p>À Vista (Dinheiro) : <input type="text" placeholder="Digite o valor pago cliente"></p></div>
+                    <div class="pagamento-default">
+                        <p>À Vista (Dinheiro):</p>
+                        <input id="valorDinheiro" type="text" value="0,00" >
+                    </div>
+                    <div class="pagamento-default">
+                        <p>PIX:</p>
+                        <input id="PIX" type="text" value="0,00">
+                    </div>
                     <p id="mensagem"></p>
                 </div>
+                
             </div>
 
             <div class="square-3">
@@ -184,7 +180,7 @@
                                 type="text" readonly>
                         </div>
                         <div class="pag-troco">
-                            <div class="total-pago"><label for="" class="total">Total Pago</label><input id="total-pago"
+                            <div class="total-pago"><label for="" class="total">Total Pago (Dinheiro)</label><input id="total-pago"
                                     value="R$ 0,00" type="text"></div>
                             <div class="pag-troco-1"><label for="" class="total">Troco</label><input id="troco"
                                     value="R$ 0,00" type="text" readonly></div>

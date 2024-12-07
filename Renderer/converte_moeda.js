@@ -1,3 +1,5 @@
+
+//consverte Moeda valor fixo, sem interação usuário.
 function converteMoeda(value) {
 
     // Converte para string com duas casas decimais
@@ -8,3 +10,5 @@ function converteMoeda(value) {
 
     return value; // Retorna o valor formatado
 }
+
+

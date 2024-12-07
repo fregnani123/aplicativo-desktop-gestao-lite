@@ -1260,13 +1260,13 @@ padding-bottom: 0px;
     margin-right: 260px;
     font-size: 1.2rem;
     width: 602px;
-    height:490px;
+    height:478px;
     display: flex;
     align-items: center;
     flex-direction: column;
-    background-color:var(--header-background-color);
     padding: 20px;
     box-sizing: border-box;
+
 }
 
 .titulo-choose-item{
@@ -1277,28 +1277,34 @@ padding-bottom: 0px;
     font-size: 1.2rem;
 }
 
-.div-choose{
-margin-top: 15px;
-display: flex;
-gap: 30px;
-border: 1px solid white;
-padding: 10px;
+.div-choose {
+    margin-top: 15px;
+    display: flex;
+    gap: 30px;
+    border: 1px solid white;
+    padding: 10px;
 }
 
 .pagamento-default {
     display: flex;
     align-items: center; /* Alinha verticalmente os elementos */
-    text-align: center;
     gap: 8px; /* Espaço entre os elementos */
     margin-top: 30px;
+    width: 500px; 
+    justify-content: end;
+    margin-right: 80px;
 }
 
 .pagamento-default p {
     margin: 0; /* Remove margens indesejadas */
+    white-space: nowrap; /* Evita quebra de linha no texto */
 }
 
 .pagamento-default input {
-    flex: 1; /* Ajusta o tamanho do input conforme necessário */
-    max-width: 250px; /* Define um tamanho máximo */
-    padding: 10px; /* Para melhorar a aparência */
+    flex: 1; /* Permite que o input cresça ou encolha */
+    max-width: 240px; /* Define um limite máximo */
+    padding: 10px; /* Espaçamento interno */
+    font-size: 1.4rem;
+    border-radius: 10px;
 }
+
