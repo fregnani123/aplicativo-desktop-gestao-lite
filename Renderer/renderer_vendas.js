@@ -1,4 +1,4 @@
-
+// Seletores de elementos
 const dataVenda = document.querySelector('#data-venda');
 const codigoEan = document.querySelector('#codigo');
 const descricao = document.querySelector('#input-descricao');
@@ -13,175 +13,122 @@ const unidadeEstoqueRender = document.querySelector('#medidaEstoque');
 const divSelecionarQtd = document.querySelector('.square-2');
 const textSelecionarQtd = document.querySelector('.qtd-p-1');
 const alertLimparVenda = document.querySelector('.square-2-2-2');
-const alertExit= document.querySelector('.square-2-2-2-2');
-const alertRemoverItem= document.querySelector('.square-2-2-2-3');
-const formaPagamento= document.querySelector('.square-2-2-2-4');
-const inputExitVenda= document.querySelector('#exit-key');
-const inputExcluiItem= document.querySelector('#numero-Item');
+const alertExit = document.querySelector('.square-2-2-2-2');
+const alertRemoverItem = document.querySelector('.square-2-2-2-3');
+const formaPagamento = document.querySelector('.square-2-2-2-4');
+const inputExitVenda = document.querySelector('#exit-key');
+const inputExcluiItem = document.querySelector('#numero-Item');
 const mensagemDiv = document.querySelector('#mensagem');
 const inputTroco = document.querySelector('#troco');
+const valorDinheiro = document.getElementById('valorDinheiro');
 
-
-codigoEan.focus(); // Define o foco no input
-
+// Estado do carrinho
 let carrinho = [];
 
+// Define foco inicial
+codigoEan.focus();
+
+
+
+// Renderiza o carrinho na tela
 function rendererCarrinho() {
     ulDescricaoProduto.innerHTML = '';
     carrinho.forEach((item, index) => {
         const produto = document.createElement('li');
         produto.classList.add('li-produto');
 
-        // Número do item
-        const indexProduto = document.createElement('span');
-        indexProduto.classList.add('spanIndex');
-        indexProduto.textContent = index + 1;
+        const indexProduto = createSpan('spanIndex', index + 1);
+        const codigoSpan = createSpan('spanEan', item.codigoEan);
+        const descricaoSpan = createSpan(
+            'spanDescricao',
+            `${item.descricao} R$${item.preco} x ${item.Qtd}${item.unidadeEstoqueID}`
+        );
 
-        // Código EAN
-        const codigoEan = document.createElement('span');
-        codigoEan.classList.add('spanEan');
-        codigoEan.textContent = item.codigoEan;
-
-        // Descrição do produto
-        const descricao = document.createElement('span');
-        descricao.classList.add('spanDescricao');
-        descricao.textContent = `${item.descricao} R$${item.preco} x ${item.Qtd}${item.unidadeEstoqueID}`;
-
-        // Adiciona cada elemento ao `produto`
-        produto.appendChild(indexProduto);
-        produto.appendChild(codigoEan);
-        produto.appendChild(descricao);
-        
-
-        // Adiciona o item à lista
+        produto.append(indexProduto, codigoSpan, descricaoSpan);
         ulDescricaoProduto.appendChild(produto);
-
     });
 }
 
+// Calcula o total do carrinho
 function calCarrinho() {
-
-    textSelecionarQtd.innerHTML=''; 
-
-    let total = carrinho.reduce((acc, item) => {
-        // Remove pontos dos milhares e substitui a vírgula por ponto para parseFloat
-        let precoFormatado = item.preco.replace(/\./g, '').replace(',', '.');
-        return acc + (parseFloat(precoFormatado) * parseInt(item.Qtd));
+    textSelecionarQtd.innerHTML = '';
+    const total = carrinho.reduce((acc, item) => {
+        const precoFormatado = parseFloat(
+            item.preco.replace(/\./g, '').replace(',', '.')
+        );
+        return acc + precoFormatado * parseInt(item.Qtd, 10);
     }, 0);
-
-    // Converte o total para o formato de moeda brasileira
-    const totalConvertido = converteMoeda(total);
-
-    // Exibe o valor formatado no campo inputTotalLiquido
-    inputTotalLiquido.value = `R$ ${totalConvertido}`;
-   
-
+    inputTotalLiquido.value = `R$ ${converteMoeda(total)}`;
     return total;
 }
 
-
-
+// Adiciona produto ao carrinho
 function pushProdutoCarrinho() {
+    if (codigoEan.value === '' || descricao.value === '' || inputQtd.value === '') {
+        console.log('Existem inputs vazios');
+        return;
+    }
+
     const produto = {
         codigoEan: codigoEan.value,
         descricao: descricao.value,
         preco: precoVenda.value,
         Qtd: inputQtd.value,
-        unidadeEstoqueID: unidadeEstoqueRender.value
+        unidadeEstoqueID: unidadeEstoqueRender.value,
     };
 
-    if (codigoEan.value === '' || descricao.value === '' || inputQtd.value === '') {
-        console.log('existem inputs vazios');
-        return;
-    } else {
-        carrinho.push(produto);
-        console.log("Produto adicionado ao carrinho:", produto);
-        console.log("Carrinho atual:", carrinho);
-        rendererCarrinho();
-        alertLimparVenda.style.display = 'none'
-        descricao.value = '';
-        precoVenda.value = '';
-        inputQtd.value = '';
-        codigoEan.value = '';
-        unidadeEstoqueRender.value = '';
-    }
+    carrinho.push(produto);
+    console.log("Produto adicionado ao carrinho:", produto);
+    rendererCarrinho();
+    resetInputs();
     calCarrinho();
+    alertLimparVenda.style.display = 'none';
 }
-codigoEan.addEventListener('input', (e) => {
-    let value = e.target.value;
 
-    // Remove qualquer caractere que não seja número
-    value = value.replace(/\D/g, '');
+// Limpa os campos de entrada
+function resetInputs() {
+    descricao.value = '';
+    precoVenda.value = '';
+    inputQtd.value = '';
+    codigoEan.value = '';
+    unidadeEstoqueRender.value = '';
+}
 
-    // Limita o número de caracteres a 13
-    if (value.length > 13) {
-        value = value.substring(0, 13);
-    }
+// Formata valor em moeda brasileira
+function converteMoeda(valor) {
+    return valor
+        .toFixed(2)
+        .replace('.', ',')
+        .replace(/\d(?=(\d{3})+,)/g, '$&.');
+}
 
-    // Atualiza o valor do input com o valor formatado
-    e.target.value = value;
-});
-
-codigoEan.addEventListener('input', (e) => {
-    e.target.value = e.target.value.replace(/\D/g, '');  // Remove caracteres não numéricos
-    const EAN = e.target.value;
-
-    if (EAN.length === 13) {  // Verifica se o código EAN tem 13 caracteres
-        if (descricao.value === '' && inputQtd.value === '') {
-            inputQtd.value = '1';
-        }
-
-        getProduto(descricao, EAN, precoVenda, unidadeEstoqueRender);  // Preenche os detalhes do produto
-
-        setTimeout(() => {
-            pushProdutoCarrinho();  // Adiciona o produto ao carrinho
-            calCarrinho();  // Atualiza o total do carrinho
-        }, 100);  // Delay para garantir o preenchimento dos valores
-    }
-
-    if (EAN.length <= 0) {  // Limpa os campos se o EAN tiver menos de 13 caracteres
-        descricao.value = '';
-        precoVenda.value = '';
-        inputQtd.value = '';
-    }
-});
-
+// Gerencia eventos de teclado
 document.addEventListener('keydown', function (event) {
-    // Verifica se alguma div está visível
-    const isAnyDivVisible = [
+    const visibleDivs = [
         alertRemoverItem,
         formaPagamento,
         alertLimparVenda,
         divSelecionarQtd,
-        alertExit
-    ].some(div => div.style.display === 'flex');
+        alertExit,
+    ].filter(div => div.style.display === 'flex'); // Verifica quais estão visíveis
 
-    // Tecla F8 - Mostrar alertRemoverItem
-    if (event.key === 'F8' && !isAnyDivVisible) {
-        alertRemoverItem.style.display = 'flex';
-        inputExcluiItem.focus();
+    const mensagem = document.getElementById('mensagemPagamento');
+
+    // Verifica se o carrinho está vazio e altera o estado do campo 'valorDinheiro'
+    if (carrinho.length === 0) {
+        valorDinheiro.readOnly = true; // Bloqueia o campo
+        valorDinheiro.style.color='red';
+        valorDinheiro.style.border='1px solid red';
+        mensagem.innerHTML = 'Não é possível inserir o pagamento, o carrinho está vazio.'; // Exibe a mensagem
+        console.log(mensagem)
+    } else {
+        valorDinheiro.readOnly = false; // Permite a edição
+        mensagem.innerHTML = ''; // Limpa a mensagem se o carrinho não estiver vazio
+        valorDinheiro.style.background='';
+        valorDinheiro.style.border='none';
+        valorDinheiro.style.color='black';
     }
 
-    // Tecla F3 - Mostrar formaPagamento
-    if (event.key === 'F3' && !isAnyDivVisible) {
-        formaPagamento.style.display = 'flex';
-        formaPagamento.focus();
-    }
-
-    // Tecla F1 - Abrir divSelecionarQtd
-    if (event.key === 'F1' && !isAnyDivVisible) {
-        event.preventDefault();
-        divSelecionarQtd.style.display = 'flex';
-        QtdFocus();
-    }
-
-    // Tecla F6 - Mostrar alertLimparVenda
-    if (event.key === 'F6' && !isAnyDivVisible) {
-        event.preventDefault();
-        alertLimparVenda.style.display = 'flex';
-    }
-
-    // Tecla Enter - Verificar se deve focar ou atualizar
     if (event.key === 'Enter') {
         event.preventDefault();
         if (alertRemoverItem.style.display === 'flex') {
@@ -193,94 +140,129 @@ document.addEventListener('keydown', function (event) {
             } else {
                 textSelecionarQtd.innerHTML = `${inputQtd.value}x`;
             }
-            EanFocus();
+            codigoEan.focus();
         }
     }
 
-    // Tecla ESC - Mostrar alertExit
-    if (event.key === 'Escape' && !isAnyDivVisible) {
-        event.preventDefault();
-        alertExit.style.display = 'flex';
-        inputExitVenda.focus();
+    switch (event.key) {
+        case 'F8':
+            if (visibleDivs.length === 0) {
+                alertRemoverItem.style.display = 'flex';
+                inputExcluiItem.focus();
+            }
+            break;
+        case 'F4':
+            if (visibleDivs.length === 0) {
+                formaPagamento.style.display = 'flex';
+                valorDinheiro.focus();
+                valorDinheiro.value = '0,00'
+            }
+            break;
+        case 'F1':
+            if (visibleDivs.length === 0) {
+                event.preventDefault();
+                divSelecionarQtd.style.display = 'flex';
+                inputQtd.focus();
+            }
+            break;
+        case 'F6':
+            if (visibleDivs.length === 0) {
+                event.preventDefault();
+                alertLimparVenda.style.display = 'flex';
+            }
+            break;
+        case 's':
+        case 'S': // Quando pressionar 'S' ou 'sim', limpa tudo
+            if (alertLimparVenda.style.display === 'flex') {
+                limparTudo(); // Função que limpa carrinho e inputs
+                alertLimparVenda.style.display = 'none'; // Fecha o alerta
+            }
+            break;
+        case 'n':
+        case 'N': // Quando pressionar 'N' ou 'não', apenas fecha o alerta
+            if (alertLimparVenda.style.display === 'flex') {
+                alertLimparVenda.style.display = 'none'; // Fecha o alerta sem limpar
+            }
+            break;
+        case 'Escape':
+            if (visibleDivs.length === 0) {
+                event.preventDefault();
+                alertExit.style.display = 'flex';
+                inputExitVenda.focus();
+            }
+            break;
+        case 'v':
+        case 'V': // Adiciona ao carrinho ou esconde divs visíveis
+            if (visibleDivs.length > 0) {
+                visibleDivs.forEach(div => div.style.display = 'none');
+                codigoEan.focus(); // Retorna o foco para o campo de código de barras
+            } else {
+                event.preventDefault();
+                pushProdutoCarrinho();
+            }
+            break;
     }
-
-    // Tecla 'v' - Fechar alertRemoverItem ou alertExit
-    if (event.key === 'v') {
-        event.preventDefault();
-        if (alertRemoverItem.style.display === 'flex') {
-            alertRemoverItem.style.display = 'none';
-            inputExcluiItem.value = '';
-            mensagemDiv.innerHTML = '';
-            EanFocus();
-        } else if (alertExit.style.display === 'flex') {
-            alertExit.style.display = 'none';
-            EanFocus();
-        }
-
-        if ( formaPagamento.style.display === 'flex') {
-            formaPagamento.style.display = 'none';
-            formaPagamento.value = '';
-            mensagemDiv.innerHTML = '';
-            EanFocus();
-        } 
-    }
-
-    // Tecla 'n' - Fechar alertLimparVenda
-    if (event.key === 'n' && alertLimparVenda.style.display === 'flex') {
-        event.preventDefault();
-        alertLimparVenda.style.display = 'none';
-        EanFocus();
-    }
-
-    // Tecla 's' - Resetar alertLimparVenda
-    if (event.key === 's' && alertLimparVenda.style.display === 'flex') {
-        event.preventDefault();
-        resetDefaults();
-    }
-
-    // Lógica para redirecionamento no alertExit
-    const handleInputExit = (e) => {
-        if (e.target.value === 'a') {
-            window.location.href = '../public/menu.html';
-            inputExitVenda.removeEventListener('input', handleInputExit);
-        }
-    };
-    inputExitVenda.addEventListener('input', handleInputExit, { once: true });
 });
 
+function limparTudo() {
+    carrinho = []; // Limpa o carrinho
+    rendererCarrinho(); // Re-renderiza a lista de produtos (agora vazia)
+    resetInputs(); // Limpa todos os campos de entrada
+    inputTotalLiquido.value = 'R$ 0,00'; // Zera o total líquido
+    inputTotalPago.value = 'R$ 0,00'; // Zera o total pago
+    inputTroco.value = 'R$ 0,00'; // Zera o troco
+    console.log('Carrinho e campos foram limpos!');
+}
 
-function resetDefaults() {
-    // Esconde os elementos necessários
-    alertLimparVenda.style.display = 'none';
-    divSelecionarQtd.style.display = 'none';
-
-    // Limpa os campos de entrada
-    codigoEan.value = '';
+// Função que reseta os inputs
+function resetInputs() {
     descricao.value = '';
     precoVenda.value = '';
     inputQtd.value = '';
+    codigoEan.value = '';
     unidadeEstoqueRender.value = '';
+};
 
-    // Reseta texto e total
-    textSelecionarQtd.innerHTML = '';
-    inputTotalLiquido.value = '';
-    inputTotalPago.value = '';
-
-    // Limpa o carrinho e renderiza novamente
-    carrinho = [];
-    rendererCarrinho();
-
-    // Foca no campo do código EAN
-    EanFocus();
+// Cria elemento <span> com classe e texto
+function createSpan(className, textContent) {
+    const span = document.createElement('span');
+    span.className = className;
+    span.textContent = textContent;
+    return span;
 }
 
-function QtdFocus() {
-    inputQtd.focus();
-    // Adicione aqui o código necessário para atualizar seu aplicativo
-}
-function EanFocus() {
-    codigoEan.focus();
-    // Adicione aqui o código necessário para atualizar seu aplicativo
+// Valida entrada do código EAN
+codigoEan.addEventListener('input', (e) => {
+    e.target.value = e.target.value.replace(/\D/g, '').slice(0, 13);
+    if (e.target.value.length === 13) {
+        if (!descricao.value && !inputQtd.value) inputQtd.value = '1';
+        getProduto(descricao, e.target.value, precoVenda, unidadeEstoqueRender);
+        setTimeout(() => {
+            pushProdutoCarrinho();
+            calCarrinho();
+        }, 100);
+    } else if (e.target.value.length === 0) resetInputs();
+});
+
+// Evento de entrada para valorDinheiro
+valorDinheiro.addEventListener('input', (e) => {
+    let value = e.target.value.replace(/\D/g, '');
+    value = (parseFloat(value) / 100).toFixed(2);
+    e.target.value = formatCurrency(value);
+
+    const totalLiquido = parseFloat(inputTotalLiquido.value.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
+    const valorPago = parseFloat(value.replace(',', '.')) || 0;
+
+    const troco = Math.max(0, valorPago - totalLiquido);
+    inputTroco.value = converteMoeda(troco);
+    inputTotalPago.value = valorDinheiro.value;
+});
+
+// Formata valor com separador de milhar
+function formatCurrency(value) {
+    return value
+        .replace('.', ',')
+        .replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 }
 
 inputQtd.addEventListener('input', function (e) {
@@ -298,73 +280,13 @@ inputQtd.addEventListener('input', function (e) {
     e.target.value = value;
 });
 
+ 
 
-
-
-
-
-
-valorDinheiro.addEventListener('input', (e) => {
-    let value = e.target.value;
-
-    // Remove qualquer caractere que não seja número
-    value = value.replace(/\D/g, '');
-
-    // Converte para um número com duas casas decimais
-    value = (parseFloat(value) / 100).toFixed(2);
-
-    // Atualiza o valor do campo, substitui o ponto por vírgula
-    value = value.replace('.', ','); // Substitui o ponto decimal por vírgula
-
-    // Adiciona ponto como separador de milhar
-    value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.'); // Adiciona o ponto como separador de milhar
-
-    // Define o valor formatado no campo
-    e.target.value = value;
-
-    // Captura o valor de inputTotalLiquido e valorDinheiro corretamente
-    let totalLiquido = parseFloat(inputTotalLiquido.value.replace(/[^\d,-]/g, '').replace(',', '.')) || 0;
-    let valorPago = parseFloat(value.replace(/[^\d,-]/g, '').replace(',', '.')) || 0;
-
-    if (totalLiquido === 0) {
-        valorDinheiro.value = '0,00'; // Define o valor como 0,00
-        valorDinheiro.readOnly = true; // Bloqueia o campo
-    } else {
-        valorDinheiro.readOnly = false; // Desbloqueia o campo
+// Lógica para redirecionamento no alertExit
+const handleInputExit = (e) => {
+    if (e.target.value === 'a') {
+        window.location.href = '../public/menu.html';
+        inputExitVenda.removeEventListener('input', handleInputExit);
     }
-
-    // Verifica se os valores são válidos antes de calcular o troco
-    if (!isNaN(totalLiquido) && !isNaN(valorPago)) {
-        // Calcula o troco
-        let troco = valorPago - totalLiquido;
-
-        // Formata o troco para "0,00" caso seja negativo
-        if (troco < 0) {
-            troco = 0;
-        }
-
-        // Atualiza os campos
-        inputTroco.value = converteMoeda(troco);
-        inputTotalPago.value = valorDinheiro.value;
-
-        // Log de teste
-        console.log('Troco: ', troco.toFixed(2)); // Exemplo de uso
-    } else {
-        inputTotalPago.value = '0,00';
-        inputTroco.value = '0,00';
-        console.log('Valores inválidos para o cálculo.');
-    }
-});
-
-
-
-const escolherformaPagamento= [
-    {id: 1,  pagamento:'À Vista'},
-    {id: 2, pagamento: 'PIX' },
-    {id: 2, pagamento: 'Cartao Credito' },
-    {id: 2, pagamento: 'Cartao Debito' },
-    {id: 2, pagamento: 'Boleto' },
-    {id: 2, pagamento: 'Crediario' },
-]
-
-
+};
+inputExitVenda.addEventListener('input', handleInputExit, { once: true });

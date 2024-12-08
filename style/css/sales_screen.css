@@ -752,6 +752,7 @@ border: none;
 max-width: 370px;
 margin-left: 5px;
 margin-right: 10px;
+border: 1px solid rgb(196, 196, 196);
 }
 
 .p-titulo-caixa{
@@ -1255,7 +1256,6 @@ padding-bottom: 0px;
 }
 .div-pagamento{
     background-color: var(--header-background-color);
-    color: white;
     border-radius: 10px;
     margin-right: 260px;
     font-size: 1.2rem;
@@ -1264,47 +1264,103 @@ padding-bottom: 0px;
     display: flex;
     align-items: center;
     flex-direction: column;
-    padding: 20px;
     box-sizing: border-box;
-
+    color: white
+}
+#mensagemPagamento{
+   margin-top:5px;
+   color: rgb(255, 255, 255);
+   background-color: red;
+   width: 97%;
+   display: flex;
+   text-align: center;
+   margin-bottom: 5px;
+   justify-content: center;
 }
 
 .titulo-choose-item{
-    margin-bottom: 0px;
     font-size: 1.3rem;
+    background-color: var(--header-background-color);
+    width: 97%;
+    color: white;
+    padding: 5px;
+    text-align: center;
+    margin-top: 10px;
+    font-weight: normal;
 }
 #numero-Item{
     font-size: 1.2rem;
 }
-
+input::placeholder {
+    color: black;
+  }
+  
 .div-choose {
-    margin-top: 15px;
+    margin-top: 10px;
     display: flex;
     gap: 30px;
-    border: 1px solid white;
-    padding: 10px;
+    border: 1px solid rgb(0, 0, 0);
+    width: 97%;
+    justify-content: center;
+    padding: 10px 0px;
+    color: rgb(0, 0, 0);
+    background-color: white;
+    border-radius: 10px;
 }
 
-.pagamento-default {
+
+.pagamento-container{
+    border: 1px solid white;
+    margin-top: 10px;
+    height: 400px;
+    width: 97%; 
+    display: flex;
+}
+.pagamento-default{
+    background-color:var(--header-background-color);
+    width: 100%;
+}
+
+.pagamento-default-1{
+    position: relative;
     display: flex;
     align-items: center; /* Alinha verticalmente os elementos */
     gap: 8px; /* Espaço entre os elementos */
-    margin-top: 30px;
-    width: 500px; 
+    margin-top: 5px;
+    margin-left: 5px;
+    color: black;
     justify-content: end;
-    margin-right: 80px;
+    padding: 10px;
+    padding-right: 40px;
+    height: 50px;
+    background-color: rgb(255, 255, 255);
+    width: 90%;
 }
 
-.pagamento-default p {
-    margin: 0; /* Remove margens indesejadas */
-    white-space: nowrap; /* Evita quebra de linha no texto */
+.pagamento-default-1 p {
+    margin: 0; 
+    white-space: nowrap; 
 }
 
-.pagamento-default input {
-    flex: 1; /* Permite que o input cresça ou encolha */
-    max-width: 240px; /* Define um limite máximo */
-    padding: 10px; /* Espaçamento interno */
+.pagamento-default-1 p {
+    margin: 0;
+    white-space: nowrap; 
+}
+
+.pagamento-default-1 input {
+    flex: 1; 
+    max-width: 240px; 
+    padding: 10px; 
     font-size: 1.4rem;
     border-radius: 10px;
 }
 
+#valorDinheiro{
+    font-size: 1.5rem;
+    border: none;
+    outline: none;
+}
+#PIX{
+    outline: none;
+    border: none;
+}

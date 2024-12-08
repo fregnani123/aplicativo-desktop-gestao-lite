@@ -86,15 +86,19 @@
                             <!-- <p>6: Crediário</p> -->
                         </div>
                     </div>
-                    <div class="pagamento-default">
-                        <p>À Vista (Dinheiro):</p>
-                        <input id="valorDinheiro" type="text" value="0,00" >
+                    <div class="pagamento-container">
+                        <div class="pagamento-default">
+                    <div class="pagamento-default-1">
+                        <p>À Vista (Dinheiro)</p>
+                        <input id="valorDinheiro" type="text" >
                     </div>
-                    <div class="pagamento-default">
+                    <div style="display: none;" class="pagamento-default-1">
                         <p>PIX:</p>
-                        <input id="PIX" type="text" value="0,00">
+                        <input id="PIX" type="text" placeholder="0,00">
                     </div>
-                    <p id="mensagem"></p>
+                </div>
+                </div>
+                    <p id="mensagemPagamento"></p>
                 </div>
                 
             </div>
@@ -182,8 +186,7 @@
                         <div class="pag-troco">
                             <div class="total-pago"><label for="" class="total">Total Pago (Dinheiro)</label><input id="total-pago"
                                     value="R$ 0,00" type="text"></div>
-                            <div class="pag-troco-1"><label for="" class="total">Troco</label><input id="troco"
-                                    value="R$ 0,00" type="text" readonly></div>
+                            <div class="pag-troco-1"><label for="" class="total">Troco</label><input id="troco" value="R$ 0,00" type="text" readonly></div>
                         </div>
                     </div>
                 </div>

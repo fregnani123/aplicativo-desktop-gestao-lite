@@ -130,6 +130,22 @@ async function postNewFornecedor(fornecedorData) {
         });
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function getGrupo(renderer) {
     const getGrupo = apiEndpoints.getGrupo;
     fetch(getGrupo)
@@ -148,6 +164,40 @@ function getGrupo(renderer) {
             console.error('Erro ao buscar dados:', error);
         });
 }
+
+
+function getSubGrupo(renderer) {
+    const getSubGrupo = apiEndpoints.getSubGrupo;
+
+    fetch(getSubGrupo)
+        .then(response => response.json())
+        .then(data => {
+            const subGrupo = data;
+            subGrupo.forEach((subGrupo) => {
+                const option = document.createElement('option');
+                option.innerHTML = subGrupo.nome_sub_grupo;
+                option.value = subGrupo.sub_grupo_id;
+                renderer.appendChild(option);
+            });
+            console.log(data);
+        })
+        .catch(error => {
+            console.error('Erro ao buscar dados:', error);
+        });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 async function getunidadeEstoqueVendas(id, renderer) {
     const getEstoque = apiEndpoints.getunidadeEstoque;
@@ -213,25 +263,7 @@ function getProduto(descricaoElement, codigoDeBarras, precoVendaElement, unidade
 
 
 
-function getSubGrupo(renderer) {
-    const getSubGrupo = apiEndpoints.getSubGrupo;
 
-    fetch(getSubGrupo)
-        .then(response => response.json())
-        .then(data => {
-            const subGrupo = data;
-            subGrupo.forEach((subGrupo) => {
-                const option = document.createElement('option');
-                option.innerHTML = subGrupo.nome_sub_grupo;
-                option.value = subGrupo.sub_grupo_id;
-                renderer.appendChild(option);
-            });
-            console.log(data);
-        })
-        .catch(error => {
-            console.error('Erro ao buscar dados:', error);
-        });
-}
 
 function getFornecedor(renderer) {
     const getFornecedor = apiEndpoints.getFornecedor;
