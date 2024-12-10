@@ -18,9 +18,11 @@ const alertRemoverItem = document.querySelector('.square-2-2-2-3');
 const formaPagamento = document.querySelector('.square-2-2-2-4');
 const inputExitVenda = document.querySelector('#exit-key');
 const inputExcluiItem = document.querySelector('#numero-Item');
+
+
 const mensagemDiv = document.querySelector('#mensagem');
 const inputTroco = document.querySelector('#troco');
-const valorDinheiro = document.getElementById('valorDinheiro');
+
 
 // Estado do carrinho
 let carrinho = [];
@@ -116,17 +118,36 @@ document.addEventListener('keydown', function (event) {
 
     // Verifica se o carrinho está vazio e altera o estado do campo 'valorDinheiro'
     if (carrinho.length === 0) {
-        valorDinheiro.readOnly = true; // Bloqueia o campo
-        valorDinheiro.style.color='red';
-        valorDinheiro.style.border='1px solid red';
-        mensagem.innerHTML = 'Não é possível inserir o pagamento, o carrinho está vazio.'; // Exibe a mensagem
-        console.log(mensagem)
+        valorDinheiro.readOnly = true; // Bloqueia o campo;
+
+        divValorDinheiro.style.display = 'none'
+
+        PIX.readOnly = true; // Bloqueia o campo; 
+        divPIX.style.display = 'none'
+
+        CartaoDebito.readOnly = true; // Bloqueia o campo; 
+        divCartaoDebito.style.display = 'none'
+
+        CartaoCredito.readOnly = true; // Bloqueia o campo; 
+        divCartaoCredito.style.display = 'none'
+
+        mensagem.innerHTML = 'Não é possível inserir o pagamento, o carrinho está vazio. Tecla V = Voltar'; // Exibe a mensagem
     } else {
-        valorDinheiro.readOnly = false; // Permite a edição
-        mensagem.innerHTML = ''; // Limpa a mensagem se o carrinho não estiver vazio
-        valorDinheiro.style.background='';
-        valorDinheiro.style.border='none';
-        valorDinheiro.style.color='black';
+        valorDinheiro.readOnly = false;
+
+        divValorDinheiro.style.display = 'flex';
+
+        PIX.readOnly = false;
+        divPIX.style.display = 'flex';
+
+        CartaoDebito.readOnly = false;
+        divCartaoDebito.style.display = 'flex';
+
+        CartaoCredito.readOnly = false;
+        divCartaoCredito.style.display = 'flex';
+
+        mensagem.innerHTML = '';
+        mensagem.style.display = 'none';
     }
 
     if (event.key === 'Enter') {
@@ -142,22 +163,26 @@ document.addEventListener('keydown', function (event) {
             }
             codigoEan.focus();
         }
+    };
+
+    if (event.key.toLowerCase() === 'c') {
+        const index = parseInt(inputExcluiItem.value, 10) - 1;
+        if (!isNaN(index) && index >= 0 && index < carrinho.length) {
+            // Remove o item usando splice
+            const itemRemovido = carrinho.splice(index, 1);
+            mensagemDiv.innerHTML = `Item removido: ${index + 1}`
+            mensagemDiv.style.color = 'green'
+            rendererCarrinho();
+            calCarrinho();
+            inputExcluiItem.value = '';
+            inputExcluiItem.focus();
+        } else {
+            console.log('Índice inválido.');
+        }
+        console.log('Estado atual do carrinho:', carrinho);
     }
 
     switch (event.key) {
-        case 'F8':
-            if (visibleDivs.length === 0) {
-                alertRemoverItem.style.display = 'flex';
-                inputExcluiItem.focus();
-            }
-            break;
-        case 'F4':
-            if (visibleDivs.length === 0) {
-                formaPagamento.style.display = 'flex';
-                valorDinheiro.focus();
-                valorDinheiro.value = '0,00'
-            }
-            break;
         case 'F1':
             if (visibleDivs.length === 0) {
                 event.preventDefault();
@@ -165,10 +190,23 @@ document.addEventListener('keydown', function (event) {
                 inputQtd.focus();
             }
             break;
-        case 'F6':
+        case 'F3':
             if (visibleDivs.length === 0) {
                 event.preventDefault();
                 alertLimparVenda.style.display = 'flex';
+            }
+            break;
+        case 'F4':
+            if (visibleDivs.length === 0) {
+                formaPagamento.style.display = 'flex';
+                valorDinheiro.focus();
+                valorDinheiro.value = '0,00';
+            }
+            break;
+        case 'd':
+            if (visibleDivs.length === 0) {
+                alertRemoverItem.style.display = 'flex';
+                inputExcluiItem.focus();
             }
             break;
         case 's':
@@ -195,6 +233,8 @@ document.addEventListener('keydown', function (event) {
         case 'V': // Adiciona ao carrinho ou esconde divs visíveis
             if (visibleDivs.length > 0) {
                 visibleDivs.forEach(div => div.style.display = 'none');
+                inputTroco.value = '0,00';
+                inputTotalPago.value = '0,00'
                 codigoEan.focus(); // Retorna o foco para o campo de código de barras
             } else {
                 event.preventDefault();
@@ -244,20 +284,6 @@ codigoEan.addEventListener('input', (e) => {
     } else if (e.target.value.length === 0) resetInputs();
 });
 
-// Evento de entrada para valorDinheiro
-valorDinheiro.addEventListener('input', (e) => {
-    let value = e.target.value.replace(/\D/g, '');
-    value = (parseFloat(value) / 100).toFixed(2);
-    e.target.value = formatCurrency(value);
-
-    const totalLiquido = parseFloat(inputTotalLiquido.value.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
-    const valorPago = parseFloat(value.replace(',', '.')) || 0;
-
-    const troco = Math.max(0, valorPago - totalLiquido);
-    inputTroco.value = converteMoeda(troco);
-    inputTotalPago.value = valorDinheiro.value;
-});
-
 // Formata valor com separador de milhar
 function formatCurrency(value) {
     return value
@@ -280,7 +306,7 @@ inputQtd.addEventListener('input', function (e) {
     e.target.value = value;
 });
 
- 
+
 
 // Lógica para redirecionamento no alertExit
 const handleInputExit = (e) => {
@@ -290,3 +316,132 @@ const handleInputExit = (e) => {
     }
 };
 inputExitVenda.addEventListener('input', handleInputExit, { once: true });
+
+
+//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Obter referências aos elementos
+const valorDinheiro = document.getElementById('valorDinheiro');
+const divValorDinheiro = document.getElementById('div-valorDinheiro');
+
+const PIX = document.getElementById('PIX');
+const divPIX = document.getElementById('div-PIX');
+
+const CartaoDebito = document.getElementById('Cartao-Debito');
+const divCartaoDebito = document.getElementById('div-Cartao-Debito');
+
+const CartaoCredito = document.getElementById('Cartao-Credito');
+const divCartaoCredito = document.getElementById('div-Cartao-Credito');
+
+// Selecionar os campos de entrada
+const inputsPagamento = [valorDinheiro, PIX, CartaoDebito, CartaoCredito];
+
+// Adicionar o evento de entrada a todos os inputs
+// Adicionar o evento de entrada a todos os inputs
+inputsPagamento.forEach(input => {
+    input.addEventListener('input', (e) => {
+        let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não for número
+        value = (parseFloat(value) / 100).toFixed(2); // Converte para decimal
+        e.target.value = formatCurrency(value); // Formata como moeda
+
+        // Verificar se o valor é maior que 0 e ajustar o estilo
+        if (parseCurrency(e.target.value) > 0) {
+            e.target.style.border = '1px solid green';
+            e.target.style.color = 'green';
+        } else {
+            e.target.style.border = '1px solid transparent'; // Define uma borda vermelha para valores 0
+            e.target.style.color = 'black'; // Define cor padrão
+        }
+
+        atualizarValores(); // Atualiza os cálculos
+    });
+
+    // Inicializar o campo com 0,00 e uma borda padrão
+    input.value = formatCurrency(0);
+    input.style.border = '1px solid transparent'; // Borda padrão inicial
+    input.style.color = 'black'; // Cor padrão inicial
+});
+
+
+
+
+// Mapear os atalhos para as divisões correspondentes
+const formasPagamento = {
+    "F6": divValorDinheiro,
+    "F7": divPIX,
+    "F8": divCartaoDebito,
+    "F9": divCartaoCredito,
+};
+
+// Tornar todas as divisões visíveis inicialmente
+Object.values(formasPagamento).forEach(div => {
+    div.style.display = 'flex';
+});
+
+// Controlar o elemento atualmente focado
+let elementoAtivo = valorDinheiro; // Inicialmente no input 'valorDinheiro'
+valorDinheiro.focus();
+
+// Alternar entre formas de pagamento com atalhos
+document.addEventListener('keydown', (e) => {
+    if (formasPagamento[e.key]) {
+        const div = formasPagamento[e.key];
+        const inputCorrespondente = document.getElementById(div.id.replace('div-', ''));
+
+        // Focar no input correspondente à tecla pressionada
+        elementoAtivo = inputCorrespondente;
+        elementoAtivo.focus();
+    }
+});
+
+// Formatar valores como moeda
+function formatCurrency(value) {
+    const formattedValue = value || 0; // Se o valor for inválido, define como 0
+    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(formattedValue);
+}
+
+// Converter valor para número
+function parseCurrency(value) {
+    const parsedValue = parseFloat(value.replace(/[^\d,]/g, '').replace(',', '.'));
+    return isNaN(parsedValue) ? 0 : parsedValue; // Retorna 0 se o valor não for um número
+}
+
+// Atualizar os valores
+function atualizarValores() {
+    const totalLiquido = parseCurrency(inputTotalLiquido.value);
+    const valorPago =
+        parseCurrency(valorDinheiro.value) +
+        parseCurrency(PIX.value) +
+        parseCurrency(CartaoDebito.value) +
+        parseCurrency(CartaoCredito.value);
+
+    const troco = Math.max(0, valorPago - totalLiquido);
+    inputTotalPago.value = formatCurrency(valorPago);
+    inputTroco.value = formatCurrency(troco);
+}
+
+// Adicionar evento aos inputs
+[valorDinheiro, PIX, CartaoDebito, CartaoCredito].forEach(input => {
+    input.addEventListener('input', (e) => {
+        let value = e.target.value.replace(/\D/g, '');
+        value = (parseFloat(value) / 100).toFixed(2);
+        e.target.value = formatCurrency(value);
+        atualizarValores();
+    });
+
+    // Inicializar todos os inputs com 0,00
+    input.value = formatCurrency(0);
+});

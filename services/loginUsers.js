@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
+ const usersFocus = document.querySelector('#username');
+ usersFocus.focus();
 
     const loginForm = document.getElementById('formLogin');
     console.log(loginForm)

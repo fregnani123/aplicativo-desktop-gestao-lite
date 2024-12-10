@@ -18,6 +18,7 @@ function formatarPrecoVenda(inputElement) {
     inputElement.value = value;
 }
 
+
 // Método para formatar código EAN
 function formatarCodigoEAN(inputElement) {
     let value = inputElement.value;

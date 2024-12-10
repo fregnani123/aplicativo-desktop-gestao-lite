@@ -71,6 +71,7 @@ function criarEstruturaFormulario(container, tipo, placeholder, onSubmit, onExit
 
     const input = document.createElement('input');
     input.className = `new${tipo.charAt(0).toUpperCase() + tipo.slice(1)}`;
+    input.id = 'grupos-inputs'
     input.type = 'text';
     input.placeholder = placeholder;
     divContainer.appendChild(input);
@@ -81,6 +82,9 @@ function criarEstruturaFormulario(container, tipo, placeholder, onSubmit, onExit
     divContainer.appendChild(cadButton);
 
     container.appendChild(divContainer);
+    
+      // Focar no input automaticamente
+      input.focus();
 
     // Eventos
     cadButton.addEventListener('click', onSubmit);
@@ -90,14 +94,13 @@ function criarEstruturaFormulario(container, tipo, placeholder, onSubmit, onExit
 }
 
 
-
 function renderizarInputsGrupo() {
     const tipo = 'grupo';
 
     const inputNewGrupo = criarEstruturaFormulario(
         containerRegister,
         tipo,
-        'Nome do Grupo',
+        '',
         (e) => {
             e.preventDefault();
 
@@ -128,10 +131,10 @@ function renderizarInputsSubGrupo() {
     const inputNewSubGrupo = criarEstruturaFormulario(
         containerRegister,
         tipo,
-        'Nome do Sub-Grupo',
+        '',
         (e) => {
             e.preventDefault();
-
+        
             const newSubGrupo = {
                 nome_sub_grupo: inputNewSubGrupo.value.trim()
             };
@@ -140,7 +143,6 @@ function renderizarInputsSubGrupo() {
                 alert('O campo de sub-grupo não pode estar vazio!');
                 return;
             }
-
             postNewSubGrupoProduto(newSubGrupo);
             inputNewSubGrupo.value = ''; // Limpa o campo após o envio
             // Limpa as opções atuais do select e redefine a primeira como "Selecione"

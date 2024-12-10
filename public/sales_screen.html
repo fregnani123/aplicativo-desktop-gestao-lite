@@ -66,8 +66,8 @@
                     <p class="titulo-delete-item">Digite o número do item que deseja remover do carrinho.</p>
                     <p><input id="numero-Item" type="number"></p>
                     <p id="mensagem"></p>
-                    <p>Tecla C / Confirmar</p>
-                    <p>Tecla V / Voltar</p>
+                    <br>Tecla C / Confirmar</br>Tecla V / Voltar</p>
+                   
                     <!-- <p><span>S / Sim</span><span>N / Não</span></p> -->
                 </div>
             </div>
@@ -75,34 +75,44 @@
                 <div class="div-pagamento">
                     <p class="titulo-choose-item">Digite o número para selecionar o Pagamento</p>
                     <div class="div-choose">
-                        <div>
-                            <p>1: À Vista</p>
-                            <p>2: PIX</p>
-                            <p>3: Cartão Crédito</p>
-                        </div>
-                        <div>
-                            <p>4: Cartão Débito</p>
-                            <!-- <p>5: Boleto</p> -->
-                            <!-- <p>6: Crediário</p> -->
+                        <div class="opcoes-pagamento">
+                            <div>
+                                <p class="titulo-dinheiro">F6: À Vista</p>
+                                <p class="titulo-pix">F7: PIX</p>
+                            </div>
+                            <div> 
+                                <p class="titulo-cartao-c">F8: Cartão Crédito</p>
+                                <p class="titulo-cartao-d">F9: Cartão Débito</p>
+                            </div>                         
+                            <div> 
+                                <p class="titulo-pix">Tecla V = Voltar</p>
+                            </div>                         
                         </div>
                     </div>
                     <div class="pagamento-container">
                         <div class="pagamento-default">
-                    <div class="pagamento-default-1">
-                        <p>À Vista (Dinheiro)</p>
-                        <input id="valorDinheiro" type="text" >
+                            <div class="pagamento-default-1"  id="div-valorDinheiro">
+                                <label for="valorDinheiro">À Vista (Dinheiro):</label>
+                                <input id="valorDinheiro" type="text" placeholder="0,00">
+                            </div>
+                            <div class="pagamento-default-1" id="div-PIX">
+                                <label for="PIX">PIX:</label>
+                                <input id="PIX" type="text" placeholder="0,00">
+                            </div>
+                            <div class="pagamento-default-1" id="div-Cartao-Debito">
+                                <label for="Cartao-Debito">Cartão Débito:</label>
+                                <input id="Cartao-Debito" type="text" placeholder="0,00">
+                            </div>
+                            <div class="pagamento-default-1" id="div-Cartao-Credito">
+                                <label for="Cartao-Credito">Cartão Crédito:</label>
+                                <input id="Cartao-Credito" type="text" placeholder="0,00">
+                            </div>
+                            <p id="mensagemPagamento"></p>
+                        </div>
                     </div>
-                    <div style="display: none;" class="pagamento-default-1">
-                        <p>PIX:</p>
-                        <input id="PIX" type="text" placeholder="0,00">
-                    </div>
                 </div>
-                </div>
-                    <p id="mensagemPagamento"></p>
-                </div>
-                
             </div>
-
+            
             <div class="square-3">
                 <div class="square-3-1">
                     <div class="square-3-1-1">
@@ -110,7 +120,7 @@
                             <img class="img-produto" src="../style/img/produto.png" alt="">
                         </div>
                         <div class="square-codigo">
-                            <p class="label-codigo"><label for="" class="label-codigo">Código Barras</label></p>
+                            <p class="label-codigo"><label for="" class="label-codigo">Código Barras (EAN)</label></p>
                             <input type="text" id="codigo">
                             <div class="qtd-selecionada">
                                 <p class="qtd-p">Quantidade<span class="qtd-span">(F1)</span></p>
@@ -139,30 +149,20 @@
                         <div class="atalhos">
                             <div class="div-atalhos">
                                 <div class="atalhos-1">
-                                    <p class="p-atalhos">F1= Alterar Qtd</p>
+                                    <p class="p-atalhos">ESC= Sair</p>
                                     <p class="p-atalhos">Enter = retornar EAN</p>
-                                    <p class="p-atalhos" style="color:red">F2= Alterar Cliente</p>
-                                    <p class="p-atalhos" style="color:red">F3= Forma Pagamento </p>
+                                    <p class="p-atalhos">F1= Alterar Qtd</p>
                                 </div>
                                 <div class="atalhos-2">
-                                    <p class="p-atalhos">F4= Alterar tabela</p>
-                                    <p class="p-atalhos">F6= Nova Venda</p>
-                                    <p class="p-atalhos">F8= Cancelar Item</p>
-                                    <p class="p-atalhos" style="color:red">F7= finalizar venda</p>
+                                    <p class="p-atalhos" style="color:red">F2= Alterar Cliente</p>
+                                    <p class="p-atalhos">F3= Nova Venda</p> 
+                                    <p class="p-atalhos" style="color:red">F4= finalizar venda</p>
                                 </div>
                                 <div class="atalhos-3">
-                                    <p class="p-atalhos">ESC= Sair</p>
-                                    <p class="p-atalhos">V= Voltar</p>
-                                    <p class="p-atalhos">S= Sim</p>
-                                    <p class="p-atalhos">N= Não</p>
+                                    <p class="p-atalhos" style="color:red">F5= Alterar Cliente</p>
+                                    <p class="p-atalhos">F6= Cancelar Item</p>
                                 </div>
                             </div>
-                            <!-- //Disponivel para habilitar btns para uso de mouse. -->
-                            <!-- <div class="btn-finalizar-venda">
-                                <button id="btn-finalizar">Finalizar Venda</button>
-                                <button id="btn-nova-venda">Nova Venda</button>
-                                <button id="btn-sair">Sair</button>
-                            </div> -->
                         </div>
 
                     </div>

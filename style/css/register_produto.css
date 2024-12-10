@@ -590,6 +590,33 @@ width: 2.5rem;
     background: white;
 }
 
+#btn-cad-grupo,#btn-cad-subGrupo{
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 1rem;
+    margin-left: 150px;
+    background-color: white;
+}
+#grupo{
+    margin-left: -20px;
+    width: 220px;
+}
+#sub-grupo{
+    width: 220px;
+}
+
+.div-grupo,.div-subGrupo{
+    padding: 50px;
+    background-color: var(--header-background-color);
+    color: white;
+    width: 400px;
+}
+
+#grupos-inputs{
+    font-size: 1.2rem;
+}
+
 .container-register {
     position: absolute;
     width: 900px;
@@ -622,20 +649,6 @@ width: 2.5rem;
     background-color: red;
 }
 
-#btn-cad-grupo,#btn-cad-subGrupo{
-    padding: 10px 20px;
-    cursor: pointer;
-    margin-top: 10px;
-    font-size: 1rem;
-    margin-left: 150px;
-}
-#grupo{
-    margin-left: -20px;
-    width: 220px;
-}
-#sub-grupo{
-    width: 220px;
-}
 
 
 /* Estilo do container principal */
