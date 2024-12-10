@@ -115,37 +115,14 @@ document.addEventListener('keydown', function (event) {
     ].filter(div => div.style.display === 'flex'); // Verifica quais estão visíveis
 
     const mensagem = document.getElementById('mensagemPagamento');
-
-    // Verifica se o carrinho está vazio e altera o estado do campo 'valorDinheiro'
+    const divPagamento = document.querySelector('.div-pagamento');
+   
+    
     if (carrinho.length === 0) {
-        valorDinheiro.readOnly = true; // Bloqueia o campo;
-
-        divValorDinheiro.style.display = 'none'
-
-        PIX.readOnly = true; // Bloqueia o campo; 
-        divPIX.style.display = 'none'
-
-        CartaoDebito.readOnly = true; // Bloqueia o campo; 
-        divCartaoDebito.style.display = 'none'
-
-        CartaoCredito.readOnly = true; // Bloqueia o campo; 
-        divCartaoCredito.style.display = 'none'
-
-        mensagem.innerHTML = 'Não é possível inserir o pagamento, o carrinho está vazio. Tecla V = Voltar'; // Exibe a mensagem
+        divPagamento.style.display = 'none';
+        mensagem.innerHTML = `<p class='alert'>Tecla V = Voltar</p><p>Não é possível inserir o pagamento, o carrinho está vazio. </p>`//
     } else {
-        valorDinheiro.readOnly = false;
-
-        divValorDinheiro.style.display = 'flex';
-
-        PIX.readOnly = false;
-        divPIX.style.display = 'flex';
-
-        CartaoDebito.readOnly = false;
-        divCartaoDebito.style.display = 'flex';
-
-        CartaoCredito.readOnly = false;
-        divCartaoCredito.style.display = 'flex';
-
+        divPagamento.style.display = 'flex';
         mensagem.innerHTML = '';
         mensagem.style.display = 'none';
     }
@@ -200,7 +177,7 @@ document.addEventListener('keydown', function (event) {
             if (visibleDivs.length === 0) {
                 formaPagamento.style.display = 'flex';
                 valorDinheiro.focus();
-                valorDinheiro.value = '0,00';
+                valorDinheiro.value = 'R$ 0,00';
             }
             break;
         case 'd':
@@ -386,26 +363,62 @@ const formasPagamento = {
     "F9": divCartaoCredito,
 };
 
-// Tornar todas as divisões visíveis inicialmente
+// Tornar todas as divisões invisíveis inicialmente
 Object.values(formasPagamento).forEach(div => {
-    div.style.display = 'flex';
+    div.style.display = 'none';
 });
 
-// Controlar o elemento atualmente focado
-let elementoAtivo = valorDinheiro; // Inicialmente no input 'valorDinheiro'
-valorDinheiro.focus();
+// Controlar as divisões ativas
+let divsAtivas = new Set();
 
 // Alternar entre formas de pagamento com atalhos
 document.addEventListener('keydown', (e) => {
     if (formasPagamento[e.key]) {
         const div = formasPagamento[e.key];
-        const inputCorrespondente = document.getElementById(div.id.replace('div-', ''));
+
+        if (e.shiftKey) {
+            // Exibir a nova forma de pagamento sem ocultar as outras
+            div.style.display = 'flex';
+            divsAtivas.add(div);
+        } else {
+            // Ocultar todas as divisões e exibir apenas a selecionada
+            divsAtivas.forEach(divAtiva => {
+                divAtiva.style.display = 'none';
+            });
+            divsAtivas.clear();
+
+            div.style.display = 'flex';
+            divsAtivas.add(div);
+        }
 
         // Focar no input correspondente à tecla pressionada
+        const inputCorrespondente = document.getElementById(div.id.replace('div-', ''));
+        inputCorrespondente.focus();
+    }
+});
+
+document.addEventListener('keydown', (e) => {
+    if (formasPagamento[e.key]) {
+        const div = formasPagamento[e.key];
+        const inputCorrespondente = document.getElementById(div.id.replace('div-', ''));
+
+        if (e.shiftKey) {
+            // Exibe a nova forma de pagamento sem ocultar as outras
+            div.style.display = 'flex';
+        } else {
+            // Oculta todas as outras e exibe apenas a selecionada
+            Object.values(formasPagamento).forEach(otherDiv => {
+                otherDiv.style.display = 'none';
+            });
+            div.style.display = 'flex';
+        }
+
+        // Foca no input correspondente
         elementoAtivo = inputCorrespondente;
         elementoAtivo.focus();
     }
 });
+
 
 // Formatar valores como moeda
 function formatCurrency(value) {

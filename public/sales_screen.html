@@ -10,7 +10,6 @@
 
 <body>
     <div class="container-sales">
-
         <div class="div-sales">
             <div class="square-1">
                 <div class="square-1-1">
@@ -67,31 +66,34 @@
                     <p><input id="numero-Item" type="number"></p>
                     <p id="mensagem"></p>
                     <br>Tecla C / Confirmar</br>Tecla V / Voltar</p>
-                   
+
                     <!-- <p><span>S / Sim</span><span>N / Não</span></p> -->
                 </div>
             </div>
             <div class="square-2-2-2-4">
+                <div id="mensagemPagamento"></div>
                 <div class="div-pagamento">
-                    <p class="titulo-choose-item">Digite o número para selecionar o Pagamento</p>
+                    <p class="titulo-choose-item">Precione a tecla para selecionar o Pagamento</p>
                     <div class="div-choose">
                         <div class="opcoes-pagamento">
                             <div>
                                 <p class="titulo-dinheiro">F6: À Vista</p>
                                 <p class="titulo-pix">F7: PIX</p>
                             </div>
-                            <div> 
+                            <div>
                                 <p class="titulo-cartao-c">F8: Cartão Crédito</p>
                                 <p class="titulo-cartao-d">F9: Cartão Débito</p>
-                            </div>                         
-                            <div> 
+                            </div>
+                            <div>
                                 <p class="titulo-pix">Tecla V = Voltar</p>
-                            </div>                         
+
+                            </div>
                         </div>
                     </div>
+                    <p class="titulo-choose-item-2">Adicione mais opções de pagamento: Shift + Atalho</p>  
                     <div class="pagamento-container">
                         <div class="pagamento-default">
-                            <div class="pagamento-default-1"  id="div-valorDinheiro">
+                            <div class="pagamento-default-1" id="div-valorDinheiro">
                                 <label for="valorDinheiro">À Vista (Dinheiro):</label>
                                 <input id="valorDinheiro" type="text" placeholder="0,00">
                             </div>
@@ -107,12 +109,12 @@
                                 <label for="Cartao-Credito">Cartão Crédito:</label>
                                 <input id="Cartao-Credito" type="text" placeholder="0,00">
                             </div>
-                            <p id="mensagemPagamento"></p>
+
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <div class="square-3">
                 <div class="square-3-1">
                     <div class="square-3-1-1">
@@ -155,7 +157,7 @@
                                 </div>
                                 <div class="atalhos-2">
                                     <p class="p-atalhos" style="color:red">F2= Alterar Cliente</p>
-                                    <p class="p-atalhos">F3= Nova Venda</p> 
+                                    <p class="p-atalhos">F3= Nova Venda</p>
                                     <p class="p-atalhos" style="color:red">F4= finalizar venda</p>
                                 </div>
                                 <div class="atalhos-3">
@@ -184,9 +186,10 @@
                                 type="text" readonly>
                         </div>
                         <div class="pag-troco">
-                            <div class="total-pago"><label for="" class="total">Total Pago (Dinheiro)</label><input id="total-pago"
-                                    value="R$ 0,00" type="text"></div>
-                            <div class="pag-troco-1"><label for="" class="total">Troco</label><input id="troco" value="R$ 0,00" type="text" readonly></div>
+                            <div class="total-pago"><label for="" class="total">Total Pago (Dinheiro)</label><input
+                                    id="total-pago" value="R$ 0,00" type="text"></div>
+                            <div class="pag-troco-1"><label for="" class="total">Troco</label><input id="troco"
+                                    value="R$ 0,00" type="text" readonly></div>
                         </div>
                     </div>
                 </div>
