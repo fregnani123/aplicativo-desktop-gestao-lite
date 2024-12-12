@@ -1063,6 +1063,9 @@ label {
     border-radius: 10px;
 
 }
+#total-liquido::placeholder {
+    color: white;
+}
 
 .total {
     color: white;
@@ -1078,6 +1081,7 @@ label {
     font-size: 2rem;
     outline: none;
     padding-bottom: 10px;
+    
 }
 
 #total-pago {

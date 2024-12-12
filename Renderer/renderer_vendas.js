@@ -20,6 +20,8 @@ const inputExitVenda = document.querySelector('#exit-key');
 const inputExcluiItem = document.querySelector('#numero-Item');
 
 
+
+
 const mensagemDiv = document.querySelector('#mensagem');
 const inputTroco = document.querySelector('#troco');
 
@@ -116,8 +118,8 @@ document.addEventListener('keydown', function (event) {
 
     const mensagem = document.getElementById('mensagemPagamento');
     const divPagamento = document.querySelector('.div-pagamento');
-   
-    
+
+
     if (carrinho.length === 0) {
         divPagamento.style.display = 'none';
         mensagem.innerHTML = `<p class='alert'>Tecla V = Voltar</p><p>Não é possível inserir o pagamento, o carrinho está vazio. </p>`//
@@ -295,19 +297,11 @@ const handleInputExit = (e) => {
 inputExitVenda.addEventListener('input', handleInputExit, { once: true });
 
 
-//
 
 
 
 
-
-
-
-
-
-
-
-
+//************************************ Forma de pagamento **************** */
 
 
 // Obter referências aos elementos
@@ -458,3 +452,40 @@ function atualizarValores() {
     // Inicializar todos os inputs com 0,00
     input.value = formatCurrency(0);
 });
+
+
+//************************** Finalizar Venda **********************************/
+
+
+
+
+function FinalizarVenda() {
+    // Cria o objeto de venda com os dados do carrinho e cliente
+    const venda = {
+        dataVenda: dataVenda.value,    // Data da venda, se necessário
+        carrinho: carrinho,
+        cliente: selectCliente.value,  // ou o valor do cliente selecionado
+        totalLiquido: inputTotalLiquido.value,   // O total da venda, que você capturou
+        numeroPedido: numeroPedido.value,  // Número do pedido, se necessário
+        valorDinheiro:valorDinheiro.value || '',
+        PIX:PIX.value || '',
+        CartaoCredito:CartaoCredito.value || '',
+        CartaoDebito:CartaoDebito.value || '',
+    };
+
+    let vendaDb = JSON.stringify(venda); // Converte o objeto para JSON
+    console.log('Venda enviada: ' + vendaDb);
+
+
+    
+}
+
+// Adiciona o evento de keydown para disparar a função FinalizarVenda quando a tecla 'e' for pressionada
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'e') {
+        FinalizarVenda();
+    }
+});
+
+
+
