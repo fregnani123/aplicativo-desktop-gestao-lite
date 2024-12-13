@@ -22,6 +22,7 @@ const inputExcluiItem = document.querySelector('#numero-Item');
 
 
 
+
 const mensagemDiv = document.querySelector('#mensagem');
 const inputTroco = document.querySelector('#troco');
 
@@ -116,18 +117,7 @@ document.addEventListener('keydown', function (event) {
         alertExit,
     ].filter(div => div.style.display === 'flex'); // Verifica quais estão visíveis
 
-    const mensagem = document.getElementById('mensagemPagamento');
     const divPagamento = document.querySelector('.div-pagamento');
-
-
-    if (carrinho.length === 0) {
-        divPagamento.style.display = 'none';
-        mensagem.innerHTML = `<p class='alert'>Tecla V = Voltar</p><p>Não é possível inserir o pagamento, o carrinho está vazio. </p>`//
-    } else {
-        divPagamento.style.display = 'flex';
-        mensagem.innerHTML = '';
-        mensagem.style.display = 'none';
-    }
 
     if (event.key === 'Enter') {
         event.preventDefault();
@@ -169,6 +159,13 @@ document.addEventListener('keydown', function (event) {
                 inputQtd.focus();
             }
             break;
+        // case 'F2':
+        //     if (visibleDivs.length === 0) {
+        //         event.preventDefault();
+        //         divSelecionarQtd.style.display = 'flex';
+        //         inputQtd.focus();
+        //     }
+        //     break;
         case 'F3':
             if (visibleDivs.length === 0) {
                 event.preventDefault();
@@ -181,8 +178,14 @@ document.addEventListener('keydown', function (event) {
                 valorDinheiro.focus();
                 valorDinheiro.value = 'R$ 0,00';
             }
+            if (carrinho.length === 0 ) {
+                divPagamento.style.display = 'none';
+                alertMsg('Não é possível inserir o pagamento, o carrinho está vazio.',type='warning',3000);
+            } else {
+                divPagamento.style.display = 'flex';
+            }
             break;
-        case 'd':
+        case 'F':
             if (visibleDivs.length === 0) {
                 alertRemoverItem.style.display = 'flex';
                 inputExcluiItem.focus();
@@ -208,12 +211,12 @@ document.addEventListener('keydown', function (event) {
                 inputExitVenda.focus();
             }
             break;
-        case 'v':
-        case 'V': // Adiciona ao carrinho ou esconde divs visíveis
+        case 'Enter': // Adiciona ao carrinho ou esconde divs visíveis
+        codigoEan.focus();
             if (visibleDivs.length > 0) {
                 visibleDivs.forEach(div => div.style.display = 'none');
                 inputTroco.value = '0,00';
-                inputTotalPago.value = '0,00'
+                inputTotalPago.value = '0,00';
                 codigoEan.focus(); // Retorna o foco para o campo de código de barras
             } else {
                 event.preventDefault();
@@ -436,22 +439,42 @@ function atualizarValores() {
         parseCurrency(CartaoCredito.value);
 
     const troco = Math.max(0, valorPago - totalLiquido);
-    inputTotalPago.value = formatCurrency(valorPago);
-    inputTroco.value = formatCurrency(troco);
+    inputTotalPago.value = formatCurrency(valorPago.toFixed(2));
+    inputTroco.value = formatCurrency(troco.toFixed(2));
 }
 
-// Adicionar evento aos inputs
 [valorDinheiro, PIX, CartaoDebito, CartaoCredito].forEach(input => {
     input.addEventListener('input', (e) => {
+        // Remover caracteres não numéricos e transformar em número
         let value = e.target.value.replace(/\D/g, '');
+        if (value === '') {
+            // Se o valor estiver vazio, inicializar como 0
+            value = '0';
+        }
+
+        // Formatar o número em moeda
         value = (parseFloat(value) / 100).toFixed(2);
         e.target.value = formatCurrency(value);
+
+        // Atualizar valores apenas se todos os inputs forem válidos
+        if (
+            isNaN(parseFloat(valorDinheiro.value.replace(',', '.'))) ||
+            isNaN(parseFloat(PIX.value.replace(',', '.'))) ||
+            isNaN(parseFloat(CartaoCredito.value.replace(',', '.'))) ||
+            isNaN(parseFloat(CartaoDebito.value.replace(',', '.')))
+        ) 
         atualizarValores();
     });
 
     // Inicializar todos os inputs com 0,00
-    input.value = formatCurrency(0);
+    input.value = '0,00';
 });
+
+// Função para formatar valores em moeda
+function formatCurrency(value) {
+    return value.toString().replace('.', ',');
+}
+
 
 
 //************************** Finalizar Venda **********************************/
@@ -460,32 +483,97 @@ function atualizarValores() {
 
 
 function FinalizarVenda() {
+
+    const totalLiquido = parseCurrency(inputTotalLiquido.value);
+    const valorPago =
+        parseCurrency(valorDinheiro.value) +
+        parseCurrency(PIX.value) +
+        parseCurrency(CartaoDebito.value) +
+        parseCurrency(CartaoCredito.value);
+
+    if (valorPago < totalLiquido) {
+        alertMsg('O valor pago esta menor que o valor da compra.', type = 'warning',3000);
+        return
+    }
+
     // Cria o objeto de venda com os dados do carrinho e cliente
     const venda = {
-        dataVenda: dataVenda.value,    // Data da venda, se necessário
+        dataVenda: dataVenda.value,
         carrinho: carrinho,
-        cliente: selectCliente.value,  // ou o valor do cliente selecionado
-        totalLiquido: inputTotalLiquido.value,   // O total da venda, que você capturou
-        numeroPedido: numeroPedido.value,  // Número do pedido, se necessário
-        valorDinheiro:valorDinheiro.value || '',
-        PIX:PIX.value || '',
-        CartaoCredito:CartaoCredito.value || '',
-        CartaoDebito:CartaoDebito.value || '',
+        cliente: selectCliente.value,
+        totalLiquido: inputTotalLiquido.value,
+        numeroPedido: numeroPedido.value,
+        valorDinheiro: valorDinheiro.value || '',
+        PIX: PIX.value || '',
+        CartaoCredito: CartaoCredito.value || '',
+        CartaoDebito: CartaoDebito.value || '',
     };
 
     let vendaDb = JSON.stringify(venda); // Converte o objeto para JSON
     console.log('Venda enviada: ' + vendaDb);
 
 
-    
+    try {
+        // postVendaDb(venda);
+        alertMsg('Venda realizada com sucesso, obrigado!', type = 'success',6000);
+    } catch (error) {
+        console.error('Erro ao cadastrar a Venda no Db:', error);
+        alertMsg('Erro ao registrar a venda no sistema. Tente novamente.', type = 'error',4000);
+        // return;
+    }
+
+    setTimeout(() => {
+        limparCampos();
+    }, 3000);
+   
+
 }
 
 // Adiciona o evento de keydown para disparar a função FinalizarVenda quando a tecla 'e' for pressionada
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'e') {
+    if (e.key === 'f') {
         FinalizarVenda();
     }
 });
 
 
+// Função que limpa os campos ao registrar a venda
+function limparCampos() {
+    // Limpa todos os inputs e campos relacionados0
+    dataVenda.value = '';
+    codigoEan.value = '';
+    descricao.value = '';
+    precoVenda.value = '';
+    inputQtd.value = '';
+    selectCliente.value = 'Consumidor Final'; // Define para o valor padrão ou vazio
+    ulDescricaoProduto.innerHTML = ''; // Limpa a lista de produtos
+    numeroPedido.value = '1';
+    inputTotalLiquido.value = 'R$ 0,00'; // Zera o total líquido
+    inputTotalPago.value = 'R$ 0,00'; // Zera o total pago
+    unidadeEstoqueRender.value = '';
+    divSelecionarQtd.style.display = 'none'; // Esconde a div de seleção de quantidade
+    textSelecionarQtd.textContent = ''; // Limpa o texto da quantidade selecionada
+    alertLimparVenda.style.display = 'none'; // Esconde alerta de limpar venda
+    alertExit.style.display = 'none'; // Esconde alerta de saída
+    alertRemoverItem.style.display = 'none'; // Esconde alerta de remover item
+    formaPagamento.style.display = 'none'; // Esconde alerta de forma de pagamento
+    inputExitVenda.value = '';
+    inputExcluiItem.value = '';
+    mensagemDiv.textContent = ''; // Remove mensagens adicionais
+    inputTroco.value = 'R$ 0,00'; // Zera o troco
+    divPIX.style.display = 'none';
+    divValorDinheiro.style.display = 'none';
+    divCartaoCredito.style.display = 'none';
+    divCartaoDebito.style.display = 'none';
+    PIX.value = '0,00';
+    valorDinheiro.value = '0,00';
+    CartaoCredito.value = '0,00';
+    CartaoDebito.value = '0,00';
+    // Limpa o estado do carrinho
+    carrinho = [];
+    console.log('Todos os campos foram limpos.');
+
+    // Redefine o foco para o campo de código EAN
+    codigoEan.focus();
+}
 

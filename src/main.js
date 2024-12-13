@@ -14,6 +14,7 @@ function createWindow() {
             nodeIntegration: true,
             contextIsolation: false // Dependendo da configuração, isso pode ser necessário
         },
+        icon: path.join(__dirname, '../style/img/logo.ico') // Caminho para o ícone
     });
 
     // Carregar o arquivo HTML
