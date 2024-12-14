@@ -445,6 +445,9 @@ async function postNewProductSubGrupo(newSubGrupo) {
     return result.insertId;
 }
 
+
+
+
 module.exports = {
     getAllProdutos,
     getFornecedor,
@@ -461,5 +464,6 @@ module.exports = {
     postNewProduct,
     postNewProductGrupo,
     postNewProductSubGrupo,
-    postNewFornecedor
+    postNewFornecedor,
+   
 };

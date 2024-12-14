@@ -20,7 +20,10 @@
                         <label for="">Nº Pedido:</label><input type="text" id="numero-pedido" value="01" readonly>
                         <label for="">Data da Venda:</label><input type="text" id="data-venda" autocomplete="off"
                             readonly>
-                        <label for="">Cliente:</label> <input id="select-cliente" value="Consumidor Final">
+                        <label for="select-cliente">Cliente:</label>
+                        <input id="nome-cliente" type="text" readonly value="Cliente Final">
+                        <input id="id-cliente" type="hidden" value="1">
+
                     </div>
                 </div>
                 <div class="square-1-2"></div>
@@ -89,7 +92,7 @@
                             </div>
                         </div>
                     </div>
-                    <p class="titulo-choose-item-2">Adicione mais opções de pagamento: Shift + Atalho</p>  
+                    <p class="titulo-choose-item-2">Adicione mais opções de pagamento: Shift + Atalho</p>
                     <div class="pagamento-container">
                         <div class="pagamento-default">
                             <div class="pagamento-default-1" id="div-valorDinheiro">
@@ -150,18 +153,19 @@
                         <div class="atalhos">
                             <div class="div-atalhos">
                                 <div class="atalhos-1">
-                                    <p class="p-atalhos"  style="color:rgb(255, 255, 255)">Enter = retornar EAN</p>
-                                    <p class="p-atalhos"  style="color:rgb(255, 255, 255)">F1= Alterar Qtd</p>
+                                    <p class="p-atalhos" style="color:rgb(255, 255, 255)">Enter = retornar EAN</p>
+                                    <p class="p-atalhos" style="color:rgb(255, 255, 255)">F1= Alterar Qtd</p>
                                     <p class="p-atalhos" style="color:rgb(255, 255, 255)">F2= Alterar Cliente</p>
                                 </div>
                                 <div class="atalhos-2">
                                     <p class="p-atalhos" style="color:rgba(255, 255, 255, 0.877)">F3= Nova Venda</p>
-                                    <p class="p-atalhos" style="color:rgba(255, 255, 255, 0.877)">F4= finalizar venda</p>
+                                    <p class="p-atalhos" style="color:rgba(255, 255, 255, 0.877)">F4= finalizar venda
+                                    </p>
                                     <p class="p-atalhos" style="color:rgba(255, 255, 255, 0.877)">F5= Cancelar Item</p>
                                 </div>
                                 <div class="atalhos-3">
-                                   
-                                    <p class="p-atalhos"  style="color:rgba(255, 255, 255, 0.993)">ESC= Sair (Menu)</p>
+
+                                    <p class="p-atalhos" style="color:rgba(255, 255, 255, 0.993)">ESC= Sair (Menu)</p>
                                 </div>
                             </div>
                         </div>
@@ -181,8 +185,8 @@
                     </div>
                     <div class="square-3-2-2">
                         <div class="div-total">
-                            <label for="" class="total-liquido">Subtotal</label><input id="total-liquido" placeholder="0,00"
-                                type="text" readonly>
+                            <label for="" class="total-liquido">Subtotal</label><input id="total-liquido"
+                                placeholder="0,00" type="text" readonly>
                         </div>
                         <div class="pag-troco">
                             <div class="total-pago"><label for="" class="total">Valores Pagos</label><input

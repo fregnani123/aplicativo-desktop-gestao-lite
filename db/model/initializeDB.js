@@ -551,4 +551,3 @@ module.exports = {
     insertFornecedorPadrao,
     insertCorProduto
 };
-

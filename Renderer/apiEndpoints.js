@@ -216,7 +216,7 @@ async function getunidadeEstoqueVendas(id, renderer) {
         });
 }
 
-function getProduto(descricaoElement, codigoDeBarras, precoVendaElement, unidadeEstoqueID) {
+function getProduto(descricaoElement, codigoDeBarras, precoVendaElement, unidadeEstoqueID, produto_id) {
     const getOneProduct = `${apiEndpoints.findOneProduct}/${codigoDeBarras}`;
     fetch(getOneProduct, {
         method: 'GET',
@@ -239,6 +239,7 @@ function getProduto(descricaoElement, codigoDeBarras, precoVendaElement, unidade
                 descricaoElement.value = produto.nome_produto;
                 precoVendaElement.value = produto.preco_venda;
                 unidadeEstoqueID = produto.unidadeEstoqueID;
+                produtoIdGlobal = produto.produto_id;
 
                 let value = precoVendaElement.value;
                 value = value.replace(/\D/g, '');

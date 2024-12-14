@@ -4,7 +4,8 @@ const codigoEan = document.querySelector('#codigo');
 const descricao = document.querySelector('#input-descricao');
 const precoVenda = document.querySelector('#valor-unitario');
 const inputQtd = document.querySelector('#input-qtd');
-const selectCliente = document.querySelector('#select-cliente');
+const selectCliente = document.querySelector('#nome-cliente');
+const clienteId = document.querySelector("#id-cliente")
 const ulDescricaoProduto = document.querySelector('.ul-descricao-produto');
 const numeroPedido = document.querySelector('#numero-pedido');
 const inputTotalLiquido = document.querySelector('#total-liquido');
@@ -18,10 +19,6 @@ const alertRemoverItem = document.querySelector('.square-2-2-2-3');
 const formaPagamento = document.querySelector('.square-2-2-2-4');
 const inputExitVenda = document.querySelector('#exit-key');
 const inputExcluiItem = document.querySelector('#numero-Item');
-
-
-
-
 
 const mensagemDiv = document.querySelector('#mensagem');
 const inputTroco = document.querySelector('#troco');
@@ -73,8 +70,9 @@ function pushProdutoCarrinho() {
         console.log('Existem inputs vazios');
         return;
     }
-
+    
     const produto = {
+        produto_id: produtoIdGlobal,
         codigoEan: codigoEan.value,
         descricao: descricao.value,
         preco: precoVenda.value,
@@ -350,10 +348,9 @@ inputsPagamento.forEach(input => {
 });
 
 
-
-
 // Mapear os atalhos para as divisões correspondentes
 const formasPagamento = {
+    "F4": divValorDinheiro,
     "F6": divValorDinheiro,
     "F7": divPIX,
     "F8": divCartaoDebito,
@@ -496,18 +493,55 @@ function FinalizarVenda() {
         return
     }
 
-    // Cria o objeto de venda com os dados do carrinho e cliente
-    const venda = {
-        dataVenda: dataVenda.value,
-        carrinho: carrinho,
-        cliente: selectCliente.value,
-        totalLiquido: inputTotalLiquido.value,
-        numeroPedido: numeroPedido.value,
-        valorDinheiro: valorDinheiro.value || '',
-        PIX: PIX.value || '',
-        CartaoCredito: CartaoCredito.value || '',
-        CartaoDebito: CartaoDebito.value || '',
-    };
+    
+    // const produto = {
+    //     produto_id: produtoIdGlobal,
+    //     codigoEan: codigoEan.value,
+    //     descricao: descricao.value,
+    //     preco: precoVenda.value,
+    //     Qtd: inputQtd.value,
+    //     unidadeEstoqueID: unidadeEstoqueRender.value,
+    // };
+    
+
+    const carrinhoId = carrinho.map(produto => {
+        return {
+            produto_id: produto.produto_id,
+            preco: produto.preco,
+            quantidade: produto.Qtd,
+            unidadeEstoqueID: produto.unidadeEstoqueID,
+        };
+    });
+  // Cria o objeto de venda com os dados do carrinho e cliente
+  // Função para identificar as formas de pagamento válidas
+function getFormasDePagamento() {
+    const formas = [];
+
+    if (valorDinheiro.value && valorDinheiro.value !== '0,00') {
+        formas.push({ tipo: 'Dinheiro', valor: valorDinheiro.value });
+    }
+    if (PIX.value && PIX.value !== '0,00') {
+        formas.push({ tipo: 'PIX', valor: PIX.value });
+    }
+    if (CartaoCredito.value && CartaoCredito.value !== '0,00') {
+        formas.push({ tipo: 'Cartão de Crédito', valor: CartaoCredito.value });
+    }
+    if (CartaoDebito.value && CartaoDebito.value !== '0,00') {
+        formas.push({ tipo: 'Cartão de Débito', valor: CartaoDebito.value });
+    }
+
+    return formas.length > 0 ? formas : [{ tipo: 'Indefinido', valor: '0,00' }]; // Retorno padrão se nenhuma forma for válida
+}
+
+// Cria o objeto de venda com os dados do carrinho e cliente
+const venda = {
+    dataVenda: dataVenda.value,
+    carrinho: carrinhoId,
+    cliente: clienteId.value,
+    totalLiquido: inputTotalLiquido.value,
+    numeroPedido: numeroPedido.value,
+    formasDePagamento: getFormasDePagamento(),
+};
 
     let vendaDb = JSON.stringify(venda); // Converte o objeto para JSON
     console.log('Venda enviada: ' + vendaDb);
@@ -550,6 +584,7 @@ function limparCampos() {
     numeroPedido.value = '1';
     inputTotalLiquido.value = 'R$ 0,00'; // Zera o total líquido
     inputTotalPago.value = 'R$ 0,00'; // Zera o total pago
+    unidadeEstoqueRender.value = '';
     unidadeEstoqueRender.value = '';
     divSelecionarQtd.style.display = 'none'; // Esconde a div de seleção de quantidade
     textSelecionarQtd.textContent = ''; // Limpa o texto da quantidade selecionada

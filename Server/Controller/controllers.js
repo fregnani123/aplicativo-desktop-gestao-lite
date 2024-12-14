@@ -17,7 +17,8 @@ const {
     postNewProduct, 
     postNewProductGrupo, 
     postNewProductSubGrupo, 
-    postNewFornecedor 
+    postNewFornecedor,
+    postNewSale 
 } = require(path.join(__dirname, '../../db/model/product'));
 
 // Configuração do multer
@@ -233,6 +234,9 @@ const controllers = {
             res.status(500).json({ error: 'Erro ao inserir novo sub-grupo.' });
         }
     },
+
+
+    
 };
 
 module.exports = controllers;
