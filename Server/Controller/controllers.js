@@ -18,8 +18,12 @@ const {
     postNewProductGrupo, 
     postNewProductSubGrupo, 
     postNewFornecedor,
-    postNewSale 
+    postNewSale,
+    fetchVenda
+
+    
 } = require(path.join(__dirname, '../../db/model/product'));
+
 
 // Configuração do multer
 const storage = multer.diskStorage({
@@ -86,6 +90,7 @@ const controllers = {
         }
     },
 
+  
     getTamanhoNumeros: async (req, res) => {
         try {
             const tamanhoNumeros = await getTamanhoNumeros();
@@ -235,7 +240,31 @@ const controllers = {
         }
     },
 
+    postNewVenda: async (req, res) => {
+        try {
+            const vendaData = req.body;
+            const newVendaId = await postNewSale(vendaData);
+    
+            res.json({
+                message: 'Venda inserida com sucesso!',
+                venda_id: newVendaId
+            });
+        } catch (error) {
+            console.error('Erro ao inserir a venda:', error.message);
+            res.status(500).json({ error: 'Erro ao inserir a venda.' });
+        }
+    },
 
+    getVenda : async (req, res) => {
+        try {
+            const vendas = await fetchVenda(); // Chama a função para buscar as vendas
+            res.json(vendas); // Retorna os dados como JSON
+        } catch (error) {
+            console.error('Erro ao buscar Venda:', error);
+            res.status(500).json({ error: 'Erro ao buscar Venda' });
+        }
+    }
+    
     
 };
 

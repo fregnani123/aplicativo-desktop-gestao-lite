@@ -445,6 +445,106 @@ async function postNewProductSubGrupo(newSubGrupo) {
     return result.insertId;
 }
 
+async function postNewSale(newSale) {
+    await ensureDBInitialized();
+    let connection;
+
+    try {
+        // Obtém uma conexão do pool
+        connection = await pool.getConnection();
+
+        // Verifica se a venda já existe com o mesmo número de pedido (opcional)
+        const checkQuery = 'SELECT venda_id FROM venda WHERE numero_pedido = ?';
+        const [existingSale] = await connection.query(checkQuery, [newSale.numero_pedido]);
+
+        if (existingSale.length > 0) {
+            // Se a venda com o mesmo número de pedido já existir, lance um erro ou retorne uma mensagem
+            throw new Error('Venda com este número de pedido já existe.');
+        }
+
+        // Inicia a transação para garantir que todos os dados sejam inseridos com sucesso
+        await connection.beginTransaction();
+
+        // Inserir dados na tabela `venda`
+        const insertSaleQuery = `
+            INSERT INTO venda (data_venda, cliente_id, total_liquido, numero_pedido) 
+            VALUES (?, ?, ?, ?)
+        `;
+        const saleValues = [
+            newSale.data_venda,
+            newSale.cliente_id,
+            newSale.total_liquido,
+            newSale.numero_pedido
+        ];
+
+        const [saleResult] = await connection.query(insertSaleQuery, saleValues);
+        const vendaId = saleResult.insertId;
+
+        // Inserir os itens da venda na tabela `item_venda`
+        for (const item of newSale.itens) {
+            const insertItemQuery = `
+                INSERT INTO item_venda (venda_id, produto_id, preco, quantidade, unidade_estoque_id) 
+                VALUES (?, ?, ?, ?, ?)
+            `;
+            const itemValues = [
+                vendaId,
+                item.produto_id,
+                item.preco,
+                item.quantidade,
+                item.unidade_estoque_id
+            ];
+            await connection.query(insertItemQuery, itemValues);
+        }
+
+        // Inserir as formas de pagamento na tabela `forma_pagamento`
+        for (const pagamento of newSale.pagamentos) {
+            const insertPaymentQuery = `
+                INSERT INTO forma_pagamento (venda_id, tipo_pagamento, valor) 
+                VALUES (?, ?, ?)
+            `;
+            const paymentValues = [
+                vendaId,
+                pagamento.tipo,
+                pagamento.valor
+            ];
+            await connection.query(insertPaymentQuery, paymentValues);
+        }
+
+        // Commit a transação
+        await connection.commit();
+
+        // Retorna o ID da venda recém-criada
+        return vendaId;
+
+    } catch (error) {
+        // Se houver erro, faz o rollback da transação
+        if (connection) await connection.rollback();
+        console.error('Erro ao inserir a venda:', error.message);
+        throw error;
+    } finally {
+        // Libera a conexão
+        if (connection) connection.release();
+    }
+}
+
+async function fetchVenda() {
+    await ensureDBInitialized(); // Certifica-se de que o banco foi inicializado
+    let connection;
+
+    try {
+        connection = await pool.getConnection(); // Obtém conexão com o banco de dados
+        const [rows, fields] = await connection.query(
+            'SELECT * FROM venda ORDER BY venda_id DESC'
+        ); // Executa a consulta SQL
+        return rows; // Retorna os resultados da consulta
+    } catch (error) {
+        console.error('Erro ao conectar ao MySQL ou executar a consulta:', error);
+        throw error; // Repassa o erro para o controlador
+    } finally {
+        if (connection) connection.release(); // Libera a conexão com o banco
+    }
+}
+
 
 
 
@@ -465,5 +565,6 @@ module.exports = {
     postNewProductGrupo,
     postNewProductSubGrupo,
     postNewFornecedor,
-   
+    postNewSale,
+    fetchVenda
 };

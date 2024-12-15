@@ -18,6 +18,7 @@ Router.post('/postNewProduto', controllers.postNewProductWithImage);
 Router.post('/newGrupo', controllers.postNewProductGrupo);
 Router.post('/newSubGrupo', controllers.postNewProductSubGrupo);
 Router.post('/newFornecedor', controllers.postNewFornecedor);
-// Router.post('/postVenda', controllers.postNewVenda);
+Router.post('/postVenda', controllers.postNewVenda);
+Router.get('/getVenda', controllers.getVenda);
 
 module.exports = Router;

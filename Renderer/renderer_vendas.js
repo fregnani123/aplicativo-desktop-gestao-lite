@@ -24,6 +24,7 @@ const mensagemDiv = document.querySelector('#mensagem');
 const inputTroco = document.querySelector('#troco');
 
 
+
 // Estado do carrinho
 let carrinho = [];
 
@@ -60,7 +61,7 @@ function calCarrinho() {
         );
         return acc + precoFormatado * parseInt(item.Qtd, 10);
     }, 0);
-    inputTotalLiquido.value = `R$ ${converteMoeda(total)}`;
+    inputTotalLiquido.value = `${converteMoeda(total)}`;
     return total;
 }
 
@@ -78,6 +79,7 @@ function pushProdutoCarrinho() {
         preco: precoVenda.value,
         Qtd: inputQtd.value,
         unidadeEstoqueID: unidadeEstoqueRender.value,
+        unidadeIDGlobal:unIDGlobal
     };
 
     carrinho.push(produto);
@@ -85,6 +87,7 @@ function pushProdutoCarrinho() {
     rendererCarrinho();
     resetInputs();
     calCarrinho();
+    getVenda(numeroPedido)
     alertLimparVenda.style.display = 'none';
 }
 
@@ -477,9 +480,23 @@ function formatCurrency(value) {
 //************************** Finalizar Venda **********************************/
 
 
-
-
 function FinalizarVenda() {
+    function parseCurrency(value) {
+        // Remover o símbolo 'R$' e qualquer espaço em excesso
+        const cleanValue = value.trim().replace('R$', '').replace(',', '.');
+        // Converter para número
+        const parsedValue = parseFloat(cleanValue);
+        if (isNaN(parsedValue)) {
+            console.error("Valor inválido para conversão:", value);
+            return 0; // Retorna 0 se o valor não for válido
+        }
+        return parsedValue;
+    }
+
+    if (carrinho.length === 0) {
+        alertMsg("Seu carrinho está vazio. Adicione itens antes de concluir a venda.", 3000);
+        return;
+    }
 
     const totalLiquido = parseCurrency(inputTotalLiquido.value);
     const valorPago =
@@ -489,78 +506,60 @@ function FinalizarVenda() {
         parseCurrency(CartaoCredito.value);
 
     if (valorPago < totalLiquido) {
-        alertMsg('O valor pago esta menor que o valor da compra.', type = 'warning',3000);
-        return
+        alertMsg('O valor pago está menor que o valor da compra.', 'warning', 3000);
+        return;
     }
-
-    
-    // const produto = {
-    //     produto_id: produtoIdGlobal,
-    //     codigoEan: codigoEan.value,
-    //     descricao: descricao.value,
-    //     preco: precoVenda.value,
-    //     Qtd: inputQtd.value,
-    //     unidadeEstoqueID: unidadeEstoqueRender.value,
-    // };
-    
 
     const carrinhoId = carrinho.map(produto => {
         return {
             produto_id: produto.produto_id,
-            preco: produto.preco,
+            preco: parseCurrency(produto.preco).toFixed(2),
             quantidade: produto.Qtd,
-            unidadeEstoqueID: produto.unidadeEstoqueID,
+            unidade_estoque_id: produto.unidadeIDGlobal,
         };
     });
-  // Cria o objeto de venda com os dados do carrinho e cliente
-  // Função para identificar as formas de pagamento válidas
-function getFormasDePagamento() {
-    const formas = [];
 
-    if (valorDinheiro.value && valorDinheiro.value !== '0,00') {
-        formas.push({ tipo: 'Dinheiro', valor: valorDinheiro.value });
-    }
-    if (PIX.value && PIX.value !== '0,00') {
-        formas.push({ tipo: 'PIX', valor: PIX.value });
-    }
-    if (CartaoCredito.value && CartaoCredito.value !== '0,00') {
-        formas.push({ tipo: 'Cartão de Crédito', valor: CartaoCredito.value });
-    }
-    if (CartaoDebito.value && CartaoDebito.value !== '0,00') {
-        formas.push({ tipo: 'Cartão de Débito', valor: CartaoDebito.value });
+    function getFormasDePagamento() {
+        const formas = [];
+        if (valorDinheiro.value && valorDinheiro.value !== '0,00') {
+            formas.push({ tipo: 'Dinheiro', valor: parseCurrency(valorDinheiro.value).toFixed(2) });
+        }
+        if (PIX.value && PIX.value !== '0,00') {
+            formas.push({ tipo: 'PIX', valor: parseCurrency(PIX.value).toFixed(2) });
+        }
+        if (CartaoCredito.value && CartaoCredito.value !== '0,00') {
+            formas.push({ tipo: 'Cartão de Crédito', valor: parseCurrency(CartaoCredito.value).toFixed(2) });
+        }
+        if (CartaoDebito.value && CartaoDebito.value !== '0,00') {
+            formas.push({ tipo: 'Cartão de Débito', valor: parseCurrency(CartaoDebito.value).toFixed(2) });
+        }
+        return formas.length > 0 ? formas : [{ tipo: 'Indefinido', valor: '0,00' }]; // Retorno padrão se nenhuma forma for válida
     }
 
-    return formas.length > 0 ? formas : [{ tipo: 'Indefinido', valor: '0,00' }]; // Retorno padrão se nenhuma forma for válida
-}
-
-// Cria o objeto de venda com os dados do carrinho e cliente
-const venda = {
-    dataVenda: dataVenda.value,
-    carrinho: carrinhoId,
-    cliente: clienteId.value,
-    totalLiquido: inputTotalLiquido.value,
-    numeroPedido: numeroPedido.value,
-    formasDePagamento: getFormasDePagamento(),
-};
+    // Cria o objeto de venda com os dados do carrinho e cliente
+    const venda = {
+        data_venda: dataVenda.value,
+        itens: carrinhoId,
+        cliente: clienteId.value,
+        total_liquido: totalLiquido.toFixed(2),
+        numero_pedido: numeroPedido.value,
+        pagamentos: getFormasDePagamento(),
+    };
 
     let vendaDb = JSON.stringify(venda); // Converte o objeto para JSON
     console.log('Venda enviada: ' + vendaDb);
 
-
     try {
-        // postVendaDb(venda);
-        alertMsg('Venda realizada com sucesso, obrigado!', type = 'success',6000);
+        postVendaDb(venda);
+        alertMsg('Venda realizada com sucesso, obrigado!', 'success', 6000);
     } catch (error) {
         console.error('Erro ao cadastrar a Venda no Db:', error);
-        alertMsg('Erro ao registrar a venda no sistema. Tente novamente.', type = 'error',4000);
-        // return;
+        alertMsg('Erro ao registrar a venda no sistema. Tente novamente.', 'error', 4000);
     }
 
     setTimeout(() => {
         limparCampos();
     }, 3000);
-   
-
 }
 
 // Adiciona o evento de keydown para disparar a função FinalizarVenda quando a tecla 'e' for pressionada
@@ -581,7 +580,7 @@ function limparCampos() {
     inputQtd.value = '';
     selectCliente.value = 'Consumidor Final'; // Define para o valor padrão ou vazio
     ulDescricaoProduto.innerHTML = ''; // Limpa a lista de produtos
-    numeroPedido.value = '1';
+    numeroPedido.value = '';
     inputTotalLiquido.value = 'R$ 0,00'; // Zera o total líquido
     inputTotalPago.value = 'R$ 0,00'; // Zera o total pago
     unidadeEstoqueRender.value = '';

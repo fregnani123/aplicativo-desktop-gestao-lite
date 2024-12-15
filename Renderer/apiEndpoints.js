@@ -16,6 +16,8 @@ const apiEndpoints = {
     postNewGrupoProduto: 'http://localhost:3000/newGrupo',
     postNewSubGrupoProduto: 'http://localhost:3000/newSubGrupo',
     postNewFornecedor: 'http://localhost:3000/newFornecedor',
+    postVenda: 'http://localhost:3000/postVenda',
+    getVenda: 'http://localhost:3000/getVenda',
 };
 
 function inputMaxCaracteres(input, max) {
@@ -32,22 +34,6 @@ function inputMaxCaracteres(input, max) {
     }
     )
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -189,16 +175,6 @@ function getSubGrupo(renderer) {
 
 
 
-
-
-
-
-
-
-
-
-
-
 async function getunidadeEstoqueVendas(id, renderer) {
     const getEstoque = apiEndpoints.getunidadeEstoque;
 
@@ -216,7 +192,7 @@ async function getunidadeEstoqueVendas(id, renderer) {
         });
 }
 
-function getProduto(descricaoElement, codigoDeBarras, precoVendaElement, unidadeEstoqueID, produto_id) {
+function getProduto(descricaoElement, codigoDeBarras, precoVendaElement, unidadeEstoqueID ) {
     const getOneProduct = `${apiEndpoints.findOneProduct}/${codigoDeBarras}`;
     fetch(getOneProduct, {
         method: 'GET',
@@ -240,7 +216,7 @@ function getProduto(descricaoElement, codigoDeBarras, precoVendaElement, unidade
                 precoVendaElement.value = produto.preco_venda;
                 unidadeEstoqueID = produto.unidadeEstoqueID;
                 produtoIdGlobal = produto.produto_id;
-
+                unIDGlobal = produto.unidade_estoque_id;
                 let value = precoVendaElement.value;
                 value = value.replace(/\D/g, '');
                 value = (parseFloat(value) / 100).toFixed(2);
@@ -418,6 +394,66 @@ function getCorProduto(renderer) {
             console.error('Erro ao buscar dados:', error);
         });
 }
+
+
+
+async function postVendaDb(vendaData) {
+    // Defina o endpoint para o qual os dados de venda serão enviados
+    const postVendaDbEndpoint = apiEndpoints.postVenda; // Altere para o endpoint correto de sua API
+
+    try {
+        // Envia os dados da venda para o backend
+        const response = await fetch(postVendaDbEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(vendaData), // Envia os dados de venda no corpo da requisição
+        });
+
+        // Verifica se a resposta foi bem-sucedida
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        // Converte a resposta para JSON
+        const data = await response.json();
+
+        // Exibe o resultado no console
+        console.log('Venda registrada com sucesso:', data);
+    } catch (error) {
+        // Trata qualquer erro que ocorrer durante o processo
+        console.error('Erro ao registrar a venda:', error);
+    }
+}
+
+async function getVenda(inputElement) {
+    const getVendaEndpoint = apiEndpoints.getVenda; // Substitua pelo endpoint correto
+
+    try {
+        const response = await fetch(getVendaEndpoint);
+        const data = await response.json();
+
+        // Se houver vendas
+        if (data && data.length > 0) {
+            const ultimoPedido = data[data.length - 1]; // Pega o último pedido
+            const numeroPedido = ultimoPedido.numero_pedido; // Obtém o número do último pedido
+
+            // Incrementa o número do pedido (supondo que seja uma string numérica)
+            const proximoNumeroPedido = (parseInt(numeroPedido, 10) + 1).toString();
+
+            inputElement.value = proximoNumeroPedido; // Define o próximo número do pedido no input
+        } else {
+            console.warn('Nenhuma venda encontrada. Definindo número do pedido como 1.');
+            inputElement.value = '1'; // Define como 1 caso não haja vendas
+        }
+    } catch (error) {
+        console.error('Erro ao buscar vendas:', error);
+    }
+}
+
+
+
 
 
 

@@ -104,6 +104,35 @@ async function initializeDB() {
                 PRIMARY KEY(cor_produto_id)
             ) ENGINE = InnoDB;`,
 
+
+            `CREATE TABLE IF NOT EXISTS venda (
+                venda_id INT NOT NULL AUTO_INCREMENT,
+                data_venda VARCHAR(10) NOT NULL,
+                cliente_id INT NULL,
+                total_liquido DECIMAL(10,2) NOT NULL,
+                numero_pedido VARCHAR(50) NOT NULL,
+                PRIMARY KEY (venda_id)
+            ) ENGINE = InnoDB;`,
+    
+            `CREATE TABLE IF NOT EXISTS forma_pagamento (
+                pagamento_id INT NOT NULL AUTO_INCREMENT,
+                venda_id INT NOT NULL,
+                tipo_pagamento VARCHAR(50) NOT NULL,
+                valor DECIMAL(10,2) NOT NULL,
+                PRIMARY KEY (pagamento_id),
+                FOREIGN KEY (venda_id) REFERENCES venda(venda_id)
+            ) ENGINE = InnoDB;`,
+    
+            `CREATE TABLE IF NOT EXISTS item_venda (
+                item_venda_id INT NOT NULL AUTO_INCREMENT,
+                venda_id INT NOT NULL,
+                produto_id INT NOT NULL,
+                preco DECIMAL(10,2) NOT NULL,
+                quantidade INT NOT NULL,
+                unidade_estoque_id INT NOT NULL,
+                PRIMARY KEY (item_venda_id)
+            ) ENGINE = InnoDB;`,
+
             // Criar Tabela produto
             `CREATE TABLE IF NOT EXISTS produto (
                 produto_id INT NOT NULL AUTO_INCREMENT,
