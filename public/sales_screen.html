@@ -68,7 +68,7 @@
                     <p class="titulo-delete-item">Digite o número do item que deseja remover do carrinho.</p>
                     <p><input id="numero-Item" type="number"></p>
                     <p id="mensagem"></p>
-                    <br>Tecla C / Confirmar</br>Tecla V / Voltar</p>
+                    <br>Tecla C / Confirmar</br>Tecla Enter / Voltar</p>
 
                     <!-- <p><span>S / Sim</span><span>N / Não</span></p> -->
                 </div>
@@ -87,8 +87,8 @@
                                 <p class="titulo-cartao-d">F9: Cartão Débito</p>
                             </div>
                             <div>
-                                <p class="titulo-pix">Tecla Enter = Voltar</p>
-
+                                <p class="titulo-pix">Enter = Voltar</p>
+                                <p class="titulo-pix">F4 = Confirmar Venda</p>
                             </div>
                         </div>
                     </div>
@@ -155,16 +155,18 @@
                                 <div class="atalhos-1">
                                     <p class="p-atalhos" style="color:rgb(255, 255, 255)">Enter = retornar EAN</p>
                                     <p class="p-atalhos" style="color:rgb(255, 255, 255)">F1= Alterar Qtd</p>
-                                    <p class="p-atalhos" style="color:rgb(255, 255, 255)">F2= Alterar Cliente</p>
+                                    <p class="p-atalhos" style="color:rgb(255, 242, 0)">F2= Alterar Cliente</p>
                                 </div>
                                 <div class="atalhos-2">
-                                    <p class="p-atalhos" style="color:rgba(255, 255, 255, 0.877)">F3= Nova Venda</p>
-                                    <p class="p-atalhos" style="color:rgba(255, 255, 255, 0.877)">F4= finalizar venda
+                                    <p class="p-atalhos" style="color:rgba(255, 255, 255, 0.877)">F3= Selecionar
+                                        Pagamento
+                                    </p>
+                                    <p class="p-atalhos" style="color:rgba(255, 255, 255, 0.877)">F4= Confirmar Venda 
                                     </p>
                                     <p class="p-atalhos" style="color:rgba(255, 255, 255, 0.877)">F5= Cancelar Item</p>
                                 </div>
                                 <div class="atalhos-3">
-
+                                    <p class="p-atalhos" style="color:rgba(255, 255, 255, 0.877)">F12= Nova Venda</p>
                                     <p class="p-atalhos" style="color:rgba(255, 255, 255, 0.993)">ESC= Sair (Menu)</p>
                                 </div>
                             </div>
@@ -190,9 +192,9 @@
                         </div>
                         <div class="pag-troco">
                             <div class="total-pago"><label for="" class="total">Valores Pagos</label><input
-                                    id="total-pago" value="R$ 0,00" type="text"></div>
+                                    id="total-pago" value="0,00" type="text"></div>
                             <div class="pag-troco-1"><label for="" class="total">Troco</label><input id="troco"
-                                    value="R$ 0,00" type="text" readonly></div>
+                                    value="0,00" type="text" readonly></div>
                         </div>
                     </div>
                 </div>
@@ -208,6 +210,9 @@
 <script src="../Renderer/apiEndpoints.js"></script>
 <script src="../Renderer/renderer_relogio.js"></script>
 <script src="../Renderer/alertMsg.js"></script>
+<script src="../Renderer/carrinho.js"></script>
+<script src="../Renderer/pagamento.js"></script>
+<script src="../Renderer/finalizarVenda.js"></script>
 
 
 

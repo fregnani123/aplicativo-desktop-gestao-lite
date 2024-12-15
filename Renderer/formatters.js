@@ -1,5 +1,5 @@
 
-// Método para formatar preço de venda
+// Método para formatar preço de venda - cadastro de produtos
 function formatarPrecoVenda(inputElement) {
     let value = inputElement.value;
     // Remove qualquer caractere que não seja número

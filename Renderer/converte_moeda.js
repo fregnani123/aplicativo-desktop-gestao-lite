@@ -12,3 +12,17 @@ function converteMoeda(value) {
 }
 
 
+// Formata valor em moeda brasileira
+function converteMoeda(valor) {
+    return valor
+        .toFixed(2)
+        .replace('.', ',')
+        .replace(/\d(?=(\d{3})+,)/g, '$&.');
+}
+
+// Formata valor com separador de milhar
+function formatCurrency(value) {
+    return value
+        .replace('.', ',')
+        .replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}

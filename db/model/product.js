@@ -534,7 +534,7 @@ async function fetchVenda() {
     try {
         connection = await pool.getConnection(); // Obtém conexão com o banco de dados
         const [rows, fields] = await connection.query(
-            'SELECT * FROM venda ORDER BY venda_id DESC'
+            'SELECT * FROM venda'
         ); // Executa a consulta SQL
         return rows; // Retorna os resultados da consulta
     } catch (error) {
@@ -544,8 +544,6 @@ async function fetchVenda() {
         if (connection) connection.release(); // Libera a conexão com o banco
     }
 }
-
-
 
 
 module.exports = {

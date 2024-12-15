@@ -35,8 +35,6 @@ function inputMaxCaracteres(input, max) {
     )
 }
 
-
-
 async function postNewProdutoWithImage(produtoData, selectedFile) {
     const apiEndpoint = apiEndpoints.postNewProduto;
 
@@ -68,25 +66,6 @@ async function postNewProdutoWithImage(produtoData, selectedFile) {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 async function postNewFornecedor(fornecedorData) {
     const postNewFornecedorData = apiEndpoints.postNewFornecedor;
     if (!fornecedorData.cnpj || !fornecedorData.nome_fantasia) {
@@ -115,22 +94,6 @@ async function postNewFornecedor(fornecedorData) {
             console.error('Error adding fornecedor:', error);
         });
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 function getGrupo(renderer) {
     const getGrupo = apiEndpoints.getGrupo;
@@ -171,8 +134,6 @@ function getSubGrupo(renderer) {
             console.error('Erro ao buscar dados:', error);
         });
 }
-
-
 
 
 async function getunidadeEstoqueVendas(id, renderer) {
@@ -237,9 +198,6 @@ function getProduto(descricaoElement, codigoDeBarras, precoVendaElement, unidade
             console.error('Erro ao buscar dados:', error);
         });
 }
-
-
-
 
 
 function getFornecedor(renderer) {
@@ -394,7 +352,6 @@ function getCorProduto(renderer) {
             console.error('Erro ao buscar dados:', error);
         });
 }
-
 
 
 async function postVendaDb(vendaData) {
