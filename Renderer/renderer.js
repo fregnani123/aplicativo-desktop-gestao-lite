@@ -157,7 +157,7 @@ inputPathImg.onchange = function (event) {
 
 //função que envia os dados do produto e img para cadastro das informações no db e inserção da img na pasta (caso o usuário envie a img)
 
-document.querySelector('#btn-cadastrar').addEventListener('click', async function (e) {
+document.querySelector('#btn-cadastrar-produto').addEventListener('click', async function (e) {
     e.preventDefault();
     const file = document.querySelector('input[type="file"]').files[0];
     let relativePath = null;
@@ -191,16 +191,17 @@ document.querySelector('#btn-cadastrar').addEventListener('click', async functio
     console.log('Dados do Produto Enviados:', produtoData);
 
     if (!produtoData.codigo_ean || !produtoData.nome_produto || !produtoData.categoria_id || !produtoData.grupo_produto_id) {
-        alert('Erro: Todos os campos obrigatórios devem ser preenchidos.');
-        return;
+            alertMsg("Todos os campos obrigatórios devem ser preenchidos.",'warning', 4000);
+            return;
     }
 
     try {
         await postNewProdutoWithImage(produtoData, file);
-        alert('Produto cadastrado com sucesso!');
+        alertMsg('Produto cadastrado com sucesso!','success', 4000);
     } catch (error) {
         console.error('Erro ao cadastrar o produto:', error);
-        alert('Erro ao cadastrar o produto. Tente novamente.');
+            alertMsg('Erro ao cadastrar o produto. Tente novamente.','warning', 4000);
+            return;
     }
 
     limparCampos();

@@ -767,6 +767,16 @@ input[type="file"]::file-selector-button {
     align-items: center;
 
 }
+.square-inputs-get {
+    display: flex;
+    width: 100%;
+    height: 50px;
+    background-color: #ffffff;
+    text-align: center;
+    align-items: center;
+    display: none;
+
+}
 
 .label-pag {
     color: white;

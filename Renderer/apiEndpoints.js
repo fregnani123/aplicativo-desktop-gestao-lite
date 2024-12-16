@@ -394,8 +394,9 @@ async function getVenda(inputElement) {
         // Se houver vendas
         if (data && data.length > 0) {
             const ultimoPedido = data[data.length - 1]; // Pega o último pedido
-            const numeroPedido = ultimoPedido.numero_pedido; // Obtém o número do último pedido
-
+            const numeroPedido = ultimoPedido.venda_id; // Obtém o número do último pedido
+            
+            console.log(data);
             // Incrementa o número do pedido (supondo que seja uma string numérica)
             const proximoNumeroPedido = (parseInt(numeroPedido, 10) + 1).toString();
 
