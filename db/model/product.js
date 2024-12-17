@@ -303,44 +303,52 @@ async function postNewProduct(produto) {
         connection = await pool.getConnection();
 
         // Verifica se já existe um produto com o mesmo código EAN
-        const checkQuery = 'SELECT produto_id FROM produto WHERE codigo_ean = ?';
-        const [existingProduct] = await connection.query(checkQuery, [produto.codigo_ean]);
+        const checkEANQuery = 'SELECT produto_id FROM produto WHERE codigo_ean = ?';
+        const [existingEAN] = await connection.query(checkEANQuery, [produto.codigo_ean]);
 
-        if (existingProduct.length > 0) {
-            // Se o produto já existir, lance um erro ou retorne uma mensagem
+        if (existingEAN.length > 0) {
             throw new Error('Um produto com o mesmo código EAN já existe.');
         }
 
+        // Verifica se já existe um produto com o mesmo caminho de imagem
+        const checkImageQuery = 'SELECT produto_id FROM produto WHERE caminho_img_produto = ?';
+        const [existingImage] = await connection.query(checkImageQuery, [produto.caminho_img_produto]);
+
+        if (existingImage.length > 0) {
+            throw new Error('Já existe um produto com o mesmo caminho de imagem.');
+        }
+
+        // Insere o novo produto
         const insertQuery = `
-    INSERT INTO produto (
-    codigo_ean, 
-    nome_produto, 
-    grupo_id, 
-    sub_grupo_id, 
-    tamanho_letras_id, 
-    tamanho_num_id, 
-    unidade_massa_qtd, 
-    unidade_massa_id, 
-    medida_volume_qtd, 
-    medida_volume_id, 
-    unidade_comprimento_qtd, 
-    unidade_comprimento_id, 
-    cor_produto_id, 
-    quantidade_estoque, 
-    observacoes, 
-    preco_compra, 
-    markup, 
-    preco_venda, 
-    unidade_estoque_id, 
-    fornecedor_id, 
-    caminho_img_produto
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-`;
+            INSERT INTO produto (
+                codigo_ean, 
+                nome_produto, 
+                grupo_id, 
+                sub_grupo_id, 
+                tamanho_letras_id, 
+                tamanho_num_id, 
+                unidade_massa_qtd, 
+                unidade_massa_id, 
+                medida_volume_qtd, 
+                medida_volume_id, 
+                unidade_comprimento_qtd, 
+                unidade_comprimento_id, 
+                cor_produto_id, 
+                quantidade_estoque, 
+                observacoes, 
+                preco_compra, 
+                markup, 
+                preco_venda, 
+                unidade_estoque_id, 
+                fornecedor_id, 
+                caminho_img_produto
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `;
 
         const values = [
             produto.codigo_ean,
             produto.nome_produto,
-            produto.grupo_id || null, // Use null se o valor for vazio ou indefinido
+            produto.grupo_id || null,
             produto.sub_grupo_id || null,
             produto.tamanho_letras_id || null,
             produto.tamanho_num_id || null,
@@ -363,7 +371,7 @@ async function postNewProduct(produto) {
 
         const [result] = await connection.query(insertQuery, values);
 
-        // Retorne o ID do novo produto inserido ou uma confirmação
+        // Retorne o ID do novo produto inserido
         return result.insertId;
     } catch (error) {
         console.error('Erro ao inserir o produto:', error.message);
@@ -372,6 +380,7 @@ async function postNewProduct(produto) {
         if (connection) connection.release();
     }
 }
+
 
 async function postNewProductGrupo(newGrupo) {
     await ensureDBInitialized();

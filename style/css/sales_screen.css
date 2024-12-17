@@ -701,9 +701,10 @@ input[type="file"]::file-selector-button {
 
 }
 
+/* tamanho barra do titulo e relogio da tela de vendas */
 .square-1 {
     display: flex;
-    width: 1220px;
+    width: 1325px;
     height: 100px;
     margin: auto;
     margin-top: 10px;
@@ -713,7 +714,7 @@ input[type="file"]::file-selector-button {
 }
 
 .square-1-1 {
-    width: 1400px;
+    width: 100%;
     height: 100px;
     border-top-left-radius: 10px;
     background-color: var(--menu-background-color);
@@ -962,7 +963,7 @@ label {
 
 .square-3-1 {
     display: block;
-    width: 600px;
+    width: 650px;
     height: 400px;
     margin-left: 10px;
 
@@ -973,7 +974,7 @@ label {
 }
 
 .square-3-2 {
-    width: 600px;
+    width: 650px;
     height: 400px;
     justify-content: center;
     margin-left: 10px;
@@ -1173,14 +1174,15 @@ label {
 }
 
 .spanDescricao {
-    width: 360px;
+    width: 380px;
     padding: 0 20px;
     box-sizing: border-box;
     text-align: center;
+    padding: 7px;
 }
 
 .spanDescricao-1 {
-    width: 360px;
+    width: 420px;
     border: 1px solid #ccc;
     padding: 0 20px;
     box-sizing: border-box;
@@ -1371,17 +1373,17 @@ label {
 
 .div-pagamento {
     background-color: var(--header-background-color);
-    border-radius: 10px;
-    margin-right: 260px;
+    border-radius: 7px;
+    margin-right: 310px;
     font-size: 1.2rem;
-    width: 602px;
-    height: 478px;
+    width: 655px;
+    height: 485px;
     display: flex;
     align-items: center;
     flex-direction: column;
     box-sizing: border-box;
     color: white;
-
+    margin-top: 30px;
 }
 
 .titulo-choose-item {
@@ -1532,3 +1534,7 @@ input::placeholder {
     margin-bottom: 20px;
 }
 
+.finalizar{
+ color:rgb(0, 220, 0);
+ border-bottom: solid 1px rgb(0, 220, 0);
+}

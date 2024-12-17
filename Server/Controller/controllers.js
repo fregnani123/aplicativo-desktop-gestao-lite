@@ -31,7 +31,7 @@ const storage = multer.diskStorage({
         cb(null, path.join(__dirname, '../../img/produtos')); // Caminho para salvar imagens
     },
     filename: function (req, file, cb) {
-        const uniqueFilename = `${Date.now()}-${file.originalname}`; // Nome único para evitar conflitos
+        const uniqueFilename = file.originalname; // Nome único para evitar conflitos
         cb(null, uniqueFilename);
     }
 });
@@ -171,18 +171,29 @@ const controllers = {
                 console.error('Erro no upload da imagem:', err);
                 return res.status(500).json({ message: 'Erro no upload da imagem.', error: err.message });
             }
-
+    
+            // Extrair o caminho da imagem carregada
             const imagePath = req.file ? req.file.path : null;
-            const produtoData = JSON.parse(req.body.produtoData); // Corrigido para garantir que os dados do produto sejam tratados como um objeto
-
-            // Adiciona o caminho da imagem aos dados do produto
-            if (imagePath) {
-                produtoData.caminho_imagem = imagePath; // Campo correto para salvar no banco
-            }
-
+    
+            // Garantir que os dados do produto sejam um objeto JSON
+            let produtoData;
             try {
-                const newProductId = await postNewProduct(produtoData); // Certifique-se de que a função insere corretamente no banco
-
+                produtoData = JSON.parse(req.body.produtoData); // Garantindo que os dados sejam tratados como um objeto
+            } catch (parseError) {
+                console.error('Erro ao analisar os dados do produto:', parseError);
+                return res.status(400).json({ message: 'Dados do produto inválidos.', error: parseError.message });
+            }
+    
+            // Adiciona o caminho da imagem aos dados do produto, se a imagem foi carregada
+            if (imagePath) {
+                produtoData.caminho_imagem = imagePath; // Usando o campo correto para salvar no banco de dados
+            }
+    
+            try {
+                // Tente inserir o produto no banco de dados
+                const newProductId = await postNewProduct(produtoData); // Certifique-se de que esta função insere corretamente o produto no banco
+    
+                // Se a inserção for bem-sucedida, retorne uma resposta de sucesso
                 res.status(201).json({
                     message: 'Produto e imagem inseridos com sucesso!',
                     produto_id: newProductId,
@@ -194,7 +205,7 @@ const controllers = {
             }
         });
     },
-
+    
     postNewFornecedor: async (req, res) => {
         try {
             const fornecedorData = req.body;

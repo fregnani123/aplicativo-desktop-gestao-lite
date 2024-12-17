@@ -35,14 +35,9 @@ function inputMaxCaracteres(input, max) {
     )
 }
 
+// Função para envio do produto e imagem
 async function postNewProdutoWithImage(produtoData, selectedFile) {
     const apiEndpoint = apiEndpoints.postNewProduto;
-
-    if (!produtoData.codigo_ean || !produtoData.nome_produto) {
-        console.error('Erro: código EAN e nome do produto são obrigatórios.');
-        alert('Erro: código EAN e nome do produto são obrigatórios.');
-        return;
-    }
 
     const formData = new FormData();
     formData.append('image', selectedFile);
@@ -55,16 +50,27 @@ async function postNewProdutoWithImage(produtoData, selectedFile) {
         });
 
         if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+            const errorData = await response.json();
+            throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
         }
+
+        limparCampos();
+        limparImagem(); 
 
         const data = await response.json();
         console.log('Produto e imagem adicionados com sucesso:', data);
+
+        // Exibe a mensagem de sucesso
+        alertMsg('Produto adicionados com sucesso!', 'success', 3000);
     } catch (error) {
-        console.error('Erro ao adicionar produto e imagem:', error);
+        // Exibe o erro no console e alerta o usuário
+        console.error('Erro ao adicionar produto:', error);
+        alertMsg(error.message, 'error', 3000);
+
+        // Retorna imediatamente para evitar limpar os campos e exibir a imagem de sucesso
+        return;
     }
 }
-
 
 async function postNewFornecedor(fornecedorData) {
     const postNewFornecedorData = apiEndpoints.postNewFornecedor;
@@ -396,7 +402,7 @@ async function getVenda(inputElement) {
             const ultimoPedido = data[data.length - 1]; // Pega o último pedido
             const numeroPedido = ultimoPedido.venda_id; // Obtém o número do último pedido
             
-            console.log(data);
+            console.log(`Vendas registradas no Db:`, data);
             // Incrementa o número do pedido (supondo que seja uma string numérica)
             const proximoNumeroPedido = (parseInt(numeroPedido, 10) + 1).toString();
 

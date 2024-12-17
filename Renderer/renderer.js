@@ -18,26 +18,20 @@ const inputMassa = document.querySelector('#massaNumero');
 const inputVolume = document.querySelector('#volumeNumero');
 const inputComprimento = document.querySelector('#comprimento');
 const inputQuantidadeEstoque = document.querySelector('#estoqueQtd');
-const inputPrecoCompra = document.querySelector('#precoCusto');
-const inputMarkup = document.querySelector('#inputMarkup');
-const outputLucro = document.querySelector('#lucro');
-const inputPrecoVenda = document.querySelector('#precoVenda');
-
 const inputPathImg = document.querySelector('#produto-imagem');
 const divImgProduct = document.querySelector('.quadro-img');
 const btnExit = document.querySelector('#botaoSair');
-
 const containerRegisterForm = document.querySelector('.container-register-form'); //Renderizar Div Fornecedor
 const btnFornecedorMenu = document.querySelector('.li-fornecedor');
-
 const containerRegister = document.querySelector('.container-register');
 const btnCadGrupo = document.querySelector('#add-grupo');
 const btnCadSubGrupo = document.querySelector('#add-subGrupo');
 
-// Adiciona ouvintes de eventos para os campos de entrada
-inputPrecoCompra.addEventListener('input', calcularMarkup);
-inputMarkup.addEventListener('input', calcularMarkup);
-
+// Seleciona os campos de input
+const inputMarkup = document.querySelector('#inputMarkup');
+const inputPrecoCompra = document.querySelector('#precoCusto');
+const inputPrecoVenda = document.querySelector('#precoVenda');
+const outputLucro = document.querySelector('#lucro');
 
 //Metodos criado por mim que renderizam os values iniciais padrões ou cadastrados no DB.
 getGrupo(selectGrupo);
@@ -54,21 +48,74 @@ getunidadeDeMassa(selectUnidadeMassa);
 inputMaxCaracteres(inputNomeProduto, 150); //max caracteres input
 inputMaxCaracteres(inputObservacoes, 150);
 
+inputCodigoEAN.addEventListener('input', (e) => {
+    inputCodigoEAN.value = e.target.value;
+    e.preventDefault();
+    formatarCodigoEAN(inputCodigoEAN);
+});
+
+
+// Função para formatar valores como moeda brasileira (R$)
+function formatarMoeda(valor) {
+    return `${valor.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`;
+}
+
+// Função para calcular o preço de venda e o lucro
+function calcularPrecoVendaELucro(inputMarkup, inputPrecoCompra, inputPrecoVenda, outputLucro) {
+    const precoCompra = parseFloat(inputPrecoCompra.value.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
+    const markup = parseFloat(inputMarkup.value.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
+
+    if (markup === 0 || precoCompra === 0) {
+        inputPrecoVenda.value = formatarMoeda(0);
+        outputLucro.value = formatarMoeda(0);
+        return;
+    }
+
+    // Calcula o preço de venda e o lucro
+    const precoVenda = precoCompra * (1 + markup / 100);
+    const lucro = precoVenda - precoCompra;
+
+    // Atualiza os campos com valores formatados
+    inputPrecoVenda.value = formatarMoeda(precoVenda);
+    outputLucro.value = formatarMoeda(lucro);
+}
+
+// Função para formatar o valor de um campo como moeda brasileira
+function handleMoedaInput(event) {
+    const input = event.target;
+    let valor = input.value.replace(/\D/g, ''); // Remove tudo que não é número
+    if (valor) {
+        valor = (parseFloat(valor) / 100).toFixed(2); // Converte para decimal e formata
+        input.value = formatarMoeda(parseFloat(valor));
+    }
+}
 
 // Configuração de eventos
-inputPrecoVenda.addEventListener('input', (e) => {
-    formatarPrecoVenda(e.target);
-    calcularLucroPorVenda();
-    calcularLucro();
+document.addEventListener('DOMContentLoaded', () => {
+    // Seleciona os campos de input
+    const inputMarkup = document.querySelector('#inputMarkup');
+    const inputPrecoCompra = document.querySelector('#precoCusto');
+    const inputPrecoVenda = document.querySelector('#precoVenda');
+    const outputLucro = document.querySelector('#lucro');
+
+    // Evento para Preço de Custo
+    inputPrecoCompra.addEventListener('input', (event) => {
+        handleMoedaInput(event);
+        calcularPrecoVendaELucro(inputMarkup, inputPrecoCompra, inputPrecoVenda, outputLucro);
+    });
+    // Evento para Preço de Custo
+    inputPrecoVenda.addEventListener('input', (event) => {
+        handleMoedaInput(event);
+       
+    });
+
+    // Evento para Markup (sem formatação automática durante digitação)
+    inputMarkup.addEventListener('input', () => {
+        calcularPrecoVendaELucro(inputMarkup, inputPrecoCompra, inputPrecoVenda, outputLucro);
+    });
 });
 
-inputCodigoEAN.addEventListener('input', (e) => {
-    formatarCodigoEAN(e.target);
-});
 
-inputMarkup.addEventListener('input', (e) => {
-    formatarMarkup(e.target, inputPrecoVenda, outputLucro);
-});
 btnCadGrupo.addEventListener('click', (e) => {
     e.preventDefault();
     containerRegister.style.display = 'flex';
@@ -83,6 +130,7 @@ btnCadSubGrupo.addEventListener('click', (e) => {
 
 
 btnExit.addEventListener('click', (e) => {
+    e.preventDefault();
     containerRegisterForm.style.display = 'none';
     btnFornecedorMenu.classList.remove('li-fornecedor-active');
 })
@@ -94,14 +142,14 @@ btnFornecedorMenu.addEventListener('click', (e) => {
     btnFornecedorMenu.classList.add('li-fornecedor-active');
 });
 
+// Função para tratar campos de valores monetários
+function tratarCampoMonetario(valor) {
+    if (!valor) return 0; // Retorna 0 se o valor for vazio ou nulo
+    return parseFloat(valor.replace(/[^\d.-]/g, '').replace(',', '.')) || 0;
+}
 
-// Evento associado ao input do campo de preço de compra
-inputPrecoCompra.addEventListener('input', (e) => {
-    formatarPrecoCompra(e.target, calcularMarkup);
-});
 
 
-// Espera o DOM carregar completamente - função que renderiza a img durante o cadastro feito pelo usuário.
 document.addEventListener('DOMContentLoaded', (event) => {
     const inputPathImg = document.querySelector('#produto-imagem');
     const divImgProduct = document.querySelector('.quadro-img');
@@ -155,7 +203,6 @@ inputPathImg.onchange = function (event) {
 };
 
 
-//função que envia os dados do produto e img para cadastro das informações no db e inserção da img na pasta (caso o usuário envie a img)
 
 document.querySelector('#btn-cadastrar-produto').addEventListener('click', async function (e) {
     e.preventDefault();
@@ -164,7 +211,7 @@ document.querySelector('#btn-cadastrar-produto').addEventListener('click', async
 
     if (file) {
         const extension = file.name.split('.').pop();
-        relativePath = `${inputPathImg.getAttribute('data-relative-path')}-${inputCodigoEAN.value}.${extension}`;
+        relativePath = `${inputPathImg.getAttribute('data-relative-path')}.${extension}`;
     }
 
     const produtoData = {
@@ -180,9 +227,9 @@ document.querySelector('#btn-cadastrar-produto').addEventListener('click', async
         unidade_comprimento_id: selectUnidadeComprimento.value,
         medida_volume_id: selectMedidaVolume.value,
         quantidade_estoque: inputQuantidadeEstoque.value,
-        preco_compra: inputPrecoCompra.value.replace(",", "."),
-        markup: inputMarkup.value,
-        preco_venda: inputPrecoVenda.value.replace(",", "."),
+        preco_compra: tratarCampoMonetario(inputPrecoCompra.value),
+        markup: tratarCampoMonetario(inputMarkup.value),
+        preco_venda: tratarCampoMonetario(inputPrecoVenda.value),
         unidade_estoque_id: selectUnidadeEstoque.value,
         cor_produto: selectCorProduto.value,
         caminho_img_produto: relativePath,
@@ -191,25 +238,16 @@ document.querySelector('#btn-cadastrar-produto').addEventListener('click', async
     console.log('Dados do Produto Enviados:', produtoData);
 
     if (!produtoData.codigo_ean || !produtoData.nome_produto || !produtoData.categoria_id || !produtoData.grupo_produto_id) {
-            alertMsg("Todos os campos obrigatórios devem ser preenchidos.",'warning', 4000);
-            return;
+        alertMsg("Todos os campos obrigatórios devem ser preenchidos.", 'warning', 4000);
+        return;
     }
 
-    try {
         await postNewProdutoWithImage(produtoData, file);
-        alertMsg('Produto cadastrado com sucesso!','success', 4000);
-    } catch (error) {
-        console.error('Erro ao cadastrar o produto:', error);
-            alertMsg('Erro ao cadastrar o produto. Tente novamente.','warning', 4000);
-            return;
-    }
-
-    limparCampos();
-    limparImagem();
+        
+  
 });
 
-
-// Função para limpar campos
+// Função para limpar os campos
 function limparCampos() {
     inputCodigoEAN.value = '';
     inputNomeProduto.value = '';
@@ -236,6 +274,3 @@ function limparImagem() {
     divImgProduct.innerHTML = `<img class="img-produto" src="../style/img/produto.png" alt="imagem produto">`;
     inputPathImg.value = '';
 }
-
-
-

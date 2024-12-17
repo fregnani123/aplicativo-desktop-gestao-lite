@@ -1,3 +1,5 @@
+
+
 function FinalizarVenda() {
     if (carrinho.length === 0) {
         alertMsg("Seu carrinho está vazio. Adicione itens antes de concluir a venda.",'warning', 4000);
@@ -22,7 +24,7 @@ function FinalizarVenda() {
     const venda = {
         data_venda: dataVenda.value,
         itens: carrinhoId,
-        cliente: clienteId.value,
+        cliente_id: clienteId.value,
         total_liquido: totalLiquido.toFixed(2),
         numero_pedido: numeroPedido.value,
         pagamentos: getFormasDePagamento(),

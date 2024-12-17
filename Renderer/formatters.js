@@ -1,23 +1,4 @@
 
-// Método para formatar preço de venda - cadastro de produtos
-function formatarPrecoVenda(inputElement) {
-    let value = inputElement.value;
-    // Remove qualquer caractere que não seja número
-    value = value.replace(/\D/g, '');
-
-    // Converte para um número com duas casas decimais
-    value = (parseFloat(value) / 100).toFixed(2);
-
-    // Substitui o ponto por vírgula
-    value = value.replace('.', ',');
-
-    // Adiciona ponto como separador de milhar
-    value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
-
-    // Define o valor formatado no campo
-    inputElement.value = value;
-}
-
 
 // Método para formatar código EAN
 function formatarCodigoEAN(inputElement) {
@@ -34,24 +15,7 @@ function formatarCodigoEAN(inputElement) {
     inputElement.value = value;
 }
 
-// Método para formatar campo de markup
-function formatarMarkup(inputElement, outputPrecoVenda, outputLucro) {
-    // Se o input estiver vazio, redefine os valores e retorna
-    if (inputElement.value === '') {
-        outputPrecoVenda.value = '0,00';
-        outputLucro.value = '0,00';
-        return;
-    }
-
-    // Substitui caracteres não numéricos e garante que apenas um ponto decimal é permitido
-    inputElement.value = inputElement.value
-        .replace(/[^0-9,.]/g, '') // Permitir dígitos, vírgulas e pontos
-        .replace(/(\..*)\./g, '$1') // Garantir que apenas um ponto decimal é permitido
-        .replace(/,/g, '.'); // Converter vírgula em ponto para a conversão correta para float
-}
-
-
-//formatar Telefone
+// Função para formatar o campo de telefone
 function formatarTelefone(input) {
     input.addEventListener('input', (e) => {
         let telefone = e.target.value;
@@ -61,7 +25,7 @@ function formatarTelefone(input) {
 
         e.target.value = telefone;
     });
-};
+}
 
 function verificarEmail(input) {
     input.addEventListener('blur', (e) => { // Trigger the validation when the input loses focus
@@ -132,49 +96,7 @@ function formatarCEP(input) {
     });
 };
 
-//************ Código formata e calcula o markup do produto ************
 
-// Método para formatar preço de compra
-function formatarPrecoCompra(inputElement, callback) {
-    let value = inputElement.value;
-    // Remove qualquer caractere que não seja número
-    value = value.replace(/\D/g, '');
-
-    // Converte para um número com duas casas decimais
-    value = (parseFloat(value) / 100).toFixed(2);
-
-    // Substitui o ponto por vírgula
-    value = value.replace('.', ',');
-
-    // Adiciona ponto como separador de milhar
-    value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
-
-    // Define o valor formatado no campo
-    inputElement.value = value;
-
-    // Executa a função de callback, se fornecida
-    if (typeof callback === 'function') {
-        callback();
-    }
-};
-
-// Função para calcular o markup
-function calcularMarkup() {
-    // Obtém o preço de compra e a margem de markup
-    const precoCompra = parseFloat(inputPrecoCompra.value.replace(',', '.')); // Troca vírgula por ponto
-    const margemMarkup = parseFloat(inputMarkup.value.replace(',', '.')); // Troca vírgula por ponto
-
-    // Verifica se os valores são válidos
-    if (!isNaN(precoCompra) && !isNaN(margemMarkup)) {
-        // Calcula o valor do markup
-        const calc = precoCompra * (margemMarkup / 100);
-        outputLucro.value = calc.toFixed(2).replace('.', ',');
-        precoVenda.value = (calc + precoCompra).toFixed(2).replace('.', ',');
-        console.log('Markup: R$ ' + calc.toFixed(2).replace('.', ','));
-    } else {
-        console.log('Valores inválidos');
-    }
-};
 
 
 //**********************************************************************************************************/
