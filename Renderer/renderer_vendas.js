@@ -25,13 +25,15 @@ const valorDinheiro = document.getElementById('valorDinheiro');
 const PIX = document.getElementById('PIX');
 const CartaoDebito = document.getElementById('Cartao-Debito');
 const CartaoCredito = document.getElementById('Cartao-Credito');
-const squareInputs = document.querySelector('.square-inputs-get')
+const squareInputs = document.querySelector('.square-inputs-get');
+const imgProduto = document.querySelector('.img-produto');
 
 // Estado do carrinho
 let carrinho = [];
 
 // Define foco inicial
 codigoEan.focus();
+
 
 // Gerencia eventos de teclado
 document.addEventListener('keydown', function (event) {
@@ -185,12 +187,14 @@ document.addEventListener('keydown', function (event) {
     }
 });
 
+
 // Valida entrada do código EAN
 codigoEan.addEventListener('input', (e) => {
     e.target.value = e.target.value.replace(/\D/g, '').slice(0, 13);
     if (e.target.value.length === 13) {
         if (!descricao.value && !inputQtd.value) inputQtd.value = '1';
         getProduto( descricao, e.target.value, precoVenda, unidadeEstoqueRender);
+       
         setTimeout(() => {
             pushProdutoCarrinho({
                 carrinho,produtoIdGlobal,codigoEan,descricao,precoVenda,inputQtd,unidadeEstoqueRender,rendererCarrinho,ulDescricaoProduto,createSpan,resetInputs,calCarrinho,converteMoeda,inputTotalLiquido,textSelecionarQtd,getVenda,numeroPedido,alertLimparVenda

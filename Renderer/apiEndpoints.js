@@ -61,11 +61,12 @@ async function postNewProdutoWithImage(produtoData, selectedFile) {
         console.log('Produto e imagem adicionados com sucesso:', data);
 
         // Exibe a mensagem de sucesso
-        alertMsg('Produto adicionados com sucesso!', 'success', 3000);
+        alertMsg('Produto adicionados com sucesso!', 'success', 4000);
+
     } catch (error) {
-        // Exibe o erro no console e alerta o usuário
+        
         console.error('Erro ao adicionar produto:', error);
-        alertMsg(error.message, 'error', 3000);
+        alertMsg(`${error}` , 'error', 4000);
 
         // Retorna imediatamente para evitar limpar os campos e exibir a imagem de sucesso
         return;
@@ -159,7 +160,7 @@ async function getunidadeEstoqueVendas(id, renderer) {
         });
 }
 
-function getProduto(descricaoElement, codigoDeBarras, precoVendaElement, unidadeEstoqueID ) {
+function getProduto(descricaoElement, codigoDeBarras, precoVendaElement, unidadeEstoqueID) {
     const getOneProduct = `${apiEndpoints.findOneProduct}/${codigoDeBarras}`;
     fetch(getOneProduct, {
         method: 'GET',
@@ -184,12 +185,17 @@ function getProduto(descricaoElement, codigoDeBarras, precoVendaElement, unidade
                 unidadeEstoqueID = produto.unidadeEstoqueID;
                 produtoIdGlobal = produto.produto_id;
                 unIDGlobal = produto.unidade_estoque_id;
+                pathIgmGlobal = produto.caminho_img_produto;
                 let value = precoVendaElement.value;
                 value = value.replace(/\D/g, '');
                 value = (parseFloat(value) / 100).toFixed(2);
                 value = value.replace('.', ',');
                 value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
                 precoVendaElement.value = value;
+
+                imgProduto.src = !pathIgmGlobal ? '../style/img/produto.png' :
+                `../img/produtos/${pathIgmGlobal}`;
+
 
                 // Chama a função `getunidadeEstoqueVendas` aqui, garantindo que unidadeEstoqueID já foi atualizado
                 getunidadeEstoqueVendas(Number(produto.unidade_estoque_id), unidadeEstoqueRender);

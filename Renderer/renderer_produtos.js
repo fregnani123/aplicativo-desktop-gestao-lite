@@ -54,6 +54,7 @@ inputCodigoEAN.addEventListener('input', (e) => {
     formatarCodigoEAN(inputCodigoEAN);
 });
 
+inputCodigoEAN.focus();
 
 // Função para formatar valores como moeda brasileira (R$)
 function formatarMoeda(valor) {
@@ -106,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Evento para Preço de Custo
     inputPrecoVenda.addEventListener('input', (event) => {
         handleMoedaInput(event);
-       
+
     });
 
     // Evento para Markup (sem formatação automática durante digitação)
@@ -144,10 +145,10 @@ btnFornecedorMenu.addEventListener('click', (e) => {
 
 // Função para tratar campos de valores monetários
 function tratarCampoMonetario(valor) {
-    if (!valor) return 0; // Retorna 0 se o valor for vazio ou nulo
-    return parseFloat(valor.replace(/[^\d.-]/g, '').replace(',', '.')) || 0;
+    if (!valor) return 0; // Retorna 0 se o valor estiver vazio ou for inválido
+    // Remove separadores de milhar e troca a vírgula por ponto
+    return parseFloat(valor.replace(/\./g, '').replace(',', '.'));
 }
-
 
 
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -204,8 +205,15 @@ inputPathImg.onchange = function (event) {
 
 
 
+
+
 document.querySelector('#btn-cadastrar-produto').addEventListener('click', async function (e) {
     e.preventDefault();
+
+    const PrecoCompraTratado = tratarCampoMonetario(inputPrecoCompra.value);
+    const PrecoVendaTratado = tratarCampoMonetario(inputPrecoVenda.value);
+    const markupTratado = tratarCampoMonetario(inputMarkup.value);
+
     const file = document.querySelector('input[type="file"]').files[0];
     let relativePath = null;
 
@@ -227,49 +235,53 @@ document.querySelector('#btn-cadastrar-produto').addEventListener('click', async
         unidade_comprimento_id: selectUnidadeComprimento.value,
         medida_volume_id: selectMedidaVolume.value,
         quantidade_estoque: inputQuantidadeEstoque.value,
-        preco_compra: tratarCampoMonetario(inputPrecoCompra.value),
-        markup: tratarCampoMonetario(inputMarkup.value),
-        preco_venda: tratarCampoMonetario(inputPrecoVenda.value),
+        preco_compra: PrecoCompraTratado,
+        markup: markupTratado,
+        preco_venda: PrecoVendaTratado,
         unidade_estoque_id: selectUnidadeEstoque.value,
         cor_produto: selectCorProduto.value,
         caminho_img_produto: relativePath,
     };
-
-    console.log('Dados do Produto Enviados:', produtoData);
 
     if (!produtoData.codigo_ean || !produtoData.nome_produto || !produtoData.categoria_id || !produtoData.grupo_produto_id) {
         alertMsg("Todos os campos obrigatórios devem ser preenchidos.", 'warning', 4000);
         return;
     }
 
-        await postNewProdutoWithImage(produtoData, file);
-        
-  
+
+    await postNewProdutoWithImage(produtoData, file);
+
+    console.log('Dados do Produto Enviados:', produtoData);
+
+
 });
 
-// Função para limpar os campos
-function limparCampos() {
-    inputCodigoEAN.value = '';
-    inputNomeProduto.value = '';
-    inputObservacoes.value = '';
-    inputQuantidadeEstoque.value = '';
-    inputPrecoCompra.value = '';
-    inputMarkup.value = '';
-    inputPrecoVenda.value = '';
 
-    selectGrupo.selectedIndex = 0;
-    selectSubGrupo.selectedIndex = 0;
-    selectFornecedor.selectedIndex = 0;
-    selectTamanhoLetras.selectedIndex = 0;
-    selectTamanhoNumeros.selectedIndex = 0;
-    selectUnidadeMassa.selectedIndex = 0;
-    selectMedidaVolume.selectedIndex = 0;
-    selectUnidadeComprimento.selectedIndex = 0;
-    selectUnidadeEstoque.selectedIndex = 0;
-    selectCorProduto.selectedIndex = 0;
+function limparCampos() {
+
+    setTimeout(() => {
+        inputCodigoEAN.value = '';
+        inputNomeProduto.value = '';
+        inputObservacoes.value = '';
+        inputQuantidadeEstoque.value = '';
+        inputPrecoCompra.value = '';
+        inputMarkup.value = '';
+        inputPrecoVenda.value = '';
+
+        selectGrupo.selectedIndex = 0;
+        selectSubGrupo.selectedIndex = 0;
+        selectFornecedor.selectedIndex = 0;
+        selectTamanhoLetras.selectedIndex = 0;
+        selectTamanhoNumeros.selectedIndex = 0;
+        selectUnidadeMassa.selectedIndex = 0;
+        selectMedidaVolume.selectedIndex = 0;
+        selectUnidadeComprimento.selectedIndex = 0;
+        selectUnidadeEstoque.selectedIndex = 0;
+        selectCorProduto.selectedIndex = 0;
+    }, 3000)
 }
 
-// Função para limpar a pré-visualização da imagem
+
 function limparImagem() {
     divImgProduct.innerHTML = `<img class="img-produto" src="../style/img/produto.png" alt="imagem produto">`;
     inputPathImg.value = '';

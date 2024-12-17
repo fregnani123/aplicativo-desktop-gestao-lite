@@ -48,7 +48,7 @@ li,
 a,
 input,
 select,
-form,
+.form,
 label {
     margin: 0;
     padding: 0;
@@ -258,12 +258,12 @@ a {
 }
 
 /* Estilo do formulário */
-form {
+.form {
     gap: 8px;
     padding: 5px;
     box-sizing: border-box;
     overflow: hidden;
-    max-width: 1000px;
+    max-width: 1100px;
     position: relative;
 }
 

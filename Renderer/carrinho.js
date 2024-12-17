@@ -94,6 +94,7 @@ function pushProdutoCarrinho({
     // Obtém os dados da venda
     getVenda(numeroPedido);
 
+
     // Oculta o alerta de limpar venda
     alertLimparVenda.style.display = 'none';
 }
