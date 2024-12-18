@@ -54,6 +54,8 @@ async function postNewProdutoWithImage(produtoData, selectedFile) {
             throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
         }
 
+        
+             
         limparCampos();
         limparImagem(); 
 
@@ -180,6 +182,7 @@ function getProduto(descricaoElement, codigoDeBarras, precoVendaElement, unidade
             if (Array.isArray(data) && data.length > 0 && data[0].nome_produto) {
                 const produto = data[0];
 
+
                 descricaoElement.value = produto.nome_produto;
                 precoVendaElement.value = produto.preco_venda;
                 unidadeEstoqueID = produto.unidadeEstoqueID;
@@ -192,10 +195,8 @@ function getProduto(descricaoElement, codigoDeBarras, precoVendaElement, unidade
                 value = value.replace('.', ',');
                 value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
                 precoVendaElement.value = value;
-
                 imgProduto.src = !pathIgmGlobal ? '../style/img/produto.png' :
                 `../img/produtos/${pathIgmGlobal}`;
-
 
                 // Chama a função `getunidadeEstoqueVendas` aqui, garantindo que unidadeEstoqueID já foi atualizado
                 getunidadeEstoqueVendas(Number(produto.unidade_estoque_id), unidadeEstoqueRender);

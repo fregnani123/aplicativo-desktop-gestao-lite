@@ -71,6 +71,7 @@ function limparCampos() {
         inputExcluiItem.value = '';
         mensagemDiv.textContent = ''; // Remove mensagens adicionais
         inputTroco.value = '0,00'; // Zera o troco
+        imgProduto.src = '../style/img/produto.png';
         // Limpa o estado do carrinho
         carrinho = [];
         getVenda(numeroPedido.value);

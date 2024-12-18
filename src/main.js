@@ -1,6 +1,6 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, Menu } = require('electron');
 const path = require('path');
-const startServer = require(path.join(__dirname,'../Server/server'));
+const startServer = require(path.join(__dirname, '../Server/server'));
 
 
 let mainWindow;
@@ -18,13 +18,16 @@ function createWindow() {
     });
 
     // Carregar o arquivo HTML
-    mainWindow.loadFile(path.join(__dirname,'../public/index.html'));
+    mainWindow.loadFile(path.join(__dirname, '../public/index.html'));
     mainWindow.maximize();
 }
 
 app.whenReady().then(() => {
+     // Remove o menu globalmente
+     Menu.setApplicationMenu(null);
     startServer();
     createWindow();
+   
 });
 
 app.on('window-all-closed', () => {

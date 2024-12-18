@@ -68,7 +68,8 @@ document.addEventListener('keydown', function (event) {
             // Remove o item usando splice
             const itemRemovido = carrinho.splice(index, 1);
             mensagemDiv.innerHTML = `Item removido: ${index + 1}`
-            mensagemDiv.style.color = 'green'
+            mensagemDiv.style.color = 'green';
+            imgProduto.src = '../style/img/produto.png';
             rendererCarrinho(carrinho, ulDescricaoProduto, createSpan);
             calCarrinho(
                 carrinho,
