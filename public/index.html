@@ -1,34 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../style/css/login.css">
     <title>Gestão Lite - Login</title>
 </head>
+
 <body>
     <div class="container">
-    <img class="img-logo" src="../style/img/logoLogin.png" alt="GestãoLite">
-    <div class="login-container">
-        <h1>Login</h1>
-        <form id="formLogin">
-            <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required autocomplete="off">
+        <div class="ativar-produto">
+            <img src="../style/img/logoLogin.png" alt="Logo">
+            <h2>Obrigado por adquirir nosso Gerenciador de Estoque! Por favor, insira os dados de ativação do produto.</h2>
+        
+            <label for="cliente">Cliente</label>
+            <input type="text" id="cliente">
+            <label for="serial-key">Chave Serial</label>
+            <input type="text" id="serial-key">
+        
+            <!-- Termos de Uso -->
+            <div class="termos-uso">
+                <input type="checkbox" id="termos" onchange="habilitarBotao()">
+                <label for="termos">Eu aceito os <a href="#">termos de uso</a>.</label>
             </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required autocomplete="off">
-            </div>
-            <button type="submit">Login</button>
-        </form>
-    </div>
+        
+            <!-- Botão desabilitado inicialmente -->
+            <button id="ativar-btn" disabled>Ativar Produto</button>
+        </div>
+        
+        <img class="img-logo" src="../style/img/logoLogin.png" alt="GestãoLite">
+        <div class="login-container">
+            <h1>Login</h1>
+            <form id="formLogin">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required autocomplete="off">
+                </div>
+                <button type="submit">Login</button>
+            </form>
+        </div>
     </div>
     <footer class="footer">
-        &copy; Todos os direitos reservados 2024 -
+        &copy; Todos os direitos reservados 2025 -
         <a href="https://fabianofregnani.netlify.app/" target="_blank">Site do Desenvolvedor</a> -
         Versão 2.0.0
     </footer>
+    <script src="../Renderer/apiEndpoints.js"></script>
     <script src="../services/loginUsers.js"></script>
 </body>
+
 </html>

@@ -1,7 +1,9 @@
 const express = require('express');
 const Router = express.Router();
 const controllers = require('../Controller/controllers');
+const { getLicenca } = require('../../db/mongoDB');
 
+// Definições de rotas
 Router.get('/produtos', controllers.getAllProducts);
 Router.get('/grupos', controllers.getGrupo);
 Router.get('/subGrupos', controllers.getSubGrupo);
@@ -20,5 +22,9 @@ Router.post('/newSubGrupo', controllers.postNewProductSubGrupo);
 Router.post('/newFornecedor', controllers.postNewFornecedor);
 Router.post('/postVenda', controllers.postNewVenda);
 Router.get('/getVenda', controllers.getVenda);
+
+// Rota para obter licença
+Router.get('/getLicenca/:serialKey', getLicenca);
+
 
 module.exports = Router;

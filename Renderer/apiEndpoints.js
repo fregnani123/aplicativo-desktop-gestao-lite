@@ -18,6 +18,7 @@ const apiEndpoints = {
     postNewFornecedor: 'http://localhost:3000/newFornecedor',
     postVenda: 'http://localhost:3000/postVenda',
     getVenda: 'http://localhost:3000/getVenda',
+    getLicenca: 'http://localhost:3000//getLicenca/:serialKey',
 };
 
 function inputMaxCaracteres(input, max) {
@@ -421,7 +422,36 @@ async function getVenda(inputElement) {
     } catch (error) {
         console.error('Erro ao buscar vendas:', error);
     }
+};
+
+async function getLicenca(serialKey) {
+    const getLicenca = `http://localhost:3000/getLicenca/${serialKey}`; 
+
+    try {
+        // Envia os dados da venda para o backend com uma requisição GET
+        const response = await fetch(getLicenca, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        // Verifica se a resposta foi bem-sucedida
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        // Converte a resposta para JSON
+        const data = await response.json();
+
+        // Exibe o resultado no console
+        console.log('Chave serial registrada com sucesso:', data);
+    } catch (error) {
+        // Trata qualquer erro que ocorrer durante o processo
+        console.error('Erro ao registrar a chave serial:', error);
+    }
 }
+
 
 
 

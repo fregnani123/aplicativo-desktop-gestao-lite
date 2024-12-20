@@ -1,28 +1,30 @@
 const path = require('path');
 const multer = require('multer');
 
-const { 
-    getAllProdutos, 
-    findProductByBarcode, 
-    getGrupo, 
-    getSubGrupo, 
-    getFornecedor, 
-    getTamanhoLetras, 
-    getTamanhoNumeros, 
-    getUnidadeMassa, 
-    getMedidaVolume, 
-    getUnidadeComprimento, 
-    getUnidadeEstoque, 
-    getCorProduto, 
-    postNewProduct, 
-    postNewProductGrupo, 
-    postNewProductSubGrupo, 
+const {
+    getAllProdutos,
+    findProductByBarcode,
+    getGrupo,
+    getSubGrupo,
+    getFornecedor,
+    getTamanhoLetras,
+    getTamanhoNumeros,
+    getUnidadeMassa,
+    getMedidaVolume,
+    getUnidadeComprimento,
+    getUnidadeEstoque,
+    getCorProduto,
+    postNewProduct,
+    postNewProductGrupo,
+    postNewProductSubGrupo,
     postNewFornecedor,
     postNewSale,
     fetchVenda
 
-    
+
 } = require(path.join(__dirname, '../../db/model/product'));
+
+
 
 
 // Configuração do multer
@@ -50,7 +52,7 @@ const controllers = {
         }
     },
 
-    getGrupo : async (req, res) => {
+    getGrupo: async (req, res) => {
         try {
             const categorias = await getGrupo();
             res.json(categorias);
@@ -60,7 +62,7 @@ const controllers = {
         }
     },
 
-    getSubGrupo : async (req, res) => {
+    getSubGrupo: async (req, res) => {
         try {
             const grupoProduto = await getSubGrupo();
             res.json(grupoProduto);
@@ -90,7 +92,7 @@ const controllers = {
         }
     },
 
-  
+
     getTamanhoNumeros: async (req, res) => {
         try {
             const tamanhoNumeros = await getTamanhoNumeros();
@@ -171,10 +173,10 @@ const controllers = {
                 console.error('Erro no upload da imagem:', err);
                 return res.status(500).json({ message: 'Erro no upload da imagem.', error: err.message });
             }
-    
+
             // Extrair o caminho da imagem carregada
             const imagePath = req.file ? req.file.path : null;
-    
+
             // Garantir que os dados do produto sejam um objeto JSON
             let produtoData;
             try {
@@ -183,16 +185,16 @@ const controllers = {
                 console.error('Erro ao analisar os dados do produto:', parseError);
                 return res.status(400).json({ message: 'Dados do produto inválidos.', error: parseError.message });
             }
-    
+
             // Adiciona o caminho da imagem aos dados do produto, se a imagem foi carregada
             if (imagePath) {
                 produtoData.caminho_imagem = imagePath; // Usando o campo correto para salvar no banco de dados
             }
-    
+
             try {
                 // Tente inserir o produto no banco de dados
                 const newProductId = await postNewProduct(produtoData); // Certifique-se de que esta função insere corretamente o produto no banco
-    
+
                 // Se a inserção for bem-sucedida, retorne uma resposta de sucesso
                 res.status(201).json({
                     message: 'Produto e imagem inseridos com sucesso!',
@@ -205,7 +207,7 @@ const controllers = {
             }
         });
     },
-    
+
     postNewFornecedor: async (req, res) => {
         try {
             const fornecedorData = req.body;
@@ -255,7 +257,7 @@ const controllers = {
         try {
             const vendaData = req.body;
             const newVendaId = await postNewSale(vendaData);
-    
+
             res.json({
                 message: 'Venda inserida com sucesso!',
                 venda_id: newVendaId
@@ -266,7 +268,7 @@ const controllers = {
         }
     },
 
-    getVenda : async (req, res) => {
+    getVenda: async (req, res) => {
         try {
             const vendas = await fetchVenda(); // Chama a função para buscar as vendas
             res.json(vendas); // Retorna os dados como JSON
@@ -274,9 +276,9 @@ const controllers = {
             console.error('Erro ao buscar Venda:', error);
             res.status(500).json({ error: 'Erro ao buscar Venda' });
         }
-    }
-    
-    
-};
+    },
 
-module.exports = controllers;
+
+    };
+
+    module.exports = controllers;

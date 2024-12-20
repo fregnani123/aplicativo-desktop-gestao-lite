@@ -24,6 +24,18 @@ async function initializeDB() {
             `CREATE SCHEMA IF NOT EXISTS gestaolite DEFAULT CHARACTER SET utf8;`,
             `USE gestaolite;`,
 
+            // Criar Tabela Serial_Key
+            `CREATE TABLE IF NOT EXISTS Serial_Key (
+            serial_key_id INT NOT NULL AUTO_INCREMENT,
+            userID VARCHAR(150) NOT NULL,
+            serialKey VARCHAR(150) NOT NULL, 
+            startedDate DATE NOT NULL, 
+            expirationDate DATE NOT NULL, 
+            PRIMARY KEY (serial_key_id),
+            UNIQUE (userID), 
+            UNIQUE (serialKey) 
+            ) ENGINE = InnoDB;`,
+
             // Criar Tabela grupo
             `CREATE TABLE IF NOT EXISTS grupo (
                 grupo_id INT NOT NULL AUTO_INCREMENT,
@@ -113,7 +125,7 @@ async function initializeDB() {
                 numero_pedido VARCHAR(50) NOT NULL,
                 PRIMARY KEY (venda_id)
             ) ENGINE = InnoDB;`,
-    
+
             `CREATE TABLE IF NOT EXISTS forma_pagamento (
                 pagamento_id INT NOT NULL AUTO_INCREMENT,
                 venda_id INT NOT NULL,
@@ -122,7 +134,7 @@ async function initializeDB() {
                 PRIMARY KEY (pagamento_id),
                 FOREIGN KEY (venda_id) REFERENCES venda(venda_id)
             ) ENGINE = InnoDB;`,
-    
+
             `CREATE TABLE IF NOT EXISTS item_venda (
                 item_venda_id INT NOT NULL AUTO_INCREMENT,
                 venda_id INT NOT NULL,
