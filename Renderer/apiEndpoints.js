@@ -20,6 +20,7 @@ const apiEndpoints = {
     postAtivacao: 'http://localhost:3000/insertAtivacao',
     getAtivacaoMysql: 'http://localhost:3000/getAtivacaoMysql',
     updateAtivacao: 'http://localhost:3000/UpdateAtivacao',
+    updateEstoque: 'http://localhost:3000/UpdateEstoque',
 };
 
 function inputMaxCaracteres(input, max) {
@@ -164,7 +165,7 @@ async function getunidadeEstoqueVendas(id, renderer) {
         });
 }
 
-function getProduto(descricaoElement, codigoDeBarras, precoVendaElement, unidadeEstoqueID) {
+function getProduto(descricaoElement, codigoDeBarras, precoVendaElement, unidadeEstoqueID ) {
     const getOneProduct = `${apiEndpoints.findOneProduct}/${codigoDeBarras}`;
     fetch(getOneProduct, {
         method: 'GET',
@@ -190,6 +191,8 @@ function getProduto(descricaoElement, codigoDeBarras, precoVendaElement, unidade
                 unidadeEstoqueID = produto.unidadeEstoqueID;
                 produtoIdGlobal = produto.produto_id;
                 unIDGlobal = produto.unidade_estoque_id;
+                quantidade_estoqueGlobal = produto.quantidade_estoque;
+                quantidade_vendidoGlobal = produto.quantidade_vendido;
                 pathIgmGlobal = produto.caminho_img_produto;
                 let value = precoVendaElement.value;
                 value = value.replace(/\D/g, '');
@@ -525,7 +528,7 @@ const atualizarDisplay = () => {
             divAtivar.style.display = 'flex'; // Exibe se não ativado
         }
     } else {
-        console.error('divAtivar não foi inicializada.');
+        console.log('');
     }
 };
 
@@ -595,10 +598,6 @@ async function verificaAtivacaoMysql() {
         atualizarDisplay(); // Atualiza o estado da interface
     }
 }
-
-// Chama a função
-verificaAtivacaoMysql();
-
 
 
 async function verificaValidadeDate() {
@@ -700,5 +699,23 @@ function bloqueiaCampos() {
     if (passwordInput) passwordInput.disabled = true;
 }
 
-// Chama a função ao carregar a página
-verificaValidadeDate();
+
+async function updateEstoque(produto) {
+    try {
+        const patchResponse = await fetch(apiEndpoints.updateEstoque, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(produto), // Apenas serialize aqui
+        });
+
+        if (!patchResponse.ok) {
+            console.log('Erro ao atualizar estoque do produto');
+        } else {
+            console.log('Estoque do produto atualizado com sucesso');
+        }
+    } catch (error) {
+        console.log('Erro durante a atualização do estoque:', error);
+    }
+}

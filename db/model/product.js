@@ -352,6 +352,7 @@ async function postNewProduct(produto) {
                 unidade_comprimento_id, 
                 cor_produto_id, 
                 quantidade_estoque, 
+                quantidade_vendido, 
                 observacoes, 
                 preco_compra, 
                 markup, 
@@ -359,7 +360,7 @@ async function postNewProduct(produto) {
                 unidade_estoque_id, 
                 fornecedor_id, 
                 caminho_img_produto
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
         const values = [
@@ -377,6 +378,7 @@ async function postNewProduct(produto) {
             produto.unidade_comprimento_id || null,
             produto.cor_produto_id || null,
             produto.quantidade_estoque || 0,
+            produto.quantidade_vendido || 0,
             produto.observacoes || '',
             produto.preco_compra || 0,
             produto.markup || 0,
@@ -652,7 +654,40 @@ async function UpdateAtivacao(serial_key) {
     } finally {
         if (connection) connection.release();
     }
+};
+
+
+async function UpdateEstoque(produto) {
+    let connection;
+    try {
+        connection = await pool.getConnection();
+
+        // Query para atualizar apenas os campos permitidos
+        const query = `
+            UPDATE produto
+            SET 
+                quantidade_estoque = ?, 
+                quantidade_vendido = ?
+            WHERE codigo_ean = ?
+        `;
+
+        // Executa a query com os valores
+        const [result] = await connection.query(query, [
+            produto.quantidade_estoque,  // Valor do estoque
+            produto.quantidade_vendido, // Valor da quantidade vendida
+            produto.codigo_ean          // Código EAN do produto
+        ]);
+
+        console.log('Registro Estoque e qtd vendido atualizado com sucesso:', result);
+        return result;
+    } catch (error) {
+        console.error('Erro ao atualizar MySQL: Estoque e qtd vendido', error);
+        throw error;
+    } finally {
+        if (connection) connection.release();
+    }
 }
+
 
 module.exports = {
     postAtivacao,
@@ -675,5 +710,7 @@ module.exports = {
     postNewSale,
     fetchVenda,
     getAtivacaoMysql,
-    UpdateAtivacao
+    UpdateAtivacao,
+    UpdateEstoque
+    // UpdateEstoque
 };

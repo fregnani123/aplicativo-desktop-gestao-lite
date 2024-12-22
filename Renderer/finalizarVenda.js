@@ -1,8 +1,6 @@
-
-
-function FinalizarVenda() {
+async function FinalizarVenda() {
     if (carrinho.length === 0) {
-        alertMsg("Seu carrinho está vazio. Adicione itens antes de concluir a venda.",'warning', 4000);
+        alertMsg("Seu carrinho está vazio. Adicione itens antes de concluir a venda.", 'warning', 4000);
         return;
     }
 
@@ -30,17 +28,21 @@ function FinalizarVenda() {
         pagamentos: getFormasDePagamento(),
     };
 
-    let vendaDb = JSON.stringify(venda);
-    console.log('Venda enviada: ' + vendaDb);
-
     try {
-        postVendaDb(venda);
+        // Registra a venda no banco
+        await postVendaDb(venda);
         alertMsg('Venda realizada com sucesso, obrigado!', 'success', 6000);
+
+        // Altera o estoque e o vendido
+        await alteraEstoqueEVendido(carrinho);
+       console.log('Estoque atualizado com sucesso!', 'success', 6000);
     } catch (error) {
-        console.error('Erro ao cadastrar a Venda no Db:', error);
-        alertMsg('Erro ao registrar a venda no sistema. Tente novamente.', 'error', 4000);
+        console.error('Erro ao processar a venda ou atualizar estoque:', error);
+        alertMsg('Erro ao registrar a venda ou atualizar o estoque. Tente novamente.', 'error', 4000);
+        return;
     }
 
+    // Limpa os campos
     limparCampos();
 }
 

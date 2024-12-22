@@ -23,11 +23,11 @@ const {
     fetchVenda,
     getAtivacaoMysql,
     UpdateAtivacao,
+    UpdateEstoque
     
 
 
 } = require(path.join(__dirname, '../../db/model/product'));
-
 
 
 
@@ -318,6 +318,20 @@ const controllers = {
             });
         } catch (error) {
             console.error('Erro ao alterar UpdateAtivacao:', error);
+            res.status(500).json({ error: 'Erro ao alterar UpdateAtivacao.' });
+        }
+    },
+    
+    UpdateEstoque: async (req, res) => {
+        try {
+            const produto = req.body; // Renomear para evitar confusão
+            await UpdateEstoque(produto); // Chamar a função importada/definida
+    
+            res.json({
+                message: 'UpdateEstoque alterado com sucesso!',
+            });
+        } catch (error) {
+            console.error('Erro ao alterar UpdateEstoque:', error);
             res.status(500).json({ error: 'Erro ao alterar UpdateAtivacao.' });
         }
     },

@@ -22,6 +22,46 @@ function rendererCarrinho(carrinho, ulDescricaoProduto, createSpan) {
 }
 
 
+async function alteraEstoqueEVendido(carrinho) {
+    // Validar se o carrinho é um array
+    if (!Array.isArray(carrinho) || carrinho.length === 0) {
+        console.error("O carrinho está vazio ou não é um array válido:", carrinho);
+        return;
+    }
+
+    // Consolidar os produtos no carrinho
+    const produtosAgrupados = carrinho.reduce((acc, item) => {
+        const existente = acc.find(prod => prod.codigoEan === item.codigoEan);
+        if (existente) {
+            existente.Qtd += parseInt(item.Qtd, 10);
+        } else {
+            acc.push({
+                codigoEan: item.codigoEan,
+                descricao: item.descricao,
+                quantidade_estoque: item.quantidade_estoque,
+                quantidade_vendido: item.quantidade_vendido,
+                Qtd: parseInt(item.Qtd, 10),
+            });
+        }
+        return acc;
+    }, []);
+
+    // Atualizar o estoque para cada produto consolidado
+    for (const produto of produtosAgrupados) {
+        const estoqueAtualizado = {
+            quantidade_estoque: produto.quantidade_estoque - produto.Qtd,
+            quantidade_vendido: produto.quantidade_vendido + produto.Qtd,
+            codigo_ean: produto.codigoEan,
+        };
+
+        try {
+            await updateEstoque(estoqueAtualizado); // Certifique-se de que updateEstoque é assíncrono
+        } catch (error) {
+            console.error("Erro ao atualizar estoque para o produto:", produto.codigoEan, error);
+        }
+    }
+}
+
 function calCarrinho(carrinho, converteMoeda, inputTotalLiquido, textSelecionarQtd) {
     if (textSelecionarQtd) textSelecionarQtd.innerHTML = ''; // Atualiza o texto, se fornecido
 
@@ -54,7 +94,7 @@ function pushProdutoCarrinho({
     textSelecionarQtd,
     getVenda,
     numeroPedido,
-    alertLimparVenda
+    alertLimparVenda,
 }) {
     // Verifica se algum campo está vazio
     if (!codigoEan.value || !descricao.value || !inputQtd.value) {
@@ -69,6 +109,8 @@ function pushProdutoCarrinho({
         descricao: descricao.value,
         preco: precoVenda.value,
         Qtd: inputQtd.value,
+        quantidade_estoque: quantidade_estoqueGlobal,
+        quantidade_vendido: quantidade_vendidoGlobal,
         unidadeEstoqueID: unidadeEstoqueRender.value,
         unidadeIDGlobal: unIDGlobal
     };

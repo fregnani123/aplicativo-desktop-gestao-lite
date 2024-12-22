@@ -18,6 +18,7 @@ const inputMassa = document.querySelector('#massaNumero');
 const inputVolume = document.querySelector('#volumeNumero');
 const inputComprimento = document.querySelector('#comprimento');
 const inputQuantidadeEstoque = document.querySelector('#estoqueQtd');
+const inputQuantidadeVendido = document.querySelector('#Qtd_vendido'); //Input Oculto, salva codidade 0 
 const inputPathImg = document.querySelector('#produto-imagem');
 const divImgProduct = document.querySelector('.quadro-img');
 const btnExit = document.querySelector('#botaoSair');
@@ -204,9 +205,6 @@ inputPathImg.onchange = function (event) {
 };
 
 
-
-
-
 document.querySelector('#btn-cadastrar-produto').addEventListener('click', async function (e) {
     e.preventDefault();
 
@@ -235,6 +233,7 @@ document.querySelector('#btn-cadastrar-produto').addEventListener('click', async
         unidade_comprimento_id: selectUnidadeComprimento.value,
         medida_volume_id: selectMedidaVolume.value,
         quantidade_estoque: inputQuantidadeEstoque.value,
+        quantidade_vendido: inputQuantidadeVendido.value,
         preco_compra: PrecoCompraTratado,
         markup: markupTratado,
         preco_venda: PrecoVendaTratado,

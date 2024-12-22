@@ -69,4 +69,8 @@ botaoAtivar.addEventListener('click', (e) => {
     }, 2000);
 });
 
-// Certifique-se de que as funções `syncLicenca`, `fetchAtivacaoMysql` e `atualizarDisplay` estão definidas.
+
+verificaValidadeDate();
+verificaAtivacaoMysql();
+
+

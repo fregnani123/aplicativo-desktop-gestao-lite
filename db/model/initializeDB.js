@@ -159,6 +159,7 @@ async function initializeDB() {
                 medida_volume_id INT NULL,
                 unidade_comprimento_id INT NULL,
                 quantidade_estoque INT NULL,
+                quantidade_vendido INT NULL,
                 preco_compra DECIMAL(10,2) NULL,
                 markup DECIMAL(5,2) NULL,
                 preco_venda DECIMAL(10,2) NULL,
