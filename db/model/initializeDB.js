@@ -31,6 +31,7 @@ async function initializeDB() {
             serialKey VARCHAR(150) NOT NULL, 
             startedDate DATE NOT NULL, 
             expirationDate DATE NOT NULL, 
+            ativado BOOLEAN NOT NULL, 
             PRIMARY KEY (serial_key_id),
             UNIQUE (userID), 
             UNIQUE (serialKey) 
@@ -577,7 +578,6 @@ async function insertFornecedorPadrao() {
         if (connection) connection.release();
     }
 };
-
 
 module.exports = {
     initializeDB,

@@ -2,6 +2,7 @@ const path = require('path');
 const multer = require('multer');
 
 const {
+    postAtivacao,
     getAllProdutos,
     findProductByBarcode,
     getGrupo,
@@ -19,7 +20,10 @@ const {
     postNewProductSubGrupo,
     postNewFornecedor,
     postNewSale,
-    fetchVenda
+    fetchVenda,
+    getAtivacaoMysql,
+    UpdateAtivacao,
+    
 
 
 } = require(path.join(__dirname, '../../db/model/product'));
@@ -62,6 +66,16 @@ const controllers = {
         }
     },
 
+    getAtivacaoMysql: async (req, res) => {
+        try {
+            const ativacao = await getAtivacaoMysql();
+            res.json(ativacao);
+        } catch (error) {
+            console.error('Erro ao buscar ativação:', error);
+            res.status(500).json({ error: 'Erro ao buscar ativação' });
+        }
+    },
+    
     getSubGrupo: async (req, res) => {
         try {
             const grupoProduto = await getSubGrupo();
@@ -278,7 +292,40 @@ const controllers = {
         }
     },
 
+    
+    postAtivacao: async (req, res) => {
+        try {
+            const insertAtivacao = req.body;
+            await postAtivacao(insertAtivacao);
+
+            res.json({
+                message: 'ativação inserido com sucesso!',
+            });
+            
+        } catch (error) {
+            console.error('Erro ao inserir o fornecedor:', error);
+            res.status(500).json({ error: 'Erro ao inserir o fornecedor.' });
+        }
+    },
+
+    UpdateAtivacao: async (req, res) => {
+        try {
+            const serialKeyData = req.body; // Renomear para evitar confusão
+            await UpdateAtivacao(serialKeyData); // Chamar a função importada/definida
+    
+            res.json({
+                message: 'UpdateAtivacao alterado com sucesso!',
+            });
+        } catch (error) {
+            console.error('Erro ao alterar UpdateAtivacao:', error);
+            res.status(500).json({ error: 'Erro ao alterar UpdateAtivacao.' });
+        }
+    },
+    
+
 
     };
+
+
 
     module.exports = controllers;

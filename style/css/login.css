@@ -161,54 +161,54 @@ button:hover {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center; /* Centraliza horizontalmente */
+    align-items: center; 
     width: 700px;
     height: 500px;
     background-color: var(--background-color);
     color: var(--text-color);
-    text-align: center; /* Centraliza o texto */
+    text-align: center; 
     position: absolute;
     border-radius: 10px;
     border: 1px solid var(--border-color);
-    padding: 20px 50px; /* Ajuste no padding para mais conforto */
+    padding: 20px 50px; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 
-                0 4px 16px rgba(0, 0, 0, 0.2); /* Sombras mais elegantes */
+                0 4px 16px rgba(0, 0, 0, 0.2); 
 }
 
 .ativar-produto h2 {
-    margin-bottom: 20px; /* Espaçamento inferior para o título */
+    margin-bottom: 20px; 
     font-weight: normal;
-    font-size: 18px; /* Ajusta o tamanho da fonte para mais legibilidade */
+    font-size: 18px;
 }
 
 .ativar-produto label {
-    margin: 3px 0; /* Espaçamento superior e inferior */
-    display: block; /* Garante que o label fique acima do input */
-    font-size: 1.4rem; /* Tamanho de fonte ajustado */
+    margin: 3px 0; 
+    display: block; 
+    font-size: 1.2rem; 
 }
 
 .ativar-produto input {
-    width: 80%; /* Largura ajustável para inputs */
+    width: 80%; 
     padding: 10px;
-    margin-bottom: 20px; /* Espaçamento inferior entre os inputs */
+    margin-bottom: 20px;
     border: 1px solid var(--text-color);
     border-radius: 5px;
     background-color: var(--background-color);
     color: var(--text-color);
-    text-align: center; /* Centraliza o texto dentro do input */
-    font-size: 1.2rem; /* Fonte consistente com os labels */
+    text-align: center; 
+    font-size: 1.2rem; 
 }
 
 .ativar-produto button {
-    width: 80%; /* Botão ajustado à largura dos inputs */
+    width: 80%; 
     padding: 10px;
     border: none;
     border-radius: 5px;
-    background-color:  var(--primary-color); /* Usa variável ou fallback */
+    background-color:  var(--primary-color); 
     color: #fff;
     font-size: 1.2rem;
     cursor: pointer;
-    transition: background-color 0.3s ease; /* Efeito de transição */
+    transition: background-color 0.3s ease;
 }
 
 .ativar-produto button:disabled {
@@ -217,20 +217,20 @@ button:hover {
 }
 .termos-uso {
     display: flex;
-    align-items: center; /* Alinha os itens verticalmente */
-    justify-content: center; /* Alinha os itens horizontalmente */
-    gap: 10px; /* Espaçamento entre o checkbox e o texto */
-    padding: 10px; /* Adiciona algum espaço interno */
+    align-items: center;
+    justify-content: center; 
+    gap: 10px; 
+    padding: 10px;
 }
 
 #termos {
     margin-bottom: 4px;
-    width: 20px; /* Ajuste o tamanho para um checkbox adequado */
+    width: 20px; 
     height: 20px;
 }
 
 .ativar-produto button:hover:not(:disabled) {
-    background-color: var(--primary-color-hover); /* Cor ao passar o mouse */
+    background-color: var(--primary-color-hover);
 }
 
 .Logo{

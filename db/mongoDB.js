@@ -12,24 +12,30 @@ const conectarMongoDB = async () => {
 };
 
 const getLicenca = async (req, res) => {
-    try {
-      const { serialKey } = req.params; // Pega o serialKey dos parâmetros da URL
-      console.log('Buscando licença para o serialKey:', serialKey); // Para depuração
-      console.log('SerialKey recebido:', serialKey);
-  
-      // Alteração para buscar pelo campo serialKey
-      const document = await Licenca.findOne({ serialKey });
-  
-      if (!document) {
-        return res.status(404).json({ message: 'Documento não encontrado' });
-      }
-  
-      res.status(200).json(document);
-    } catch (error) {
-      console.error('Erro ao buscar os dados:', error);
-      res.status(500).json({ message: 'Erro ao buscar os dados' });
+  try {
+    const { userID, serialKey } = req.params;
+
+    console.log('Parâmetros recebidos em req.params:', req.params);
+
+    if (!userID || !serialKey) {
+      return res.status(400).json({ message: 'Parâmetros incompletos' });
     }
-  };
+
+    console.log('Buscando licença para os parâmetros:', { userID, serialKey });
+
+    const document = await Licenca.findOne({ userID, serialKey });
+
+    if (!document) {
+      return res.status(404).json({ message: 'Documento não encontrado' });
+    }
+
+    res.status(200).json(document);
+  } catch (error) {
+    console.error('Erro ao buscar os dados:', error);
+    res.status(500).json({ message: 'Erro ao buscar os dados' });
+  }
+};
+
   
 
 // Exporte todas as funções necessárias

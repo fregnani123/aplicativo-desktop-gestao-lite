@@ -38,7 +38,7 @@ async function ensureDBInitialized() {
         }
         dbTableInitialized = true;
     }
-}
+};
 
 async function getAllProdutos() {
     await ensureDBInitialized();
@@ -54,7 +54,7 @@ async function getAllProdutos() {
     } finally {
         if (connection) connection.release();
     }
-}
+};
 
 
 async function getFornecedor() {
@@ -69,7 +69,7 @@ async function getFornecedor() {
     } finally {
         if (connection) connection.release();
     }
-}
+};
 
 async function getTamanhoLetras() {
     await ensureDBInitialized();
@@ -84,7 +84,7 @@ async function getTamanhoLetras() {
     } finally {
         if (connection) connection.release();
     }
-}
+};
 async function getTamanhoNumeros() {
     await ensureDBInitialized();
     let connection;
@@ -98,7 +98,7 @@ async function getTamanhoNumeros() {
     } finally {
         if (connection) connection.release();
     }
-}
+};
 
 async function getGrupo() {
     await ensureDBInitialized();
@@ -115,7 +115,7 @@ async function getGrupo() {
     finally {
         if (connection) connection.release();
     }
-}
+};
 
 async function getSubGrupo() {
     await ensureDBInitialized();
@@ -132,7 +132,7 @@ async function getSubGrupo() {
     finally {
         if (connection) connection.release();
     }
-}
+};
 async function getUnidadeMassa() {
     await ensureDBInitialized();
     let connection;
@@ -148,7 +148,7 @@ async function getUnidadeMassa() {
     finally {
         if (connection) connection.release();
     }
-}
+};
 
 async function getMedidaVolume() {
     await ensureDBInitialized();
@@ -165,7 +165,7 @@ async function getMedidaVolume() {
     finally {
         if (connection) connection.release();
     }
-}
+};
 
 async function getUnidadeComprimento() {
     await ensureDBInitialized();
@@ -182,7 +182,7 @@ async function getUnidadeComprimento() {
     finally {
         if (connection) connection.release();
     }
-}
+};
 
 async function getUnidadeEstoque() {
     await ensureDBInitialized();
@@ -199,7 +199,7 @@ async function getUnidadeEstoque() {
     finally {
         if (connection) connection.release();
     }
-}
+};
 
 async function getCorProduto() {
     await ensureDBInitialized();
@@ -216,7 +216,24 @@ async function getCorProduto() {
     finally {
         if (connection) connection.release();
     }
-}
+};
+
+async function getAtivacaoMysql() {
+    await ensureDBInitialized();
+    let connection;
+
+    try {
+        connection = await pool.getConnection();
+        const [rows, fields] = await connection.query('SELECT * FROM serial_key');
+        return rows;
+    } catch (error) {
+        console.error('Erro ao conectar ao MySQL ou executar a consulta:', error);
+        throw error;
+    }
+    finally {
+        if (connection) connection.release();
+    }
+};
 
 async function findProductByBarcode(barcode) {
     await ensureDBInitialized();
@@ -232,7 +249,7 @@ async function findProductByBarcode(barcode) {
     } finally {
         if (connection) connection.release();
     }
-}
+};
 
 async function postNewFornecedor(fornecedor) {
     await ensureDBInitialized();
@@ -292,7 +309,7 @@ async function postNewFornecedor(fornecedor) {
         if (connection) connection.release();
     };
 
-}
+};
 
 
 async function postNewProduct(produto) {
@@ -379,7 +396,7 @@ async function postNewProduct(produto) {
     } finally {
         if (connection) connection.release();
     }
-}
+};
 
 
 async function postNewProductGrupo(newGrupo) {
@@ -416,7 +433,7 @@ async function postNewProductGrupo(newGrupo) {
 
     const [result] = await connection.query(insertQuery, values);
     return result.insertId;
-}
+};
 
 async function postNewProductSubGrupo(newSubGrupo) {
     await ensureDBInitialized();
@@ -452,7 +469,7 @@ async function postNewProductSubGrupo(newSubGrupo) {
 
     const [result] = await connection.query(insertQuery, values);
     return result.insertId;
-}
+};
 
 async function postNewSale(newSale) {
     await ensureDBInitialized();
@@ -534,7 +551,7 @@ async function postNewSale(newSale) {
         // Libera a conexão
         if (connection) connection.release();
     }
-}
+};
 
 async function fetchVenda() {
     await ensureDBInitialized(); // Certifica-se de que o banco foi inicializado
@@ -552,10 +569,93 @@ async function fetchVenda() {
     } finally {
         if (connection) connection.release(); // Libera a conexão com o banco
     }
+};
+
+async function postAtivacao(serial_key) {
+    let connection;
+    try {
+        connection = await pool.getConnection();
+
+        // Verifica se já existem registros na tabela
+        const [existingRecords] = await connection.query('SELECT COUNT(*) as count FROM serial_key');
+        if (existingRecords.count > 0) {
+            console.log('Tabela ativado já contém registros.');
+            return;
+        }
+
+        // Query para inserir os dados
+        const query = `
+            INSERT INTO serial_key (userID, serialKey, startedDate, expirationDate, ativado) 
+            VALUES (?, ?, ?, ?, ?)
+        `;
+
+        // Converte o valor de ativado para 1 (true) ou 0 (false)
+
+
+        // Executa a query com os valores
+        const [result] = await connection.query(query, [
+            serial_key.userID,
+            serial_key.serialKey,
+            serial_key.startedDate,
+            serial_key.expirationDate,
+            serial_key.ativado
+        ]);
+
+        console.log('Registro inserido com sucesso:', result);
+        return result;
+    } catch (error) {
+        console.error('Erro ao inserir MySQL:', error);
+        throw error;
+    } finally {
+        if (connection) connection.release();
+    }
+}
+async function UpdateAtivacao(serial_key) {
+    let connection;
+    try {
+        connection = await pool.getConnection();
+
+        // Convertendo as datas para o formato 'YYYY-MM-DD HH:MM:SS'
+        const startedDate = new Date(serial_key.startedDate)
+            .toISOString()
+            .slice(0, 19)
+            .replace('T', ' '); // Formato 'YYYY-MM-DD HH:MM:SS'
+
+        const expirationDate = new Date(serial_key.expirationDate)
+            .toISOString()
+            .slice(0, 19)
+            .replace('T', ' '); // Formato 'YYYY-MM-DD HH:MM:SS'
+
+        // Query para atualizar apenas os campos permitidos
+        const query = `
+            UPDATE serial_key
+            SET 
+                startedDate = ?, 
+                expirationDate = ?, 
+                ativado = ?
+            WHERE serialKey = ?
+        `;
+
+        // Executa a query com os valores
+        const [result] = await connection.query(query, [
+            startedDate,
+            expirationDate,
+            serial_key.ativado ? 1 : 0, // Converte ativado para 1 ou 0
+            serial_key.serialKey // Chave de busca no WHERE
+        ]);
+
+        console.log('Registro atualizado com sucesso:', result);
+        return result;
+    } catch (error) {
+        console.error('Erro ao atualizar MySQL:', error);
+        throw error;
+    } finally {
+        if (connection) connection.release();
+    }
 }
 
-
 module.exports = {
+    postAtivacao,
     getAllProdutos,
     getFornecedor,
     findProductByBarcode,
@@ -573,5 +673,7 @@ module.exports = {
     postNewProductSubGrupo,
     postNewFornecedor,
     postNewSale,
-    fetchVenda
+    fetchVenda,
+    getAtivacaoMysql,
+    UpdateAtivacao
 };

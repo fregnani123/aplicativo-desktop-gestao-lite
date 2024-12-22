@@ -22,9 +22,12 @@ Router.post('/newSubGrupo', controllers.postNewProductSubGrupo);
 Router.post('/newFornecedor', controllers.postNewFornecedor);
 Router.post('/postVenda', controllers.postNewVenda);
 Router.get('/getVenda', controllers.getVenda);
+Router.get('/getAtivacaoMysql', controllers.getAtivacaoMysql);
+Router.post('/insertAtivacao', controllers.postAtivacao);
+Router.patch('/UpdateAtivacao', controllers.UpdateAtivacao);
 
 // Rota para obter licença
-Router.get('/getLicenca/:serialKey', getLicenca);
+Router.get('/getLicenca/:userID/:serialKey', getLicenca);
 
 
 module.exports = Router;
