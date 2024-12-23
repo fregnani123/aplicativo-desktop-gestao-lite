@@ -303,8 +303,8 @@ const controllers = {
             });
             
         } catch (error) {
-            console.error('Erro ao inserir o fornecedor:', error);
-            res.status(500).json({ error: 'Erro ao inserir o fornecedor.' });
+            console.error('Erro ao inserir a ativação:', error);
+            res.status(500).json({ error: 'Erro ao inserir a ativação.' });
         }
     },
 

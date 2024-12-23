@@ -107,8 +107,10 @@ async function initializeDB() {
             endereco VARCHAR(255) NULL,
             telefone VARCHAR(15) NULL,
             email VARCHAR(150) NULL,
+            observacoes TEXT NULL, -- Adicionando coluna para observações
             PRIMARY KEY(fornecedor_id)
-            ) ENGINE = InnoDB;`,
+            ) ENGINE = InnoDB;
+`,
 
             // Criar Tabela cor produto
             `CREATE TABLE IF NOT EXISTS cor_produto (

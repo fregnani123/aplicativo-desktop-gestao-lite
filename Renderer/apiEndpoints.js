@@ -82,29 +82,32 @@ async function postNewFornecedor(fornecedorData) {
     const postNewFornecedorData = apiEndpoints.postNewFornecedor;
     if (!fornecedorData.cnpj || !fornecedorData.nome_fantasia) {
         console.error('Erro: cnpj e nome fantasia são obrigatórios.');
-        alert('Erro: Erro: cnpj e nome fantasia são obrigatórios.');
+        alert('Erro: cnpj e nome fantasia são obrigatórios.');
         return;
     }
-    fetch(postNewFornecedorData, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(fornecedorData),
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('fornecedor added successfully:', data);
 
-        })
-        .catch(error => {
-            console.error('Error adding fornecedor:', error);
+    try {
+        const response = await fetch(postNewFornecedorData, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(fornecedorData),
         });
+
+        if (!response.ok) {
+            const errorMessage = await response.text(); // Obtém a mensagem de erro do backend
+            throw new Error(errorMessage); // Lança um erro com a mensagem recebida
+        }
+
+        const data = await response.json();
+        console.log('Fornecedor adicionado com sucesso:', data);
+        return data; // Retorna a resposta do backend
+
+    } catch (error) {
+        console.error('Erro ao adicionar fornecedor:', error);
+        throw error; // Repassa o erro para o frontend
+    }
 }
 
 function getGrupo(renderer) {

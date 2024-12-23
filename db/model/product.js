@@ -40,6 +40,7 @@ async function ensureDBInitialized() {
     }
 };
 
+
 async function getAllProdutos() {
     await ensureDBInitialized();
 
@@ -249,66 +250,6 @@ async function findProductByBarcode(barcode) {
     } finally {
         if (connection) connection.release();
     }
-};
-
-async function postNewFornecedor(fornecedor) {
-    await ensureDBInitialized();
-    let connection;
-    try {
-        // Obtém uma conexão do pool
-        connection = await pool.getConnection();
-
-        // Verifica se já existe um produto com o mesmo código EAN
-        const checkQuery = 'SELECT fornecedor_id FROM fornecedor WHERE cnpj = ?';
-        const [existingProduct] = await connection.query(checkQuery, [fornecedor.cnpj]);
-
-        if (existingProduct.length > 0) {
-            // Se o fornecedor já existir, lance um erro ou retorne uma mensagem
-            throw new Error('Um fornecedor com o mesmo cnpj já existe.');
-        }
-
-        const insertQuery = `
-        INSERT INTO fornecedor (
-        cnpj,
-        inscricao_estadual,
-        razao_social,
-        nome_fantasia,
-        cep,
-        cidade,
-        bairro,
-        uf,
-        endereco,
-        telefone,
-        email
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
-
-        const values = [
-            fornecedor.cnpj,
-            fornecedor.inscricao_estadual || null, // Use null se o valor for vazio ou indefinido
-            fornecedor.razao_social || null, // Use null se o valor for vazio ou indefinido,
-            fornecedor.razao_social,
-            fornecedor.cep || null, // Use null se o valor for vazio ou indefinido,
-            fornecedor.cidade || null, // Use null se o valor for vazio ou indefinido,
-            fornecedor.bairro || null, // Use null se o valor for vazio ou indefinido,
-            fornecedor.uf || null, // Use null se o valor for vazio ou indefinido,
-            fornecedor.endereco || null, // Use null se o valor for vazio ou indefinido,
-            fornecedor.telefone || null, // Use null se o valor for vazio ou indefinido,
-            fornecedor.email || null // Use null se o valor for vazio ou indefinido
-        ];
-
-        const [result] = await connection.query(insertQuery, values);
-
-        // Retorne o ID do novo produto inserido ou uma confirmação
-        return result.insertId;
-
-    } catch (error) {
-        console.error('Erro ao inserir o fornecedor:', error.message);
-        throw error;
-    } finally {
-        if (connection) connection.release();
-    };
-
 };
 
 

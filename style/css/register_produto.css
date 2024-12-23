@@ -646,7 +646,6 @@ width: 2.5rem;
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;  
-    background-color: red;
 }
 
 
@@ -661,7 +660,7 @@ width: 2.5rem;
     border:1px solid black;
     border-radius: 10px;
     padding-top: 50px;
-    padding-right: 53px;
+
 }
 
 
