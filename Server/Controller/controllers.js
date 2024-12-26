@@ -23,9 +23,8 @@ const {
     fetchVenda,
     getAtivacaoMysql,
     UpdateAtivacao,
-    UpdateEstoque
-    
-
+    UpdateEstoque,
+    postNewCliente
 
 } = require(path.join(__dirname, '../../db/model/product'));
 
@@ -224,19 +223,26 @@ const controllers = {
 
     postNewFornecedor: async (req, res) => {
         try {
-            const fornecedorData = req.body;
-            const newFornecedorId = await postNewFornecedor(fornecedorData);
-
+            const fornecedorData = req.body; // Dados do fornecedor recebidos do frontend
+            const newFornecedorId = await postNewFornecedor(fornecedorData); // Insere o fornecedor no banco
+    
             res.json({
                 message: 'Fornecedor inserido com sucesso!',
                 fornecedor_id: newFornecedorId
             });
         } catch (error) {
             console.error('Erro ao inserir o fornecedor:', error);
+    
+            // Verifica se o erro possui uma mensagem personalizada (como para o CNPJ duplicado)
+            if (error.message) {
+                return res.status(400).json({ error: error.message }); // Retorna a mensagem específica do erro
+            }
+    
+            // Retorna uma mensagem genérica para outros erros
             res.status(500).json({ error: 'Erro ao inserir o fornecedor.' });
         }
     },
-
+    
     postNewProductGrupo: async (req, res) => {
         try {
             const grupoData = req.body;
@@ -336,6 +342,27 @@ const controllers = {
         }
     },
     
+    postNewCliente: async (req, res) => {
+        try {
+            const clienteData = req.body; // Dados do fornecedor recebidos do frontend
+            const newFornecedorId = await  postNewCliente(clienteData); // Insere o fornecedor no banco
+    
+            res.json({
+                message: 'Cliente inserido com sucesso!',
+                fornecedor_id: newFornecedorId
+            });
+        } catch (error) {
+            console.error('Erro ao inserir o Cliente:', error);
+    
+            // Verifica se o erro possui uma mensagem personalizada (como para o CNPJ duplicado)
+            if (error.message) {
+                return res.status(400).json({ error: error.message }); // Retorna a mensagem específica do erro
+            }
+    
+            // Retorna uma mensagem genérica para outros erros
+            res.status(500).json({ error: 'Erro ao inserir o fornecedor.' });
+        }
+    },
 
 
     };

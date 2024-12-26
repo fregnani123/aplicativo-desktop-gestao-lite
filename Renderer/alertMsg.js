@@ -21,6 +21,7 @@ function alertMsg(msg, type = 'info',time) {
     alertDiv.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.3)';
     alertDiv.style.fontSize = '18px';
     alertDiv.style.textAlign = 'center';
+    alertDiv.style.zIndex = '99999';
     alertDiv.classList.add('alertDiv');
     alertDiv.style.display = 'block'; // Torna o alerta visível
 

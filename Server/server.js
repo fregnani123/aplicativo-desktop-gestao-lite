@@ -14,8 +14,6 @@ serverApp.use(express.json());
 serverApp.use(cors());
 serverApp.use(Routes);
 
-
-
 const startServer = async () => {
     try {
         // Inicializa o MongoDB

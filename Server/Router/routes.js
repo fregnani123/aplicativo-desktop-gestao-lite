@@ -26,6 +26,7 @@ Router.get('/getAtivacaoMysql', controllers.getAtivacaoMysql);
 Router.post('/insertAtivacao', controllers.postAtivacao);
 Router.patch('/UpdateAtivacao', controllers.UpdateAtivacao);
 Router.patch('/UpdateEstoque', controllers.UpdateEstoque);
+Router.post('/postNewCliente', controllers.postNewCliente);
 
 // Rota para obter licença
 Router.get('/getLicenca/:userID/:serialKey', getLicenca);

@@ -119,6 +119,24 @@ async function initializeDB() {
                 PRIMARY KEY(cor_produto_id)
             ) ENGINE = InnoDB;`,
 
+            `CREATE TABLE IF NOT EXISTS cliente (
+                cliente_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                nome VARCHAR(255) NOT NULL,
+                cpf VARCHAR(14) NOT NULL UNIQUE,
+                data_nascimento DATE,
+                telefone VARCHAR(20) NOT NULL,
+                email VARCHAR(255) NOT NULL UNIQUE,
+                cep VARCHAR(10) NOT NULL,
+                logradouro VARCHAR(255),
+                numero VARCHAR(10),
+                bairro VARCHAR(100),
+                estado VARCHAR(2) NOT NULL,
+                cidade VARCHAR(100) NOT NULL,
+                observacoes TEXT,
+                data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            ) ENGINE = InnoDB;`,
+            
 
             `CREATE TABLE IF NOT EXISTS venda (
                 venda_id INT NOT NULL AUTO_INCREMENT,

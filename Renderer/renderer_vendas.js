@@ -34,6 +34,12 @@ let carrinho = [];
 // Define foco inicial
 codigoEan.focus();
 
+// Aguarda o carregamento completo do DOM antes de executar a função
+document.addEventListener('DOMContentLoaded', () => {
+    const numeroPedido = document.querySelector('#numero-pedido');
+    getVenda(numeroPedido);
+});
+
 
 // Gerencia eventos de teclado
 document.addEventListener('keydown', function (event) {
@@ -195,7 +201,6 @@ codigoEan.addEventListener('input', (e) => {
     if (e.target.value.length === 13) {
         if (!descricao.value && !inputQtd.value) inputQtd.value = '1';
         getProduto( descricao, e.target.value, precoVenda, unidadeEstoqueRender);
-       
         setTimeout(() => {
             pushProdutoCarrinho({
                 carrinho,produtoIdGlobal,codigoEan,descricao,precoVenda,inputQtd,unidadeEstoqueRender,rendererCarrinho,ulDescricaoProduto,createSpan,resetInputs,calCarrinho,converteMoeda,inputTotalLiquido,textSelecionarQtd,getVenda,numeroPedido,alertLimparVenda
@@ -210,6 +215,7 @@ codigoEan.addEventListener('input', (e) => {
             squareInputs.style.display = 'flex';
         }, 100);
     } else if (e.target.value.length === 0) resetInputs();
+    getVenda(numeroPedido.value);
 });
 
 inputQtd.addEventListener('input', function (e) {

@@ -49,7 +49,8 @@ async function FinalizarVenda() {
 // Função que limpa os campos ao registrar a venda
 function limparCampos() {
     // Limpa todos os inputs e campos relacionados0
-
+    
+    
     setTimeout(() => {
         dataVenda.value = '';
         codigoEan.value = '';
@@ -58,7 +59,6 @@ function limparCampos() {
         inputQtd.value = '';
         selectCliente.value = 'Consumidor Final'; // Define para o valor padrão ou vazio
         ulDescricaoProduto.innerHTML = ''; // Limpa a lista de produtos
-        numeroPedido.value = '';
         inputTotalLiquido.value = '0,00'; // Zera o total líquido
         inputTotalPago.value = '0,00'; // Zera o total pago
         unidadeEstoqueRender.value = '';
@@ -76,14 +76,13 @@ function limparCampos() {
         imgProduto.src = '../style/img/produto.png';
         // Limpa o estado do carrinho
         carrinho = [];
-        getVenda(numeroPedido.value);
         //renderiza input numero pedido - data da venda - cliente
         squareInputs.style.display = 'none';
         console.log('Todos os campos foram limpos.');
     
         // Redefine o foco para o campo de código EAN
         codigoEan.focus();
-    }, 3000);
+    }, 6000);
    
 }
 

@@ -40,7 +40,6 @@ async function ensureDBInitialized() {
     }
 };
 
-
 async function getAllProdutos() {
     await ensureDBInitialized();
 
@@ -251,6 +250,47 @@ async function findProductByBarcode(barcode) {
         if (connection) connection.release();
     }
 };
+
+
+async function postNewFornecedor(fornecedor) {
+    await ensureDBInitialized();
+    let connection;
+    try {
+        connection = await pool.getConnection();
+
+        const checkQuery = 'SELECT fornecedor_id FROM fornecedor WHERE cnpj = ?';
+        const [existingFornecedor] = await connection.query(checkQuery, [fornecedor.cnpj]);
+
+        if (existingFornecedor.length > 0) {
+            // Retorna uma mensagem de erro detalhada
+            throw new Error('Um fornecedor com o mesmo CNPJ já existe.');
+        }
+
+        const insertQuery = `
+        INSERT INTO fornecedor (
+            cnpj, inscricao_estadual, razao_social, nome_fantasia,
+            cep, cidade, bairro, uf, endereco,
+            telefone, email, observacoes
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+        const values = [
+            fornecedor.cnpj, fornecedor.inscricao_estadual || null, fornecedor.razao_social || null,
+            fornecedor.nome_fantasia || null, fornecedor.cep || null, fornecedor.cidade || null,
+            fornecedor.bairro || null, fornecedor.uf || null, fornecedor.endereco || null,
+            fornecedor.telefone || null, fornecedor.email || null, fornecedor.observacoes || null
+        ];
+
+        const [result] = await connection.query(insertQuery, values);
+        return { insertId: result.insertId };
+    } catch (error) {
+        console.error('Erro ao inserir o fornecedor:', error.message);
+
+        // Envia um status de erro com uma mensagem JSON para o frontend
+        throw { status: 400, message: error.message };
+    } finally {
+        if (connection) connection.release();
+    }
+}
 
 
 async function postNewProduct(produto) {
@@ -627,7 +667,49 @@ async function UpdateEstoque(produto) {
     } finally {
         if (connection) connection.release();
     }
+};
+
+async function postNewCliente(cliente) {
+    await ensureDBInitialized();
+    let connection;
+    try {
+        connection = await pool.getConnection();
+
+        // Verifica se já existe um cliente com o mesmo CPF
+        const checkQuery = 'SELECT cliente_id FROM cliente WHERE cpf = ?';
+        const [existingCliente] = await connection.query(checkQuery, [cliente.cpf]);
+
+        if (existingCliente.length > 0) {
+            // Retorna uma mensagem de erro detalhada
+            throw new Error('Um cliente com o mesmo CPF já existe.');
+        }
+
+        // Insere o novo cliente
+        const insertQuery = `
+        INSERT INTO cliente (
+            nome, cpf, data_nascimento, telefone, email, cep, 
+            logradouro, numero, bairro, estado, cidade, observacoes
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+        const values = [
+            cliente.nome, cliente.cpf, cliente.data_nascimento || null, 
+            cliente.telefone || null, cliente.email || null, cliente.cep || null,
+            cliente.logradouro || null, cliente.numero || null, cliente.bairro || null, 
+            cliente.estado || null, cliente.cidade || null, cliente.observacoes || null
+        ];
+
+        const [result] = await connection.query(insertQuery, values);
+        return { insertId: result.insertId };
+    } catch (error) {
+        console.error('Erro ao inserir o cliente:', error.message);
+
+        // Envia um status de erro com uma mensagem JSON para o frontend
+        throw { status: 400, message: error.message };
+    } finally {
+        if (connection) connection.release();
+    }
 }
+
 
 
 module.exports = {
@@ -652,6 +734,7 @@ module.exports = {
     fetchVenda,
     getAtivacaoMysql,
     UpdateAtivacao,
-    UpdateEstoque
+    UpdateEstoque,
+    postNewCliente
     // UpdateEstoque
 };

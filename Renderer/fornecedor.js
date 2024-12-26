@@ -12,84 +12,6 @@ const cidade = document.getElementById('cidade');
 const uf = document.getElementById('uf');
 const observacoes = document.getElementById('observacoes');
 
-// Função para limitar caracteres no campo de entrada
-function inputMaxCaracteres(input, maxLength) {
-    input.addEventListener("input", function () {
-        if (input.value.length > maxLength) {
-            input.value = input.value.slice(0, maxLength);
-        }
-    });
-}
-
-// Função para formatar o telefone (ex: (XX) XXXX-XXXX)
-function formatarTelefone(input) {
-    input.addEventListener('input', function () {
-        let value = input.value.replace(/\D/g, ''); // Remove tudo o que não for número
-        if (value.length <= 2) {
-            input.value = value.replace(/^(\d{0,2})/, '($1');
-        } else if (value.length <= 6) {
-            input.value = value.replace(/^(\d{2})(\d{0,4})/, '($1) $2');
-        } else {
-            input.value = value.replace(/^(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
-        }
-    });
-}
-
-// Função para formatar o CNPJ (ex: XX.XXX.XXX/XXXX-XX)
-function formatarCNPJ(input) {
-    input.addEventListener('input', function () {
-        let value = input.value.replace(/\D/g, ''); // Remove tudo o que não for número
-        if (value.length <= 2) {
-            input.value = value.replace(/^(\d{0,2})/, '$1');
-        } else if (value.length <= 5) {
-            input.value = value.replace(/^(\d{2})(\d{0,3})/, '$1.$2');
-        } else if (value.length <= 8) {
-            input.value = value.replace(/^(\d{2})(\d{3})(\d{0,3})/, '$1.$2.$3');
-        } else if (value.length <= 12) {
-            input.value = value.replace(/^(\d{2})(\d{3})(\d{3})(\d{0,4})/, '$1.$2.$3/$4');
-        } else {
-            input.value = value.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{0,2})/, '$1.$2.$3/$4-$5');
-        }
-    });
-}
-
-// Função para formatar a inscrição estadual (ex: XX.XXX.XXX)
-function formatarIE(input) {
-    input.addEventListener('input', function () {
-        let value = input.value.replace(/\D/g, ''); // Remove tudo o que não for número
-        if (value.length <= 3) {
-            input.value = value.replace(/^(\d{0,3})/, '$1');
-        } else if (value.length <= 6) {
-            input.value = value.replace(/^(\d{3})(\d{0,3})/, '$1.$2');
-        } else {
-            input.value = value.replace(/^(\d{3})(\d{3})(\d{0,3})/, '$1.$2.$3');
-        }
-    });
-}
-
-// Função para formatar o CEP (ex: 12345-678)
-function formatarCEP(input) {
-    input.addEventListener('input', function () {
-        let value = input.value.replace(/\D/g, ''); // Remove tudo o que não for número
-        if (value.length <= 5) {
-            input.value = value.replace(/^(\d{0,5})/, '$1');
-        } else {
-            input.value = value.replace(/^(\d{5})(\d{0,3})/, '$1-$2');
-        }
-    });
-}
-
-// Função para verificar o email
-function verificarEmail(input) {
-    input.addEventListener('input', function () {
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        if (!emailRegex.test(input.value)) {
-            input.setCustomValidity("Por favor, insira um email válido.");
-        } else {
-            input.setCustomValidity("");
-        }
-    });
-}
 
 // APLICANDO A FORMATAÇÃO NOS CAMPOS
 
@@ -144,21 +66,11 @@ async function sendNewFornecedor() {
         return;
     }
 
-    try {
-        await postNewFornecedor(newFornecedor); // Supondo que postNewFornecedor seja assíncrono
-        alertMsg('Fornecedor cadastrado com sucesso!', 'success', 3000);
-        selectFornecedor.value = '';
-        getFornecedor(selectFornecedor);
-        containerRegisterForm.style.display = 'none';
-        btnFornecedorMenu.classList.remove('li-fornecedor-active');
-    } catch (error) {
-        alertMsg('Erro ao cadastrar fornecedor. Tente novamente.', 'error', 4000);
-        return;
-    }
-
-    // Limpa os campos
-    limparFormulario();
+     await postNewFornecedor(newFornecedor); // Chama a função para enviar os dados
+     
+      
 }
+
 
 // Função para limpar os campos
 function limparFormulario() {

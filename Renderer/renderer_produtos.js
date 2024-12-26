@@ -140,7 +140,6 @@ btnExit.addEventListener('click', (e) => {
 btnFornecedorMenu.addEventListener('click', (e) => {
     e.preventDefault();
     containerRegisterForm.style.display = 'flex';
-    renderizarDivFornecedor();
     btnFornecedorMenu.classList.add('li-fornecedor-active');
 });
 
@@ -242,7 +241,7 @@ document.querySelector('#btn-cadastrar-produto').addEventListener('click', async
         caminho_img_produto: relativePath,
     };
 
-    if (!produtoData.codigo_ean || !produtoData.nome_produto || !produtoData.categoria_id || !produtoData.grupo_produto_id) {
+    if (!produtoData.codigo_ean || !produtoData.nome_produto || !produtoData.categoria_id || !produtoData.grupo_produto_id || !produtoData.unidade_estoque_id) {
         alertMsg("Todos os campos obrigatórios devem ser preenchidos.", 'warning', 4000);
         return;
     }
