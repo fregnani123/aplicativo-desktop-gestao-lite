@@ -136,9 +136,9 @@ border: 1px solid black;
   }
 
 /* Estilos básicos para os botões */
-button {
+/* button {
     font-size: 1.2rem;
-    margin-left: 20px;
+    margin-left: -25px;
     cursor: pointer;
     background-color: transparent;
     border: 2px solid black;
@@ -148,9 +148,36 @@ button {
     display: flex;
     align-items: center;
     gap: 10px;
-    transition: transform 0.2s, background-color 0.2s, color 0.2s; /* Suaviza transformações */
+    transition: transform 0.2s, background-color 0.2s, color 0.2s; 
     flex-direction: column;
+    height: 120px;
+    margin-bottom: 10px;
+} */
+
+#salvar-cliente {
+    margin-top: 25px;
+    color: white;
+    width: 350px;
+    height: 50px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    background: #4CAF50;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    padding: 3px;
+    font-size: 1.1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+   flex-direction:row ;
 }
+
+#salvar-cliente:hover {
+    background: #45a049;
+}
+
 
 button img {
     width: 30px;

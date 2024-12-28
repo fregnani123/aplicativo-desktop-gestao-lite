@@ -4,7 +4,7 @@ const pool = require('../db');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../../config/.env') });
 const { initializeDB, insertSubGrupo, insertGrupo, insertTamanhoLetras, insertTamanhoNumeros,
-    insertUnidadeMassa, insertUnidadeVolume, insertUnidadeComprimento, insertUnidadeEstoque, insertFornecedorPadrao, insertCorProduto
+    insertUnidadeMassa, insertUnidadeVolume, insertUnidadeComprimento, insertUnidadeEstoque, insertFornecedorPadrao, insertCorProduto, insertClienteDefault
 
 } = require(path.join(__dirname, './initializeDB'));
 
@@ -32,6 +32,7 @@ async function ensureDBInitialized() {
             await insertUnidadeEstoque();
             await insertFornecedorPadrao();
             await insertCorProduto();
+            await insertClienteDefault();
             console.log('Dados iniciais inseridos com sucesso.');
         } catch (error) {
             console.error('Erro ao inserir dados iniciais nas tabelas:', error);
@@ -537,15 +538,15 @@ async function postNewSale(newSale) {
 };
 
 async function fetchVenda() {
-    await ensureDBInitialized(); // Certifica-se de que o banco foi inicializado
+    await ensureDBInitialized(); 
     let connection;
 
     try {
         connection = await pool.getConnection(); // Obtém conexão com o banco de dados
         const [rows, fields] = await connection.query(
-            'SELECT * FROM venda'
-        ); // Executa a consulta SQL
-        return rows; // Retorna os resultados da consulta
+            'SELECT * FROM venda ORDER BY venda_id DESC LIMIT 1'
+        ); // Obtém apenas a última venda
+        return rows[0]; // Retorna o único resultado
     } catch (error) {
         console.error('Erro ao conectar ao MySQL ou executar a consulta:', error);
         throw error; // Repassa o erro para o controlador
@@ -553,6 +554,7 @@ async function fetchVenda() {
         if (connection) connection.release(); // Libera a conexão com o banco
     }
 };
+
 
 async function postAtivacao(serial_key) {
     let connection;
@@ -692,9 +694,9 @@ async function postNewCliente(cliente) {
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
         const values = [
-            cliente.nome, cliente.cpf, cliente.data_nascimento || null, 
+            cliente.nome, cliente.cpf, cliente.data_nascimento || null,
             cliente.telefone || null, cliente.email || null, cliente.cep || null,
-            cliente.logradouro || null, cliente.numero || null, cliente.bairro || null, 
+            cliente.logradouro || null, cliente.numero || null, cliente.bairro || null,
             cliente.estado || null, cliente.cidade || null, cliente.observacoes || null
         ];
 
@@ -708,8 +710,135 @@ async function postNewCliente(cliente) {
     } finally {
         if (connection) connection.release();
     }
-}
+};
 
+async function historicoDeVendas({ startDate, endDate, clienteNome, produtoNome }) {
+    await ensureDBInitialized(); // Certifica-se de que o banco foi inicializado
+    let connection;
+
+    try {
+        connection = await pool.getConnection(); // Obtém conexão com o banco de dados
+
+        // Construindo a cláusula WHERE dinamicamente com base nos filtros
+        let whereConditions = [];
+        let queryParams = [];
+
+        if (startDate && endDate) {
+            whereConditions.push('v.data_venda BETWEEN ? AND ?');
+            queryParams.push(startDate, endDate);
+        }
+
+        if (clienteNome) {
+            whereConditions.push('c.nome LIKE ?');
+            queryParams.push(`%${clienteNome}%`);
+        }
+
+        if (produtoNome) {
+            whereConditions.push('p.nome_produto LIKE ?');
+            queryParams.push(`%${produtoNome}%`);
+        }
+
+        // Caso haja filtros, adiciona a cláusula WHERE à consulta
+        const whereClause = whereConditions.length > 0 ? 'WHERE ' + whereConditions.join(' AND ') : '';
+
+        // Removendo LIMIT e OFFSET se não forem passados
+        const query = `
+            SELECT 
+            v.data_venda, 
+            c.nome AS cliente_nome, 
+            v.total_liquido, 
+            v.numero_pedido,
+            iv.produto_id,
+            p.nome_produto AS produto_nome,
+            iv.preco,
+            iv.quantidade,
+            ue.estoque_nome AS unidade_estoque_nome
+            FROM 
+                venda v
+            LEFT JOIN 
+                cliente c 
+            ON 
+                v.cliente_id = c.cliente_id
+            LEFT JOIN 
+                item_venda iv
+            ON 
+                v.venda_id = iv.venda_id
+            LEFT JOIN 
+                produto p
+            ON 
+                iv.produto_id = p.produto_id
+            LEFT JOIN 
+                unidade_estoque ue
+            ON 
+            iv.unidade_estoque_id = ue.unidade_estoque_id;
+
+            ${whereClause};
+             `;
+
+        const [rows] = await connection.query(query, queryParams);
+
+        return rows; // Retorna os resultados da consulta
+    } catch (error) {
+        console.error('Erro ao conectar ao MySQL ou executar a consulta:', error);
+        throw error;
+    } finally {
+        if (connection) connection.release(); // Libera a conexão com o banco
+    }
+};
+
+
+async function getUltimoVenda() {
+    await ensureDBInitialized(); // Certifica-se de que o banco foi inicializado
+    let connection;
+
+    try {
+        connection = await pool.getConnection(); // Obtém conexão com o banco de dados
+
+        // Consulta para buscar o último pedido baseado na data mais recente
+        const query = `
+            SELECT 
+                v.data_venda, 
+                c.nome AS cliente_nome, 
+                v.total_liquido, 
+                v.numero_pedido,
+                iv.produto_id,
+                p.nome_produto AS produto_nome,
+                iv.preco,
+                iv.quantidade,
+                ue.estoque_nome AS unidade_estoque_nome
+            FROM 
+                venda v
+            LEFT JOIN 
+                cliente c 
+            ON 
+                v.cliente_id = c.cliente_id
+            LEFT JOIN 
+                item_venda iv
+            ON 
+                v.venda_id = iv.venda_id
+            LEFT JOIN 
+                produto p
+            ON 
+                iv.produto_id = p.produto_id
+            LEFT JOIN 
+                unidade_estoque ue
+            ON 
+                iv.unidade_estoque_id = ue.unidade_estoque_id
+            ORDER BY 
+                v.data_venda DESC
+            LIMIT 1; -- Busca apenas o registro mais recente
+        `;
+
+        const [rows] = await connection.query(query);
+
+        return rows[0]; // Retorna apenas o último pedido
+    } catch (error) {
+        console.error('Erro ao conectar ao MySQL ou executar a consulta:', error);
+        throw error;
+    } finally {
+        if (connection) connection.release(); // Libera a conexão com o banco
+    }
+}
 
 
 module.exports = {
@@ -735,6 +864,7 @@ module.exports = {
     getAtivacaoMysql,
     UpdateAtivacao,
     UpdateEstoque,
-    postNewCliente
-    // UpdateEstoque
+    postNewCliente,
+    historicoDeVendas,
+    getUltimoVenda
 };

@@ -27,6 +27,8 @@ Router.post('/insertAtivacao', controllers.postAtivacao);
 Router.patch('/UpdateAtivacao', controllers.UpdateAtivacao);
 Router.patch('/UpdateEstoque', controllers.UpdateEstoque);
 Router.post('/postNewCliente', controllers.postNewCliente);
+Router.get('/getHistoricoVendas', controllers.getHistoricoDeVenda);
+Router.get('/getUltimaVenda', controllers.getUltimaVenda);
 
 // Rota para obter licença
 Router.get('/getLicenca/:userID/:serialKey', getLicenca);

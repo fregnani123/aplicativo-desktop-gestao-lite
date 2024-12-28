@@ -111,6 +111,7 @@ a {
     box-sizing: border-box;
     border: 2px solid black;
     height: auto;
+    padding-bottom: 80px;
 }
 .div-form{
     border-left: 1px solid black;
@@ -145,11 +146,51 @@ a {
     border-top: 1px solid black;
 }
 #btn-cad-fornecedor{
-    width: 200px;
-    height:100px;
+    margin-top: 25px;
+    color: white;
+    width: 350px;
+    height: 50px;
+    justify-content: center;
     display: flex;
     align-items: center;
+    gap: 30px;
+    background: #4CAF50;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    padding: 3px;
+    font-size: 1.1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+   flex-direction:row ;
 }
+
+
+#btn-cadastrar-produto{
+    margin-top: 25px;
+    color: white;
+    width: 350px;
+    height: 50px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    background: #4CAF50;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    padding: 3px;
+    font-size: 1.1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+   flex-direction:row ;
+}
+
+#btn-cad-fornecedor:hover, #btn-cadastrar-produto:hover  {
+    background: #45a049;
+}
+
+
 #botaoSair {
     color: white;
     background-color: rgba(255, 255, 255, 0.005);
@@ -371,8 +412,9 @@ width: 100%;
     gap: 10px;
     
 }
+
 #fornecedor{
-    width: 392px;
+    width: 495px;
 }
 
 .input-select-wrapper input {
@@ -582,7 +624,7 @@ width: 2.5rem;
     margin-bottom: 10px;
 }
 
-.div-grupo,.div-subGrupo,.div-fornecedor{
+.div-grupo,.div-subGrupo{
     border: 1px solid black;
     padding: 10px;
     text-align: center;
@@ -652,18 +694,26 @@ width: 2.5rem;
 
 /* Estilo do container principal */
 .div-fornecedor {
+    display: flex;
+    flex-direction: column;
     width:1250px ;
     position:absolute;
-    margin: 0 auto;
-    height:550px;
+    height:auto;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border:1px solid black;
     border-radius: 10px;
-    padding-top: 50px;
-
+    border: 1px solid black;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    background: white;
+    align-items: center;
+    margin-top: 50px;
 }
 
-
+.menu-secundario{
+    width: 100%;
+}
 
 #razaoSocial{
     width:550px;

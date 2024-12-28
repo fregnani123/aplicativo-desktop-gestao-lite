@@ -136,7 +136,7 @@ async function initializeDB() {
                 data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             ) ENGINE = InnoDB;`,
-            
+
 
             `CREATE TABLE IF NOT EXISTS venda (
                 venda_id INT NOT NULL AUTO_INCREMENT,
@@ -156,15 +156,16 @@ async function initializeDB() {
                 FOREIGN KEY (venda_id) REFERENCES venda(venda_id)
             ) ENGINE = InnoDB;`,
 
-            `CREATE TABLE IF NOT EXISTS item_venda (
-                item_venda_id INT NOT NULL AUTO_INCREMENT,
-                venda_id INT NOT NULL,
-                produto_id INT NOT NULL,
-                preco DECIMAL(10,2) NOT NULL,
-                quantidade INT NOT NULL,
-                unidade_estoque_id INT NOT NULL,
-                PRIMARY KEY (item_venda_id)
-            ) ENGINE = InnoDB;`,
+            `CREATE TABLE IF NOT EXISTS item_venda ( 
+            item_venda_id INT NOT NULL AUTO_INCREMENT,
+            venda_id INT NOT NULL,
+            produto_id INT NOT NULL,
+            preco DECIMAL(10,2) NOT NULL,
+            quantidade INT NOT NULL,
+            unidade_estoque_id INT NOT NULL,
+            PRIMARY KEY (item_venda_id),
+            FOREIGN KEY (venda_id) REFERENCES venda(venda_id) 
+            )  ENGINE = InnoDB;`,
 
             // Criar Tabela produto
             `CREATE TABLE IF NOT EXISTS produto (
@@ -600,6 +601,40 @@ async function insertFornecedorPadrao() {
     }
 };
 
+ async function insertClienteDefault() {
+    let connection;
+    try {
+        connection = await pool.getConnection();
+
+        // Verifica se o cliente padrão já existe
+        const [existingRecords] = await connection.query(
+            "SELECT COUNT(*) as count FROM cliente WHERE nome = 'Consumidor Final'"
+        );
+        if (existingRecords[0].count > 0) {
+            console.log('Cliente Default já existe.');
+            return;
+        }
+
+        // Insere o cliente padrão
+        const query = `
+            INSERT INTO cliente (
+                nome, cpf, telefone, email, cep, estado, cidade
+            ) VALUES (
+                'Consumidor Final', '', '', '', '', '', ''
+            );
+        `;
+        const [result] = await connection.query(query);
+        console.log('Cliente Default inserido com sucesso.');
+        return result;
+    } catch (error) {
+        console.error('Erro ao inserir Cliente Default no MySQL:', error);
+        throw error;
+    } finally {
+        if (connection) connection.release();
+    }
+};
+
+
 module.exports = {
     initializeDB,
     insertGrupo,
@@ -611,5 +646,6 @@ module.exports = {
     insertUnidadeComprimento,
     insertUnidadeEstoque,
     insertFornecedorPadrao,
-    insertCorProduto
+    insertCorProduto,
+    insertClienteDefault
 };

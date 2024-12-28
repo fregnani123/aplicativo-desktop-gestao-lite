@@ -24,7 +24,9 @@ const {
     getAtivacaoMysql,
     UpdateAtivacao,
     UpdateEstoque,
-    postNewCliente
+    postNewCliente,
+    historicoDeVendas,
+    getUltimoVenda
 
 } = require(path.join(__dirname, '../../db/model/product'));
 
@@ -298,6 +300,42 @@ const controllers = {
         }
     },
 
+    getUltimaVenda: async (req, res) => {
+        try {
+            const ultimaVendas = await getUltimoVenda(); // Chama a função para buscar as vendas
+            res.json(ultimaVendas); // Retorna os dados como JSON
+        } catch (error) {
+            console.error('Erro ao buscar ultima Venda:', error);
+            res.status(500).json({ error: 'Erro ao buscar ultima Venda' });
+        }
+    },
+
+    getHistoricoDeVenda: async (req, res) => {
+        try {
+            // Extrai parâmetros de filtros e paginação da requisição
+            const { startDate, endDate, clienteNome, produtoNome} = req.query;
+    
+            // Verifica se os parâmetros de data estão presentes, caso contrário, define como NULL
+            const startDateFormatted = startDate || null;
+            const endDateFormatted = endDate || null;
+            const clienteNomeFormatted = clienteNome || null;
+            const produtoNomeFormatted = produtoNome || null;
+    
+            // Chama a função para buscar o histórico de vendas com os filtros
+            const historicoVendas = await historicoDeVendas({
+                startDate: startDateFormatted,
+                endDate: endDateFormatted,
+                clienteNome: clienteNomeFormatted,
+                produtoNome: produtoNomeFormatted,
+            });
+    
+            res.json(historicoVendas); // Retorna os dados como JSON
+        } catch (error) {
+            console.error('Erro ao buscar histórico de vendas:', error);
+            res.status(500).json({ error: 'Erro ao buscar histórico de vendas' });
+        }
+    },
+    
     
     postAtivacao: async (req, res) => {
         try {

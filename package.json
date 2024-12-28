@@ -26,33 +26,32 @@
     "mysql2": "^3.10.3"
   },
   "build": {
-    "appId": "com.gestaolite",
-    "productName": "Gestão Lite",
-    "directories": {
-      "output": "dist"
-    },
-    "files": [
-      "config/**/*",
-      "db/**/*",
-      "img/**/*",
-      "node_modules/**/*",
-      "public/**/*",
-      "Renderer/**/*",
-      "Server/**/*",
-      "services/**/*",
-      "src/**/*",
-      "style/**/*",
-      "package.json"
-    ],
-    "asar": true,
-    "win": {
-      "icon": "./style/img/menu-aberto.png"
-    },
-    "mac": {
-      "icon": "./style/img/menu-aberto.png"
-    },
-    "linux": {
-      "icon": "./style/img/menu-aberto.png"
-    }
+  "appId": "com.gestaolite",
+  "productName": "Gestão Lite",
+  "directories": {
+    "output": "dist"
+  },
+  "files": [
+    "config/**/*",
+    "db/**/*",
+    "img/**/*",
+    "node_modules/**/*",
+    "public/**/*",
+    "Renderer/**/*",
+    "Server/**/*",
+    "services/**/*",
+    "src/**/*",
+    "style/**/*",
+    "package.json"
+  ],
+  "win": {
+    "icon": "./style/img/menu-aberto.png"
+  },
+  "mac": {
+    "icon": "./style/img/menu-aberto.png"
+  },
+  "linux": {
+    "icon": "./style/img/menu-aberto.png"
   }
+}
 }
