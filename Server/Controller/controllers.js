@@ -26,7 +26,7 @@ const {
     UpdateEstoque,
     postNewCliente,
     historicoDeVendas,
-    getUltimoVenda
+    getVendasPorNumeroVenda
 
 } = require(path.join(__dirname, '../../db/model/product'));
 
@@ -76,7 +76,7 @@ const controllers = {
             res.status(500).json({ error: 'Erro ao buscar ativação' });
         }
     },
-    
+
     getSubGrupo: async (req, res) => {
         try {
             const grupoProduto = await getSubGrupo();
@@ -227,24 +227,24 @@ const controllers = {
         try {
             const fornecedorData = req.body; // Dados do fornecedor recebidos do frontend
             const newFornecedorId = await postNewFornecedor(fornecedorData); // Insere o fornecedor no banco
-    
+
             res.json({
                 message: 'Fornecedor inserido com sucesso!',
                 fornecedor_id: newFornecedorId
             });
         } catch (error) {
             console.error('Erro ao inserir o fornecedor:', error);
-    
+
             // Verifica se o erro possui uma mensagem personalizada (como para o CNPJ duplicado)
             if (error.message) {
                 return res.status(400).json({ error: error.message }); // Retorna a mensagem específica do erro
             }
-    
+
             // Retorna uma mensagem genérica para outros erros
             res.status(500).json({ error: 'Erro ao inserir o fornecedor.' });
         }
     },
-    
+
     postNewProductGrupo: async (req, res) => {
         try {
             const grupoData = req.body;
@@ -300,27 +300,34 @@ const controllers = {
         }
     },
 
-    getUltimaVenda: async (req, res) => {
+
+    getVendasPorNumeroVenda: async (req, res) => {
+        const { numero_pedido } = req.params;  // Pegando o numero_pedido da URL
         try {
-            const ultimaVendas = await getUltimoVenda(); // Chama a função para buscar as vendas
-            res.json(ultimaVendas); // Retorna os dados como JSON
+            // Chama a função que busca as vendas pelo numero_pedido
+            const vendas = await getVendasPorNumeroVenda(numero_pedido);
+            if (vendas.length === 0) {
+                return res.status(404).json({ message: 'Venda não encontrada' });
+            }
+            res.json(vendas);  // Retorna todos os itens da venda
         } catch (error) {
-            console.error('Erro ao buscar ultima Venda:', error);
-            res.status(500).json({ error: 'Erro ao buscar ultima Venda' });
+            console.error('Erro ao buscar vendas:', error);
+            res.status(500).json({ error: 'Erro ao buscar vendas' });
         }
     },
+
 
     getHistoricoDeVenda: async (req, res) => {
         try {
             // Extrai parâmetros de filtros e paginação da requisição
-            const { startDate, endDate, clienteNome, produtoNome} = req.query;
-    
+            const { startDate, endDate, clienteNome, produtoNome } = req.query;
+
             // Verifica se os parâmetros de data estão presentes, caso contrário, define como NULL
             const startDateFormatted = startDate || null;
             const endDateFormatted = endDate || null;
             const clienteNomeFormatted = clienteNome || null;
             const produtoNomeFormatted = produtoNome || null;
-    
+
             // Chama a função para buscar o histórico de vendas com os filtros
             const historicoVendas = await historicoDeVendas({
                 startDate: startDateFormatted,
@@ -328,15 +335,15 @@ const controllers = {
                 clienteNome: clienteNomeFormatted,
                 produtoNome: produtoNomeFormatted,
             });
-    
+
             res.json(historicoVendas); // Retorna os dados como JSON
         } catch (error) {
             console.error('Erro ao buscar histórico de vendas:', error);
             res.status(500).json({ error: 'Erro ao buscar histórico de vendas' });
         }
     },
-    
-    
+
+
     postAtivacao: async (req, res) => {
         try {
             const insertAtivacao = req.body;
@@ -345,7 +352,7 @@ const controllers = {
             res.json({
                 message: 'ativação inserido com sucesso!',
             });
-            
+
         } catch (error) {
             console.error('Erro ao inserir a ativação:', error);
             res.status(500).json({ error: 'Erro ao inserir a ativação.' });
@@ -356,7 +363,7 @@ const controllers = {
         try {
             const serialKeyData = req.body; // Renomear para evitar confusão
             await UpdateAtivacao(serialKeyData); // Chamar a função importada/definida
-    
+
             res.json({
                 message: 'UpdateAtivacao alterado com sucesso!',
             });
@@ -365,12 +372,12 @@ const controllers = {
             res.status(500).json({ error: 'Erro ao alterar UpdateAtivacao.' });
         }
     },
-    
+
     UpdateEstoque: async (req, res) => {
         try {
             const produto = req.body; // Renomear para evitar confusão
             await UpdateEstoque(produto); // Chamar a função importada/definida
-    
+
             res.json({
                 message: 'UpdateEstoque alterado com sucesso!',
             });
@@ -379,32 +386,32 @@ const controllers = {
             res.status(500).json({ error: 'Erro ao alterar UpdateAtivacao.' });
         }
     },
-    
+
     postNewCliente: async (req, res) => {
         try {
             const clienteData = req.body; // Dados do fornecedor recebidos do frontend
-            const newFornecedorId = await  postNewCliente(clienteData); // Insere o fornecedor no banco
-    
+            const newFornecedorId = await postNewCliente(clienteData); // Insere o fornecedor no banco
+
             res.json({
                 message: 'Cliente inserido com sucesso!',
                 fornecedor_id: newFornecedorId
             });
         } catch (error) {
             console.error('Erro ao inserir o Cliente:', error);
-    
+
             // Verifica se o erro possui uma mensagem personalizada (como para o CNPJ duplicado)
             if (error.message) {
                 return res.status(400).json({ error: error.message }); // Retorna a mensagem específica do erro
             }
-    
+
             // Retorna uma mensagem genérica para outros erros
             res.status(500).json({ error: 'Erro ao inserir o fornecedor.' });
         }
     },
 
 
-    };
+};
 
 
 
-    module.exports = controllers;
+module.exports = controllers;

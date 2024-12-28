@@ -20,7 +20,7 @@ const apiEndpoints = {
     postNewCliente: 'http://localhost:3000/postNewCliente',
     updateEstoque: 'http://localhost:3000/UpdateEstoque',
     // getHistoricoVendas: 'http://localhost:3000/getHistoricoVendas',
-    getUltimaVendas: 'http://localhost:3000/getUltimaVenda',
+    getVendaPorNumeroPedido: 'http://localhost:3000/getVendaPorNumeroPedido'
 };
 
 
@@ -55,7 +55,7 @@ async function postNewFornecedor(fornecedorData) {
         // Limpa as opções atuais do select e redefine a primeira como "Selecione"
         selectFornecedor.innerHTML = '<option value="">Selecione</option>';
         containerRegisterForm.style.display = 'none';
-        
+
         return data;
 
     } catch (error) {
@@ -123,7 +123,7 @@ async function getunidadeEstoqueVendas(id, renderer) {
         });
 }
 
-function getProduto(descricaoElement, codigoDeBarras, precoVendaElement, unidadeEstoqueID ) {
+function getProduto(descricaoElement, codigoDeBarras, precoVendaElement, unidadeEstoqueID) {
     const getOneProduct = `${apiEndpoints.findOneProduct}/${codigoDeBarras}`;
     fetch(getOneProduct, {
         method: 'GET',
@@ -234,6 +234,7 @@ function getunidadeDeMassa(renderer) {
         });
 }
 
+
 function getTamanhoNumeros(renderer) {
     const getTamanho = apiEndpoints.getTamanhoNumeros;
 
@@ -342,11 +343,11 @@ async function postVendaDb(vendaData) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(vendaData), // Envia os dados de venda no corpo da requisição
-        });    
-                 //Chama o numero do pedido para evitar erros na sincronização na próxima venda.
-             setTimeout(()=>{
-                getVenda(numeroPedido)
-             },6000);
+        });
+        //Chama o numero do pedido para evitar erros na sincronização na próxima venda.
+        setTimeout(() => {
+            getVenda(numeroPedido)
+        }, 6000);
 
         // Verifica se a resposta foi bem-sucedida
         if (!response.ok) {
@@ -363,7 +364,6 @@ async function postVendaDb(vendaData) {
         console.error('Erro ao registrar a venda:', error);
     }
 };
-
 
 
 async function getVenda(inputElement) {
@@ -481,4 +481,53 @@ async function postNewCliente(clienteData) {
         throw error;
     }
 };
+
+
+function getUltimoPedidoImprimir(numero_pedido_imprimir) {
+    const ultimoPedidoImprimir = `http://localhost:3000/getVendaPorNumeroPedido/${numero_pedido_imprimir}`;
+
+    fetch(ultimoPedidoImprimir)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Limpa o conteúdo anterior do cupom
+            impressaoCupom.innerHTML = '';
+
+            // Adiciona os detalhes gerais da venda
+            const header = `
+                <div>
+                    <h3>Detalhes da Venda</h3>
+                    <p>Data: ${data[0].data_venda}</p>
+                    <p>Cliente: ${data[0].cliente_nome}</p>
+                    <p>Número do Pedido: ${data[0].numero_pedido}</p>
+                    <p>Total: R$ ${data[0].total_liquido}</p>
+                </div>
+                <hr>
+            `;
+            impressaoCupom.innerHTML += header;
+
+            // Exibe cada item separadamente
+            data.forEach(venda => {
+                const itemHTML = `
+                    <div>
+                        <p>Produto: ${venda.produto_nome}</p>
+                        <p>Quantidade: ${venda.quantidade} ${venda.unidade_estoque_nome}</p>
+                        <p>Preço Unitário: R$ ${parseFloat(venda.preco).toFixed(2)}</p>
+                    </div>
+                    <hr>
+                `;
+                impressaoCupom.innerHTML += itemHTML;
+                impressaoCupom.style.display = 'block'
+            });
+        })
+        .catch(error => {
+            console.error('Erro ao buscar dados:', error);
+            impressaoCupom.innerHTML = `<p style="color: red;">Erro ao carregar os dados do pedido.</p>`;
+        });
+}
+
 

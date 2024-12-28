@@ -27,6 +27,8 @@ const CartaoDebito = document.getElementById('Cartao-Debito');
 const CartaoCredito = document.getElementById('Cartao-Credito');
 const squareInputs = document.querySelector('.square-inputs-get');
 const imgProduto = document.querySelector('.img-produto');
+const impressaoCupom = document.getElementById('impressaoCupom');
+
 
 // Estado do carrinho
 let carrinho = [];

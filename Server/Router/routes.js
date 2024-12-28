@@ -28,7 +28,7 @@ Router.patch('/UpdateAtivacao', controllers.UpdateAtivacao);
 Router.patch('/UpdateEstoque', controllers.UpdateEstoque);
 Router.post('/postNewCliente', controllers.postNewCliente);
 Router.get('/getHistoricoVendas', controllers.getHistoricoDeVenda);
-Router.get('/getUltimaVenda', controllers.getUltimaVenda);
+Router.get('/getVendaPorNumeroPedido/:numero_pedido', controllers.getVendasPorNumeroVenda);
 
 // Rota para obter licença
 Router.get('/getLicenca/:userID/:serialKey', getLicenca);

@@ -35,22 +35,32 @@ async function FinalizarVenda() {
 
         // Altera o estoque e o vendido
         await alteraEstoqueEVendido(carrinho);
-       console.log('Estoque atualizado com sucesso!', 'success', 6000);
+        console.log('Estoque atualizado com sucesso!', 'success', 6000);
+
+        // Busca os dados do pedido registrado e imprime
+        await imprimirVenda(numeroPedido.value);
+
     } catch (error) {
         console.error('Erro ao processar a venda ou atualizar estoque:', error);
         alertMsg('Erro ao registrar a venda ou atualizar o estoque. Tente novamente.', 'error', 4000);
-        return;
     }
+};
 
-    // Limpa os campos
-    limparCampos();
-}
+async function imprimirVenda(numeroPedido) {
+    try {
+        getUltimoPedidoImprimir(numeroPedido);
+
+        // Limpa os campos
+        limparCampos();
+        
+    } catch (error) {
+        console.error('Erro ao buscar o último pedido para impressão:', error);
+    }
+};
 
 // Função que limpa os campos ao registrar a venda
 function limparCampos() {
-    // Limpa todos os inputs e campos relacionados0
-    
-    
+
     setTimeout(() => {
         dataVenda.value = '';
         codigoEan.value = '';
@@ -79,10 +89,10 @@ function limparCampos() {
         //renderiza input numero pedido - data da venda - cliente
         squareInputs.style.display = 'none';
         console.log('Todos os campos foram limpos.');
-    
+
         // Redefine o foco para o campo de código EAN
         codigoEan.focus();
     }, 6000);
-   
+
 }
 

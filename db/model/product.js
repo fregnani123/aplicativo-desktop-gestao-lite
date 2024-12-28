@@ -787,14 +787,13 @@ async function historicoDeVendas({ startDate, endDate, clienteNome, produtoNome 
 };
 
 
-async function getUltimoVenda() {
-    await ensureDBInitialized(); // Certifica-se de que o banco foi inicializado
+async function getVendasPorNumeroVenda(numeroPedido) {
     let connection;
 
     try {
         connection = await pool.getConnection(); // Obtém conexão com o banco de dados
 
-        // Consulta para buscar o último pedido baseado na data mais recente
+        // Consulta para buscar todos os itens de uma venda com base no numero_pedido
         const query = `
             SELECT 
                 v.data_venda, 
@@ -809,36 +808,29 @@ async function getUltimoVenda() {
             FROM 
                 venda v
             LEFT JOIN 
-                cliente c 
-            ON 
-                v.cliente_id = c.cliente_id
+                cliente c ON v.cliente_id = c.cliente_id
             LEFT JOIN 
-                item_venda iv
-            ON 
-                v.venda_id = iv.venda_id
+                item_venda iv ON v.venda_id = iv.venda_id
             LEFT JOIN 
-                produto p
-            ON 
-                iv.produto_id = p.produto_id
+                produto p ON iv.produto_id = p.produto_id
             LEFT JOIN 
-                unidade_estoque ue
-            ON 
-                iv.unidade_estoque_id = ue.unidade_estoque_id
-            ORDER BY 
-                v.data_venda DESC
-            LIMIT 1; -- Busca apenas o registro mais recente
+                unidade_estoque ue ON iv.unidade_estoque_id = ue.unidade_estoque_id
+            WHERE 
+                v.numero_pedido = ?;
         `;
 
-        const [rows] = await connection.query(query);
+        const [rows] = await connection.query(query, [numeroPedido]);
 
-        return rows[0]; // Retorna apenas o último pedido
+        return rows; // Retorna todos os itens dessa venda
     } catch (error) {
-        console.error('Erro ao conectar ao MySQL ou executar a consulta:', error);
+        console.error('Erro ao buscar vendas por número do pedido:', error);
         throw error;
     } finally {
-        if (connection) connection.release(); // Libera a conexão com o banco
+        if (connection) connection.release(); // Libera a conexão
     }
 }
+
+
 
 
 module.exports = {
@@ -866,5 +858,5 @@ module.exports = {
     UpdateEstoque,
     postNewCliente,
     historicoDeVendas,
-    getUltimoVenda
+    getVendasPorNumeroVenda
 };
