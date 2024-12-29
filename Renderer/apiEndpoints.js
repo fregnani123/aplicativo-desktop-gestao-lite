@@ -23,6 +23,44 @@ const apiEndpoints = {
     getVendaPorNumeroPedido: 'http://localhost:3000/getVendaPorNumeroPedido'
 };
 
+// Função para envio do produto e imagem
+async function postNewProdutoWithImage(produtoData, selectedFile) {
+    const apiEndpoint = apiEndpoints.postNewProduto;
+
+    const formData = new FormData();
+    formData.append('image', selectedFile);
+    formData.append('produtoData', JSON.stringify(produtoData)); // Dados do produto como string JSON
+
+    try {
+        const response = await fetch(apiEndpoint, {
+            method: 'POST',
+            body: formData,
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('Produto e imagem adicionados com sucesso:', data);
+
+        // Exibe a mensagem de sucesso
+        alertMsg('Produto adicionados com sucesso!', 'success', 4000);
+
+        
+        limparCampos();
+        limparImagem();
+    } catch (error) {
+
+        console.error('Erro ao adicionar produto:', error);
+        alertMsg(`${error}`, 'error', 4000);
+
+        // Retorna imediatamente para evitar limpar os campos e exibir a imagem de sucesso
+        return;
+    }
+};
+
 
 async function postNewFornecedor(fornecedorData) {
     const postNewFornecedorData = apiEndpoints.postNewFornecedor;
@@ -529,5 +567,4 @@ function getUltimoPedidoImprimir(numero_pedido_imprimir) {
             impressaoCupom.innerHTML = `<p style="color: red;">Erro ao carregar os dados do pedido.</p>`;
         });
 }
-
 
