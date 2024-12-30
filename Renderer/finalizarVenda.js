@@ -24,6 +24,8 @@ async function FinalizarVenda() {
         itens: carrinhoId,
         cliente_id: clienteId.value,
         total_liquido: totalLiquido.toFixed(2),
+        valor_recebido: valorPago.toFixed(2),
+        troco: Math.max(0, valorPago - totalLiquido),
         numero_pedido: numeroPedido.value,
         pagamentos: getFormasDePagamento(),
     };

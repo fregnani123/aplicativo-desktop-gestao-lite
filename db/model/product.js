@@ -477,15 +477,18 @@ async function postNewSale(newSale) {
 
         // Inserir dados na tabela `venda`
         const insertSaleQuery = `
-            INSERT INTO venda (data_venda, cliente_id, total_liquido, numero_pedido) 
-            VALUES (?, ?, ?, ?)
+            INSERT INTO venda (data_venda, cliente_id, total_liquido,valor_recebido,troco, numero_pedido) 
+            VALUES (?, ?, ?, ?, ?, ?)
         `;
         const saleValues = [
             newSale.data_venda,
             newSale.cliente_id,
             newSale.total_liquido,
+            newSale.valor_recebido,
+            newSale.troco, // Define troco como 0 caso esteja indefinido ou vazio
             newSale.numero_pedido
         ];
+        
 
         const [saleResult] = await connection.query(insertSaleQuery, saleValues);
         const vendaId = saleResult.insertId;

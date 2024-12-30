@@ -143,6 +143,8 @@ async function initializeDB() {
                 data_venda VARCHAR(10) NOT NULL,
                 cliente_id INT NULL,
                 total_liquido DECIMAL(10,2) NOT NULL,
+                valor_recebido DECIMAL(10,2) NOT NULL,
+                troco DECIMAL(10,2) NOT NULL,
                 numero_pedido VARCHAR(50) NOT NULL,
                 PRIMARY KEY (venda_id)
             ) ENGINE = InnoDB;`,

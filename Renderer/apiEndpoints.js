@@ -413,7 +413,17 @@ async function getVenda(inputElement) {
         if (!response.ok) {
             throw new Error(`Erro na resposta da API: ${response.status} ${response.statusText}`);
         }
-        const rawResponse = await response.json();
+
+        // Verifica se a resposta está vazia
+        const rawResponseText = await response.text();
+        if (!rawResponseText) {
+            console.warn('Nenhuma venda encontrada. Definindo número do pedido como 1.');
+            inputElement.value = '1';
+            return;
+        }
+
+        // Converte a resposta para JSON
+        const rawResponse = JSON.parse(rawResponseText);
 
         // Verifica se o objeto contém a propriedade venda_id
         if (rawResponse && typeof rawResponse === 'object' && rawResponse.venda_id) {
@@ -435,7 +445,7 @@ async function getVenda(inputElement) {
         console.error('Erro ao buscar vendas:', error);
         inputElement.value = '1'; // Valor padrão em caso de erro
     }
-}
+};
 
 
 // async function getHistoricoVendas(filters) {
