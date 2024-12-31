@@ -48,7 +48,7 @@ async function postNewProdutoWithImage(produtoData, selectedFile) {
         // Exibe a mensagem de sucesso
         alertMsg('Produto adicionados com sucesso!', 'success', 4000);
 
-        
+
         limparCampos();
         limparImagem();
     } catch (error) {
@@ -161,6 +161,83 @@ async function getunidadeEstoqueVendas(id, renderer) {
         });
 }
 
+// const path = require('path');
+// const { app } = require('electron');
+
+// function getProduto(descricaoElement, codigoDeBarras, precoVendaElement, unidadeEstoqueID) {
+//     const getOneProduct = `${apiEndpoints.findOneProduct}/${codigoDeBarras}`;
+//     fetch(getOneProduct, {
+//         method: 'GET',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//     })
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error('Produto não encontrado');
+//             }
+//             return response.json();
+//         })
+//         .then(data => {
+//             console.log("Dados recebidos:", data);
+
+//             if (Array.isArray(data) && data.length > 0 && data[0].nome_produto) {
+//                 const produto = data[0];
+
+//                 descricaoElement.value = produto.nome_produto;
+//                 precoVendaElement.value = produto.preco_venda;
+//                 unidadeEstoqueID = produto.unidadeEstoqueID;
+//                 produtoIdGlobal = produto.produto_id;
+//                 unIDGlobal = produto.unidade_estoque_id;
+//                 quantidade_estoqueGlobal = produto.quantidade_estoque;
+//                 quantidade_vendidoGlobal = produto.quantidade_vendido;
+//                 pathIgmGlobal = produto.caminho_img_produto;
+
+//                 let value = precoVendaElement.value;
+//                 value = value.replace(/\D/g, '');
+//                 value = (parseFloat(value) / 100).toFixed(2);
+//                 value = value.replace('.', ',');
+//                 value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+//                 precoVendaElement.value = value;
+
+//                 // Caminho absoluto da imagem
+//                 const imagePath = pathIgmGlobal ? pathIgmGlobal : 'produto.png'; // Caso a imagem não exista, usa a padrão
+
+//                 // Caminho absoluto da imagem fora do pacote, no seu caso
+//                 const imgPath = `file:///C:/Users/Fregnani/Desktop/teste/${imagePath}`; // Aqui a imagem deve estar fora do asar
+
+//                 // Verificar se a imagem está carregando corretamente
+//                 imgProduto.src = imgPath;  // Usando file:// para acessar o arquivo local
+
+//                 // Se a imagem não estiver carregando, tente usar um caminho local padrão
+//                 imgProduto.onload = function() {
+//                     alertMsg("Imagem carregada com sucesso", 'success', 5000);
+//                 };
+
+//                 imgProduto.onerror = function() {
+//                     const erroMsg = `Erro ao carregar a imagem de: ${imgPath}, usando imagem padrão`;
+//                     alertMsg(erroMsg, 'error', 7000);  // Exibe o erro com o caminho no alerta
+//                     imgProduto.src = path.join(__dirname, '../style/img/produto.png'); // Caminho de fallback
+//                 };
+
+//                 // Chama a função `getunidadeEstoqueVendas` aqui, garantindo que unidadeEstoqueID já foi atualizado
+//                 getunidadeEstoqueVendas(Number(produto.unidade_estoque_id), unidadeEstoqueRender);
+//             } else {
+//                 console.error('Propriedade nome_produto ou produto_id não encontrada na resposta da API');
+//                 descricaoElement.value = '';
+//                 precoVendaElement.value = '';
+//                 descricaoElement.placeholder = 'Produto não encontrado';
+//             }
+//         })
+//         .catch(error => {
+//             console.error('Erro ao buscar dados:', error);
+//         });
+// }
+
+// renderer.js
+const { ipcRenderer } = require('electron');
+const path = require('path');
+
 function getProduto(descricaoElement, codigoDeBarras, precoVendaElement, unidadeEstoqueID) {
     const getOneProduct = `${apiEndpoints.findOneProduct}/${codigoDeBarras}`;
     fetch(getOneProduct, {
@@ -181,7 +258,6 @@ function getProduto(descricaoElement, codigoDeBarras, precoVendaElement, unidade
             if (Array.isArray(data) && data.length > 0 && data[0].nome_produto) {
                 const produto = data[0];
 
-
                 descricaoElement.value = produto.nome_produto;
                 precoVendaElement.value = produto.preco_venda;
                 unidadeEstoqueID = produto.unidadeEstoqueID;
@@ -190,14 +266,34 @@ function getProduto(descricaoElement, codigoDeBarras, precoVendaElement, unidade
                 quantidade_estoqueGlobal = produto.quantidade_estoque;
                 quantidade_vendidoGlobal = produto.quantidade_vendido;
                 pathIgmGlobal = produto.caminho_img_produto;
+
                 let value = precoVendaElement.value;
                 value = value.replace(/\D/g, '');
                 value = (parseFloat(value) / 100).toFixed(2);
                 value = value.replace('.', ',');
                 value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
                 precoVendaElement.value = value;
-                imgProduto.src = !pathIgmGlobal ? '../style/img/produto.png' :
-                    `../img/produtos/${pathIgmGlobal}`;
+
+                // Solicitar o caminho APPDATA do processo principal
+                ipcRenderer.invoke('get-app-data-path').then(appDataPath => {
+                    const imgDir = path.join(appDataPath, 'electronmysql', 'img', 'produtos');
+                    const imagePath = pathIgmGlobal ? pathIgmGlobal : 'produto.png'; // Caso a imagem não exista, usa a padrão
+                    const imgPath = path.join(imgDir, imagePath); // Caminho final da imagem
+
+                    // Verificar se a imagem está carregando corretamente
+                    imgProduto.src = `file://${imgPath}`;  // Usando file:// para acessar o arquivo local
+
+                    // Se a imagem não estiver carregando, tente usar um caminho local padrão
+                    imgProduto.onload = function() {
+                        console.log("Imagem carregada com sucesso");
+                    };
+
+                    imgProduto.onerror = function() {
+                        const erroMsg = `Erro ao carregar a imagem de: ${imgPath}, usando imagem padrão`;
+                        console.log(erroMsg);  // Exibe o erro com o caminho no alerta
+                        imgProduto.src = path.join(__dirname, '../style/img/produto.png'); // Caminho de fallback
+                    };
+                });
 
                 // Chama a função `getunidadeEstoqueVendas` aqui, garantindo que unidadeEstoqueID já foi atualizado
                 getunidadeEstoqueVendas(Number(produto.unidade_estoque_id), unidadeEstoqueRender);
@@ -212,7 +308,6 @@ function getProduto(descricaoElement, codigoDeBarras, precoVendaElement, unidade
             console.error('Erro ao buscar dados:', error);
         });
 }
-
 
 function getFornecedor(renderer) {
     const getFornecedor = apiEndpoints.getFornecedor;

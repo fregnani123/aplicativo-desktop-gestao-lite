@@ -1,5 +1,6 @@
-const path = require('path');
 const multer = require('multer');
+const path = require('path');
+const { app } = require('electron'); // Importando o Electron para acessar caminhos dinâmicos
 
 const {
     postAtivacao,
@@ -32,18 +33,28 @@ const {
 
 
 
-// Configuração do multer
+// Define o caminho de destino para salvar as imagens
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, path.join(__dirname, '../../img/produtos')); // Caminho para salvar imagens
+        // Aqui usamos app.getPath('userData') para garantir que estamos usando um diretório acessível
+        const uploadPath = path.join(app.getPath('userData'), 'img', 'produtos');
+        
+        // Crie a pasta caso ela não exista
+        const fs = require('fs');
+        if (!fs.existsSync(uploadPath)) {
+            fs.mkdirSync(uploadPath, { recursive: true });
+        }
+
+        cb(null, uploadPath); // Caminho para salvar as imagens
     },
     filename: function (req, file, cb) {
-        const uniqueFilename = file.originalname; // Nome único para evitar conflitos
-        cb(null, uniqueFilename);
+        // Usar o nome original do arquivo ou criar um nome único
+        const uniqueFilename = file.originalname; // Adiciona um timestamp para evitar conflitos
+        cb(null, uniqueFilename); // Define o nome do arquivo
     }
 });
 
-const upload = multer({ storage: storage }).single('image'); // Usar o campo "image" do formulário
+const upload = multer({ storage: storage }).single('image'); // Usa o campo "image" do formulário para upload
 
 const controllers = {
 

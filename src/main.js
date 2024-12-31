@@ -1,7 +1,11 @@
-const { app, BrowserWindow, Menu } = require('electron');
+const { app, ipcMain, BrowserWindow, Menu } = require('electron');
 const path = require('path');
 const startServer = require(path.join(__dirname, '../Server/server'));
 
+// Registra o manipulador uma única vez para evitar duplicação
+ipcMain.handle('get-app-data-path', () => {
+    return process.env.APPDATA;  // Retorna o caminho APPDATA para o renderer
+});
 
 let mainWindow;
 
