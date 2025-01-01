@@ -121,7 +121,6 @@ function inputMaxCaracteres(input, maxLength) {
     });
 }
 
-
 // Função para formatar o CNPJ (ex: XX.XXX.XXX/XXXX-XX)
 function formatarCNPJ(input) {
     input.addEventListener('input', function () {

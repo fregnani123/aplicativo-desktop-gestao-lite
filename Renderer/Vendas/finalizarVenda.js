@@ -50,6 +50,7 @@ async function FinalizarVenda() {
 
 async function imprimirVenda(numeroPedido) {
     try {
+        
         getUltimoPedidoImprimir(numeroPedido);
 
         // Limpa os campos

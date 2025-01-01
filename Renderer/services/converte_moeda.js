@@ -11,15 +11,6 @@ function converteMoeda(value) {
     return value; // Retorna o valor formatado
 }
 
-
-// Formata valor em moeda brasileira
-function converteMoeda(valor) {
-    return valor
-        .toFixed(2)
-        .replace('.', ',')
-        .replace(/\d(?=(\d{3})+,)/g, '$&.');
-}
-
 // Formata valor com separador de milhar
 function formatCurrency(value) {
     return value

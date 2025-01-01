@@ -488,7 +488,7 @@ async function postNewSale(newSale) {
             newSale.troco, // Define troco como 0 caso esteja indefinido ou vazio
             newSale.numero_pedido
         ];
-        
+
 
         const [saleResult] = await connection.query(insertSaleQuery, saleValues);
         const vendaId = saleResult.insertId;
@@ -541,7 +541,7 @@ async function postNewSale(newSale) {
 };
 
 async function fetchVenda() {
-    await ensureDBInitialized(); 
+    await ensureDBInitialized();
     let connection;
 
     try {
@@ -799,27 +799,44 @@ async function getVendasPorNumeroVenda(numeroPedido) {
         // Consulta para buscar todos os itens de uma venda com base no numero_pedido
         const query = `
             SELECT 
-                v.data_venda, 
-                c.nome AS cliente_nome, 
-                v.total_liquido, 
-                v.numero_pedido,
-                iv.produto_id,
-                p.nome_produto AS produto_nome,
-                iv.preco,
-                iv.quantidade,
-                ue.estoque_nome AS unidade_estoque_nome
+            v.data_venda, 
+            c.nome AS cliente_nome, 
+            v.total_liquido,
+            v.valor_recebido,
+            v.troco,
+            v.numero_pedido,
+            iv.produto_id,
+            p.codigo_ean,
+            p.nome_produto AS produto_nome,
+            iv.preco,
+            iv.quantidade,
+            ue.estoque_nome AS unidade_estoque_nome,
+            fp.tipo_pagamento,
+            fp.valor AS valor_pagamento
             FROM 
                 venda v
             LEFT JOIN 
-                cliente c ON v.cliente_id = c.cliente_id
+                cliente c 
+            ON 
+                v.cliente_id = c.cliente_id
             LEFT JOIN 
-                item_venda iv ON v.venda_id = iv.venda_id
+                item_venda iv
+            ON 
+                v.venda_id = iv.venda_id
             LEFT JOIN 
-                produto p ON iv.produto_id = p.produto_id
+                produto p
+            ON 
+                iv.produto_id = p.produto_id
             LEFT JOIN 
-                unidade_estoque ue ON iv.unidade_estoque_id = ue.unidade_estoque_id
+                unidade_estoque ue
+            ON 
+                iv.unidade_estoque_id = ue.unidade_estoque_id
+            LEFT JOIN 
+                forma_pagamento fp
+            ON 
+                v.venda_id = fp.venda_id
             WHERE 
-                v.numero_pedido = ?;
+            v.numero_pedido = ?; 
         `;
 
         const [rows] = await connection.query(query, [numeroPedido]);

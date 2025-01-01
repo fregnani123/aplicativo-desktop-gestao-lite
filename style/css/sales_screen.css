@@ -64,7 +64,7 @@ label {
 
 /* Estilo geral do corpo */
 body {
-    background-color: var(--background-color);
+    background-color: var(--header-background-color);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -439,19 +439,18 @@ a:hover {
     align-items: center;
     box-sizing: border-box;
     overflow: hidden;
-
+  
 }
 
 .square-img-produto {
-    width: 220px;
-    height: 250px;
+    width: 400px;
     border-right: 2px solid rgb(0, 0, 0);
     border-bottom: 2px solid rgb(0, 0, 0);
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 5px;
-    margin-top: 50px;
+    margin-top: 0px;
 }
 
 .form-container {
@@ -499,14 +498,10 @@ input[type="file"]::file-selector-button {
 }
 
 .img-produto {
-    width: 200px;
+    width: 260px;
     height: auto;
-    margin-top: 5px;
     margin-left: 10px;
-}
-
-.square-img-produto {
-    height: 210px;
+    margin-bottom: 5px;
 }
 
 .img-disquete {
@@ -527,6 +522,7 @@ input[type="file"]::file-selector-button {
     position: relative;
     background: white;
 }
+
 
 .container-register {
     position: absolute;
@@ -689,22 +685,23 @@ input[type="file"]::file-selector-button {
 
 .container-sales {
     position: absolute;
-    /* margin-top: 50px;
-     height: 550px;
-    width: 1220px; */
-    width: 90%;
-    height: 630px;
+    width: 98%;
+    height: 95%;
+    display: flex;
+    flex-direction: column;
     /* background-color: var(--header-background-color); */
     border: 1px solid rgb(255, 255, 255);
     box-sizing: border-box;
     justify-content: center;
+    align-items: center;
+    background-color: white;
 
 }
 
 /* tamanho barra do titulo e relogio da tela de vendas */
 .square-1 {
     display: flex;
-    width: 1325px;
+    width: 98%;
     height: 100px;
     margin: auto;
     margin-top: 10px;
@@ -822,7 +819,7 @@ label {
     display: flex;
     align-items: center;
     width: 100%;
-    height: 120vh;
+    height:auto;
     margin: auto;
     justify-content: center;
     background-color: rgba(255, 0, 0, 0);
@@ -956,14 +953,15 @@ label {
 
 .square-3 {
     display: flex;
-    margin: auto;
     justify-content: center;
-    margin: 30px;
+    width: 98%;
+    height: 550px;
+    /* background-color: red; */
 }
 
 .square-3-1 {
     display: block;
-    width: 650px;
+    width: 49%;
     height: 400px;
     margin-left: 10px;
 
@@ -974,7 +972,7 @@ label {
 }
 
 .square-3-2 {
-    width: 650px;
+    width: 49%;
     height: 400px;
     justify-content: center;
     margin-left: 10px;
@@ -1054,7 +1052,7 @@ label {
     margin-top: 5px;
     display: flex;
     gap: 15px;
-    height: 72px;
+    height: 90px;
 }
 
 #troco {
@@ -1072,7 +1070,7 @@ label {
     background-color: var(--header-background-color);
     color: white;
     border-radius: 10px;
-
+    padding-top: 40px;
 }
 #total-liquido::placeholder {
     color: white;
@@ -1080,9 +1078,8 @@ label {
 
 .total {
     color: white;
-    font-size: 1.3rem;
+    font-size: 1.7rem;
     font-weight: normal;
-
 }
 
 #total-pago,
@@ -1111,15 +1108,19 @@ label {
 }
 
 #total-liquido {
+    /* background-color: red; */
     background-color: var(--header-background-color);
     text-align: right;
-    font-size: 3rem;
+    font-size: 5rem;
+    display: flex;
     border: none;
     color: white;
+    height: 100px;
 }
 
 .total-liquido {
-    font-size: 2.0rem;
+    font-size: 2.5rem;
+    display: flex;
     background-color: var(--header-background-color);
     height: 100px;
     color: white;
@@ -1182,7 +1183,7 @@ label {
 }
 
 .spanDescricao-1 {
-    width: 420px;
+    width: 502px;
     border: 1px solid #ccc;
     padding: 0 20px;
     box-sizing: border-box;
@@ -1194,9 +1195,8 @@ label {
     /* background-color: red; */
     display: flex;
     align-items: center;
-    margin-top: 10px;
-    justify-content: center;
     margin-top: 30px;
+    justify-content: center;
     border: 1px solid rgb(2, 2, 2);
     background-color: var(--header-background-color);
     border-bottom-left-radius: 10px;
@@ -1207,14 +1207,13 @@ label {
 .div-atalhos {
     display: flex;
     width: auto;
-    height: 160px;
+    height: 233px;
     background: var(--header-background-color);
     text-align: center;
     justify-content: center;
     color: white;
     margin-top: 5px;
     gap: 20px;
-    padding: 10px;
     padding-bottom: 0px;
 }
 
@@ -1226,8 +1225,8 @@ label {
     justify-content: center;
     text-align: center;
     align-items: center;
-    height: 160px;
-    font-size: 1.1rem;
+    height:auto;
+    font-size: 1.2rem;
 }
 
 .p-atalhos {

@@ -94,6 +94,7 @@ a:hover {
         0 3px 6px rgba(0, 0, 0, 0.1);
 }
 
+
 li img {
     width: 55px;
     height: auto;
@@ -148,4 +149,9 @@ li img {
 
 .footer a:hover {
     text-decoration: underline;
+}
+
+/* Menu oculto, disponível para futuras novas do painel opções */
+.menu-item-6{
+    z-index: -10;
 }

@@ -1,14 +1,15 @@
 const menuPainel1 = [
     { id: '1', texto: 'Painel de controle', src: '../style/img/painel-de-controle (1).png', to: '' },
-    { id: '2', texto: 'Realizar venda', src: '../style/img/carrinho-de-compras.png', to: '../public/sales_screen.html' },
+    { id: '2', texto: 'Realizar venda', src: '../style/img/carrinho-de-compras.png', to: '../public/tela_vendas.html' },
     { id: '3', texto: 'Detalhes de venda', src: '../style/img/detalhes vendas.png', to: '../public/detalhe_vendas.html' },
-    { id: '4', texto: 'Produto', src: '../style/img/cadastro de produtos.png', to: '../public/register_product.html' },
+    { id: '4', texto: 'Produto', src: '../style/img/cadastro de produtos.png', to: '../public/registrar_produto.html' },
     { id: '5', texto: 'Cadastro de Fornecedor', src: '../style/img/pacotes.png', to: '../public/fornecedor.html' },
 ];
 const menuPainel2 = [
-    { id: '6', texto: 'Excluir Produto', src: '../style/img/excluir-produto.png', to: '../public/excluir-produtos.html' },
-    { id: '7', texto: 'Cadastro de cliente', src: '../style/img/cadastroCliente.png', to: '../public/register_client.html' },
-    { id: '8', texto: 'Controle de entrada ', src: '../style/img/caixa-de-entrada.png', to: '../public/controle-entrada.html' },
+    /* Menu id:6 oculto, disponível para futuras novas do painel opções */
+    { id: '6', texto: '', src: '', to: '' },
+    { id: '7', texto: 'Cadastro de cliente', src: '../style/img/cadastroCliente.png', to: '../public/registrar_cliente.html' },
+    { id: '8', texto: 'Controle de entrada ', src: '../style/img/caixa-de-entrada.png', to: '../public/menu.html' },
     { id: '9', texto: 'Suporte', src: '../style/img/suporte.png', to: 'https://api.whatsapp.com/send?phone=5548996607600' },
     { id: '10', texto: 'Sair', src: '../style/img/sair.png', to: '../public/index.html' },
 ];

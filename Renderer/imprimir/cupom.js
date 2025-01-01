@@ -395,3 +395,4 @@ function getUltimoPedidoImprimir(numero_pedido_imprimir) {
 //             console.error('Erro ao buscar dados:', error);
 //         });
 // }
+
