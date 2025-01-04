@@ -726,61 +726,94 @@ async function historicoDeVendas({ startDate, endDate, clienteNome, produtoNome 
         let whereConditions = [];
         let queryParams = [];
 
+        // Adiciona o filtro de data de início e fim se existirem
         if (startDate && endDate) {
             whereConditions.push('v.data_venda BETWEEN ? AND ?');
             queryParams.push(startDate, endDate);
         }
 
+        // Filtro por nome do cliente
         if (clienteNome) {
             whereConditions.push('c.nome LIKE ?');
             queryParams.push(`%${clienteNome}%`);
         }
 
+        // Filtro por nome do produto
         if (produtoNome) {
             whereConditions.push('p.nome_produto LIKE ?');
             queryParams.push(`%${produtoNome}%`);
         }
 
+        // Filtrando vendas de hoje
+        const today = new Date();
+        const formattedDate = today.toISOString().split('T')[0]; // Formata como 'YYYY-MM-DD'
+        console.log("Data formatada de hoje:", formattedDate); // Log para depuração
+
+        // Adicionando o filtro de data de hoje com STR_TO_DATE para formato 'DD/MM/YYYY'
+        whereConditions.push('STR_TO_DATE(v.data_venda, "%d/%m/%Y") = ?');
+        queryParams.push(formattedDate);
+
         // Caso haja filtros, adiciona a cláusula WHERE à consulta
         const whereClause = whereConditions.length > 0 ? 'WHERE ' + whereConditions.join(' AND ') : '';
 
-        // Removendo LIMIT e OFFSET se não forem passados
+        console.log("Cláusula WHERE:", whereClause); // Log para depuração
+
+        // Consultar o total de vendas e as formas de pagamento
+        const totalQuery = `
+        SELECT   
+            SUM(v.total_liquido) AS total_vendas,
+            fp.tipo_pagamento, 
+            SUM(fp.valor) AS total_pago
+        FROM 
+            venda v
+        LEFT JOIN 
+            forma_pagamento fp 
+        ON 
+            v.venda_id = fp.venda_id
+        ${whereClause}
+        GROUP BY fp.tipo_pagamento;
+        `;
+        
+        // Consultar as vendas detalhadas
         const query = `
             SELECT 
-            v.data_venda, 
-            c.nome AS cliente_nome, 
-            v.total_liquido, 
-            v.numero_pedido,
-            iv.produto_id,
-            p.nome_produto AS produto_nome,
-            iv.preco,
-            iv.quantidade,
-            ue.estoque_nome AS unidade_estoque_nome
+                v.data_venda, 
+                c.nome AS cliente_nome, 
+                v.total_liquido,
+                v.valor_recebido, 
+                v.troco,
+                v.numero_pedido,
+                iv.produto_id,
+                p.codigo_ean AS codigo_ean,
+                p.nome_produto AS produto_nome,
+                iv.preco,
+                iv.quantidade,
+                ue.estoque_nome AS unidade_estoque_nome,
+                fp.tipo_pagamento, 
+                fp.valor AS valor_pagamento
             FROM 
                 venda v
             LEFT JOIN 
-                cliente c 
-            ON 
-                v.cliente_id = c.cliente_id
+                cliente c ON v.cliente_id = c.cliente_id
             LEFT JOIN 
-                item_venda iv
-            ON 
-                v.venda_id = iv.venda_id
+                item_venda iv ON v.venda_id = iv.venda_id
             LEFT JOIN 
-                produto p
-            ON 
-                iv.produto_id = p.produto_id
+                produto p ON iv.produto_id = p.produto_id
             LEFT JOIN 
-                unidade_estoque ue
-            ON 
-            iv.unidade_estoque_id = ue.unidade_estoque_id;
+                unidade_estoque ue ON iv.unidade_estoque_id = ue.unidade_estoque_id
+            LEFT JOIN 
+                forma_pagamento fp ON v.venda_id = fp.venda_id
+            ${whereClause}
+            ORDER BY v.data_venda DESC;
+        `;
+        
+        console.log("Consulta detalhada:", query); // Log para depuração
 
-            ${whereClause};
-             `;
+        // Execute both queries: total query and detailed query without pagination
+        const [totalRows] = await connection.query(totalQuery, queryParams); // Total de vendas e formas de pagamento
+        const [rows] = await connection.query(query, queryParams); // Vendas detalhadas sem paginação
 
-        const [rows] = await connection.query(query, queryParams);
-
-        return rows; // Retorna os resultados da consulta
+        return { totalRows, rows }; // Retorna os resultados da consulta
     } catch (error) {
         console.error('Erro ao conectar ao MySQL ou executar a consulta:', error);
         throw error;
@@ -788,6 +821,7 @@ async function historicoDeVendas({ startDate, endDate, clienteNome, produtoNome 
         if (connection) connection.release(); // Libera a conexão com o banco
     }
 };
+
 
 
 async function getVendasPorNumeroVenda(numeroPedido) {

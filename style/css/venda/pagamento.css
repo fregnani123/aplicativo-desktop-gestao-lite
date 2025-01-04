@@ -1,0 +1,123 @@
+.payment-form-section {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 37.5rem; /* 600px em rem */
+    z-index: 999;
+    padding: 1.25rem; /* 20px em rem */
+    background-color: #fff;
+    border-radius: 0.5rem; /* 8px em rem */
+    box-shadow: 0 0.25rem 0.375rem rgba(0, 0, 0, 0.1); /* 4px 6px em rem */
+}
+
+.div-pagamento {
+    width: 100%;
+    padding: 1.25rem; /* 20px em rem */
+    border: 1px solid #ccc;
+    border-radius: 0.5rem; /* 8px em rem */
+    background-color: #f9f9f9;
+}
+
+.titulo-choose-item,
+.titulo-choose-item-2 {
+    font-size: 1.2rem; /* 1.2em em rem */
+    margin-bottom: 0.625rem; /* 10px em rem */
+    color: #333;
+}
+
+.div-choose {
+    margin-bottom: 0.9375rem; /* 15px em rem */
+}
+
+.opcoes-pagamento {
+    display: flex;
+    justify-content: space-between;
+}
+
+.opcoes-pagamento div {
+    width: 45%;
+}
+
+.opcoes-pagamento p {
+    font-size: 1rem; /* 1em em rem */
+    color: #666;
+}
+
+.pagamento-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.pagamento-default {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem; /* 10px em rem */
+}
+
+.pagamento-default-1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pagamento-default-1 label {
+    font-size: 1rem; /* 1em em rem */
+    color: #333;
+    width: 12.5rem; /* 200px em rem */
+}
+
+.pagamento-default-1 input {
+    padding: 0.5rem; /* 8px em rem */
+    font-size: 1rem; /* 1em em rem */
+    border: 1px solid #ccc;
+    border-radius: 0.25rem; /* 4px em rem */
+    width: 100%;
+}
+
+.pagamento-default-1 input:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+#div-valorDinheiro,
+#div-PIX,
+#div-Cartao-Debito,
+#div-Cartao-Credito {
+    display: none;
+}
+
+#div-valorDinheiro.active,
+#div-PIX.active,
+#div-Cartao-Debito.active,
+#div-Cartao-Credito.active {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    background-color: white;
+    box-shadow: 0 0.25rem 0.375rem rgba(0, 0, 0, 0.1); /* 4px 6px em rem */
+    padding: 0.625rem; /* 10px em rem */
+    border-radius: 0.3125rem; /* 5px em rem */
+}
+
+.titulo-dinheiro,
+.titulo-pix,
+.titulo-cartao-c,
+.titulo-cartao-d,
+.titulo-pix,
+.finalizar {
+    font-size: 1.1rem; /* 1.1em em rem */
+    margin-bottom: 0.3125rem; /* 5px em rem */
+}
+
+#div-valorDinheiro input,
+#div-PIX input,
+#div-Cartao-Debito input,
+#div-Cartao-Credito input {
+    max-width: 18.75rem; /* 300px em rem */
+}

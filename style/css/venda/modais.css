@@ -1,0 +1,102 @@
+/* Estilo geral para os modais */
+.div-qtd,
+.confirmation-clear,
+.exit-venda,
+.remove-item,
+.payment-section {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40%; /* Usando % para tornar o modal responsivo */
+    max-width: 500px; /* Define um tamanho máximo */
+    padding: 1.25rem; /* 20px em rem */
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 0.3125rem; /* 5px em rem */
+    box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1); /* 2px x 5px */
+    display: none; /* Mantém oculto por padrão */
+    z-index: 10;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 1rem; /* 16px em rem */
+}
+
+/* Estilo para quando as divs estão visíveis */
+.div-qtd.active,
+.confirmation-clear.active,
+.exit-venda.active,
+.remove-item.active,
+.payment-section.active {
+    display: block; /* Mostra a div */
+}
+
+/* Estilo básico para o texto */
+label, 
+p {
+    font-size: 1.2rem; /* 14px em rem */
+    color: #333;
+    margin-bottom: 0; /* 10px em rem */
+}
+
+/* Estilo para os inputs */
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: 0.5rem; /* 8px em rem */
+    margin: 0.625rem 0; /* 10px em rem */
+    border: 1px solid #ccc;
+    border-radius: 0.1875rem; /* 3px em rem */
+    font-size: 1.1rem; /* 14px em rem */
+    text-align: center;
+}
+
+/* Botões de confirmação */
+.payment-options p,
+.confirmation-clear span {
+    display: inline-block;
+    font-size: 0.875rem; /* 14px em rem */
+    color: #007bff;
+    cursor: pointer;
+    margin: 0.3125rem; /* 5px em rem */
+}
+
+/* Botão ativo (hover) */
+.payment-options p:hover,
+.confirmation-clear span:hover {
+    color: #0056b3;
+}
+
+/* Estilo para o fundo escurecido */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 9;
+    display: none; /* Invisível por padrão */
+}
+
+/* Mostra o fundo escurecido quando ativo */
+.overlay.active {
+    display: block;
+}
+
+/* Animação de entrada */
+@keyframes popIn {
+    0% {
+        transform: translate(-50%, -50%) scale(0.9);
+        opacity: 0;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Efeito ao passar o mouse */
+.div-qtd:hover {
+    box-shadow: 0 0.75rem 1.5625rem rgba(0, 0, 0, 0.5); /* 12px x 25px */
+}

@@ -11,11 +11,11 @@ const numeroPedido = document.querySelector('#numero-pedido');
 const inputTotalLiquido = document.querySelector('#total-liquido');
 const inputTotalPago = document.querySelector('#total-pago');
 const unidadeEstoqueRender = document.querySelector('#medidaEstoque');
-const divSelecionarQtd = document.querySelector('.square-2');
+const divSelecionarQtd = document.querySelector('.div-qtd');
 const textSelecionarQtd = document.querySelector('.qtd-p-1');
-const alertLimparVenda = document.querySelector('.square-2-2-2');
-const alertExit = document.querySelector('.square-2-2-2-2');
-const alertRemoverItem = document.querySelector('.square-2-2-2-3');
+const alertLimparVenda = document.querySelector('.confirmation-clear');
+const alertExit = document.querySelector('.exit-venda');
+const alertRemoverItem = document.querySelector('.remove-item');
 const formaPagamento = document.querySelector('.square-2-2-2-4');
 const inputExitVenda = document.querySelector('#exit-key');
 const inputExcluiItem = document.querySelector('#numero-Item');
@@ -25,7 +25,7 @@ const valorDinheiro = document.getElementById('valorDinheiro');
 const PIX = document.getElementById('PIX');
 const CartaoDebito = document.getElementById('Cartao-Debito');
 const CartaoCredito = document.getElementById('Cartao-Credito');
-const squareInputs = document.querySelector('.square-inputs-get');
+const info_container = document.querySelector('.info-container');
 const imgProduto = document.querySelector('.img-produto');
 const impressaoCupom = document.getElementById('impressaoCupom');
 
@@ -36,166 +36,101 @@ let carrinho = [];
 // Define foco inicial
 codigoEan.focus();
 
-// Aguarda o carregamento completo do DOM antes de executar a função
+
 document.addEventListener('DOMContentLoaded', () => {
     const numeroPedido = document.querySelector('#numero-pedido');
     getVenda(numeroPedido);
-});
+    const carrinho = [];
+    const codigoEan = document.querySelector('#codigo');
+    const inputQtd = document.querySelector('#input-qtd');
+    const alertLimparVenda = document.querySelector('.confirmation-clear');
+    const alertExit = document.querySelector('.exit-venda');
+    const alertRemoverItem = document.querySelector('.remove-item');
+    const divSelecionarQtd = document.querySelector('.div-qtd');
+    const divPagamento = document.querySelector('.payment-form-section');
+  
+    codigoEan.focus();
 
+    document.addEventListener('keydown', (event) => {
+        const visibleDivs = [alertRemoverItem, divPagamento, alertLimparVenda, divSelecionarQtd, alertExit].filter(div => div.style.display === 'block');
 
-// Gerencia eventos de teclado
-document.addEventListener('keydown', function (event) {
-    const visibleDivs = [
-        alertRemoverItem,
-        formaPagamento,
-        alertLimparVenda,
-        divSelecionarQtd,
-        alertExit,
-    ].filter(div => div.style.display === 'flex'); // Verifica quais estão visíveis
+        switch (event.key) {
+            case 'F1':
+                if (visibleDivs.length === 0) {
+                    divSelecionarQtd.style.display = 'block';
+                    inputQtd.focus();
+                }
+                break;
 
-    const divPagamento = document.querySelector('.div-pagamento');
+            case 'F3':
+                if (visibleDivs.length === 0) {
+                    divPagamento.style.display = 'flex';
+                    valorDinheiro.focus();
+                }
+                break;
 
-    if (event.key === 'Enter') {
-        event.preventDefault();
-        if (alertRemoverItem.style.display === 'flex') {
-            inputExcluiItem.focus();
-        } else if (divSelecionarQtd.style.display === 'flex') {
-            divSelecionarQtd.style.display = 'none';
-            if (inputQtd.value === '') {
-                textSelecionarQtd.innerHTML = '';
-            } else {
-                textSelecionarQtd.innerHTML = `${inputQtd.value}x`;
-            }
-            codigoEan.focus();
+            case 'F5':
+                if (visibleDivs.length === 0) {
+                    alertRemoverItem.style.display = 'block';
+                }
+                break;
+
+            case 'F12':
+                if (visibleDivs.length === 0) {
+                    alertLimparVenda.style.display = 'block';
+                }
+                break;
+
+            case 'Escape':
+                if (visibleDivs.length === 0) {
+                    alertExit.style.display = 'block';
+                }
+                break;
+
+            case 'Enter':
+                if (alertRemoverItem.style.display === 'block') {
+                    const inputExcluiItem = document.querySelector('#numero-Item');
+                    inputExcluiItem.focus();
+                } else if (divSelecionarQtd.style.display === 'block') {
+                    divSelecionarQtd.style.display = 'none';
+                    codigoEan.focus();
+                }
+                break;
+
+            case 'c':
+            case 'C':
+                if (alertRemoverItem.style.display === 'block') {
+                    const inputExcluiItem = document.querySelector('#numero-Item');
+                    const index = parseInt(inputExcluiItem.value, 10) - 1;
+                    if (!isNaN(index) && index >= 0 && index < carrinho.length) {
+                        carrinho.splice(index, 1);
+                        console.log(`Item ${index + 1} removido.`);
+                    }
+                    inputExcluiItem.value = '';
+                    inputExcluiItem.focus();
+                }
+                break;
+
+            case 's':
+            case 'S':
+                if (alertLimparVenda.style.display === 'block') {
+                    carrinho.length = 0; // Limpa o carrinho
+                    alertLimparVenda.style.display = 'none';
+                }
+                break;
+
+            case 'n':
+            case 'N':
+                if (alertLimparVenda.style.display === 'block') {
+                    alertLimparVenda.style.display = 'none';
+                }
+                break;
+
+            default:
+                break;
         }
-    };
-
-    if (event.key.toLowerCase() === 'c') {
-        const index = parseInt(inputExcluiItem.value, 10) - 1;
-        if (!isNaN(index) && index >= 0 && index < carrinho.length) {
-            // Remove o item usando splice
-            const itemRemovido = carrinho.splice(index, 1);
-            mensagemDiv.innerHTML = `Item removido: ${index + 1}`
-            mensagemDiv.style.color = 'green';
-            imgProduto.src = '../style/img/produto.png';
-            rendererCarrinho(carrinho, ulDescricaoProduto, createSpan);
-            calCarrinho(
-                carrinho,
-                converteMoeda,
-                inputTotalLiquido,
-                textSelecionarQtd
-            );
-            inputExcluiItem.value = '';
-            inputExcluiItem.focus();
-        } else {
-            console.log('Índice inválido.');
-        }
-        console.log('Estado atual do carrinho:', carrinho);
-    }
-
-    switch (event.key) {
-        case 'F1':
-            if (visibleDivs.length === 0) {
-                event.preventDefault();
-                divSelecionarQtd.style.display = 'flex';
-                inputQtd.focus();
-            }
-            break;
-            
-        case 'F3':
-            if (visibleDivs.length === 0) {
-                formaPagamento.style.display = 'flex';
-                valorDinheiro.focus();
-                valorDinheiro.value = '0,00';
-                PIX.value = '0,00';
-                CartaoCredito.value = '0,00';
-                CartaoDebito.value = '0,00';
-            }
-            if (carrinho.length === 0) {
-                divPagamento.style.display = 'none';
-                alertMsg('Não é possível inserir o pagamento, o carrinho está vazio.', 'warning', 3000);
-            } else {
-                divPagamento.style.display = 'flex';
-            }
-            break;
-
-        case 'F4': // Finaliza a venda
-            if (event.key) {
-                event.preventDefault();
-                FinalizarVenda();
-            }
-            break;
-
-        case 'F5':
-            if (visibleDivs.length === 0) {
-                alertRemoverItem.style.display = 'flex';
-                inputExcluiItem.focus();
-            }
-            break;
-
-        case 'F12':
-            if (visibleDivs.length === 0) {
-                event.preventDefault();
-                alertLimparVenda.style.display = 'flex';
-            }
-            break;
-
-        case 's':
-        case 'S': // Limpa tudo quando pressionar 'S' ou 'sim'
-            if (alertLimparVenda.style.display === 'flex') {
-                limparCampos(); // Função que limpa carrinho e inputs
-                alertLimparVenda.style.display = 'none'; // Fecha o alerta
-            }
-            break;
-
-        case 'n':
-        case 'N': // Fecha o alerta ao pressionar 'N' ou 'não'
-            if (alertLimparVenda.style.display === 'flex') {
-                alertLimparVenda.style.display = 'none'; // Fecha o alerta sem limpar
-            }
-            break;
-
-        case 'Escape':
-            if (visibleDivs.length === 0) {
-                event.preventDefault();
-                alertExit.style.display = 'flex';
-                inputExitVenda.focus();
-            }
-            break;
-
-        case 'Enter': // Adiciona ao carrinho ou esconde divs visíveis
-            codigoEan.focus();
-            if (visibleDivs.length > 0) {
-                visibleDivs.forEach(div => div.style.display = 'none');
-                inputTroco.value = '0,00';
-                inputTotalPago.value = '0,00';
-                codigoEan.focus(); // Retorna o foco para o campo de código de barras
-            } else {
-                event.preventDefault();
-                pushProdutoCarrinho({
-                    carrinho,
-                    codigoEan,
-                    descricao,
-                    precoVenda,
-                    inputQtd,
-                    unidadeEstoqueRender,
-                    rendererCarrinho,
-                    ulDescricaoProduto,
-                    createSpan,
-                    resetInputs,
-                    // calCarrinho,
-                    converteMoeda,
-                    inputTotalLiquido,
-                    textSelecionarQtd,
-                    getVenda,
-                    numeroPedido,
-                    alertLimparVenda,
-                });
-            }
-            break;
-    }
+    });
 });
-
 
 // Valida entrada do código EAN
 codigoEan.addEventListener('input', (e) => {
@@ -214,7 +149,7 @@ codigoEan.addEventListener('input', (e) => {
                 textSelecionarQtd
             );
             //renderiza input numero pedido - data da venda - cliente
-            squareInputs.style.display = 'flex';
+            info_container.style.display = 'flex';
         }, 100);
     } else if (e.target.value.length === 0) resetInputs();
     getVenda(numeroPedido.value);

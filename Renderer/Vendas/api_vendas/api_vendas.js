@@ -10,100 +10,75 @@ const apiEndpoints = {
 };
 
 
-async function getunidadeEstoqueVendas(id, renderer) {
-    const getEstoque = apiEndpoints.getunidadeEstoque;
+async function getunidadeEstoqueVendas(id) {
+    try {
+        const response = await fetch(apiEndpoints.getunidadeEstoque);
+        const data = await response.json();
 
-    fetch(getEstoque)
-        .then(response => response.json())
-        .then(data => {
-            data.forEach((unidadeEstoque) => {
-                if (id === unidadeEstoque.unidade_estoque_id)
-                    renderer.value = unidadeEstoque.estoque_nome;
-            });
-            console.log(data);
-        })
-        .catch(error => {
-            console.error('Erro ao buscar dados:', error);
-        });
-}
+        const unidadeEstoque = data.find(unidade => unidade.unidade_estoque_id === id);
+        return unidadeEstoque ? unidadeEstoque.estoque_nome : null;
+    } catch (error) {
+        console.error('Erro ao buscar unidade de estoque:', error);
+        return null;
+    }
+};
 
 const { ipcRenderer } = require('electron');
 const path = require('path');
 
 
-function getProduto(descricaoElement, codigoDeBarras, precoVendaElement, unidadeEstoqueID) {
-    const getOneProduct = `${apiEndpoints.findOneProduct}/${codigoDeBarras}`;
-    fetch(getOneProduct, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Produto não encontrado');
-            }
-            return response.json();
-        })
-        .then(data => {
-            
-            console.log("Dados recebidos:", data);
+async function getProduto(descricaoElement, codigoDeBarras, precoVendaElement) {
+    try {
+        const getOneProduct = `${apiEndpoints.findOneProduct}/${codigoDeBarras}`;
+        const response = await fetch(getOneProduct, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
 
-            if (Array.isArray(data) && data.length > 0 && data[0].nome_produto) {
-                const produto = data[0];
+        if (!response.ok) throw new Error('Produto não encontrado');
 
-                descricaoElement.value = produto.nome_produto;
-                precoVendaElement.value = produto.preco_venda;
-                unidadeEstoqueID = produto.unidadeEstoqueID;
-                produtoIdGlobal = produto.produto_id;
-                unIDGlobal = produto.unidade_estoque_id;
-                quantidade_estoqueGlobal = produto.quantidade_estoque;
-                quantidade_vendidoGlobal = produto.quantidade_vendido;
-                pathIgmGlobal = produto.caminho_img_produto;
+        const data = await response.json();
+        console.log("Dados recebidos:", data);
 
-                let value = precoVendaElement.value;
-                value = value.replace(/\D/g, '');
-                value = (parseFloat(value) / 100).toFixed(2);
-                value = value.replace('.', ',');
-                value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
-                precoVendaElement.value = value;
+        if (Array.isArray(data) && data.length > 0 && data[0].nome_produto) {
+            const produto = data[0];
 
-                  // Chama a função `getunidadeEstoqueVendas` aqui, garantindo que unidadeEstoqueID já foi atualizado
-                  getunidadeEstoqueVendas(Number(produto.unidade_estoque_id), unidadeEstoqueRender);
+            const estoqueNome = await getunidadeEstoqueVendas(produto.unidade_estoque_id);
+            unidadeEstoqueRender.value = estoqueNome || 'Não disponível';
 
-                // Solicitar o caminho APPDATA do processo principal
-                ipcRenderer.invoke('get-app-data-path').then(appDataPath => {
-                    const imgDir = path.join(appDataPath, 'electronmysql', 'img', 'produtos');
-                    const imagePath = pathIgmGlobal ? pathIgmGlobal : 'produto.png'; // Caso a imagem não exista, usa a padrão
-                    const imgPath = path.join(imgDir, imagePath); // Caminho final da imagem
+            descricaoElement.value = produto.nome_produto;
+            precoVendaElement.value = produto.preco_venda;
 
-                    // Verificar se a imagem está carregando corretamente
-                    imgProduto.src = `file://${imgPath}`;  // Usando file:// para acessar o arquivo local
+            produtoIdGlobal = produto.produto_id;
+            unIDGlobal = produto.unidade_estoque_id;
+            quantidade_estoqueGlobal = produto.quantidade_estoque;
+            quantidade_vendidoGlobal = produto.quantidade_vendido;
+            pathIgmGlobal = produto.caminho_img_produto;
 
-                    // Se a imagem não estiver carregando, tente usar um caminho local padrão
-                    imgProduto.onload = function() {
-                        console.log("Imagem carregada com sucesso");
-                    };
+            // Formata o preço
+            let value = precoVendaElement.value.replace(/\D/g, '');
+            value = (parseFloat(value) / 100).toFixed(2).replace('.', ',').replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+            precoVendaElement.value = value;
 
-                    imgProduto.onerror = function() {
-                        const erroMsg = `Erro ao carregar a imagem de: ${imgPath}, usando imagem padrão`;
-                        console.log(erroMsg);  // Exibe o erro com o caminho no alerta
-                        imgProduto.src = path.join(__dirname, '../style/img/produto.png'); // Caminho de fallback
-                    };
-                });
+            // Solicitar o caminho APPDATA
+            const appDataPath = await ipcRenderer.invoke('get-app-data-path');
+            const imgDir = path.join(appDataPath, 'electronmysql', 'img', 'produtos');
+            const imagePath = pathIgmGlobal || 'produto.png';
+            const imgPath = path.join(imgDir, imagePath);
 
-              
-            } else {
-                console.error('Propriedade nome_produto ou produto_id não encontrada na resposta da API');
-                descricaoElement.value = '';
-                precoVendaElement.value = '';
-                descricaoElement.placeholder = 'Produto não encontrado';
-            }
-        })
-        .catch(error => {
-            console.error('Erro ao buscar dados:', error);
-        });
-}
+            imgProduto.src = `file://${imgPath}`;
+            imgProduto.onload = () => console.log("Imagem carregada com sucesso");
+            imgProduto.onerror = () => {
+                console.log(`Erro ao carregar a imagem de: ${imgPath}, usando imagem padrão`);
+                imgProduto.src = path.join(__dirname, '../style/img/produto.png');
+            };
+        } else {
+            console.error('Propriedade nome_produto ou produto_id não encontrada na resposta da API');
+            descricaoElement.value = '';
+            precoVendaElement.value = '';
+            descricaoElement.placeholder = 'Produto não encontrado';
+        }
+    } catch (error) {
+        console.error('Erro ao buscar dados:', error);
+    }
+};
 
 
 async function postVendaDb(vendaData) {

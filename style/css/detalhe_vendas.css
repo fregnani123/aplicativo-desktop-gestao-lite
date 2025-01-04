@@ -457,3 +457,140 @@ input[type="file"]::before {
 width: 2.5rem;
 }
 
+/* styles.css */
+.titulo-relatorio{
+    font-size: 1.3rem;
+    position:absolute;
+    width: 100;
+    height: 10px;
+}
+.filtros {
+    background: var(--header-background-color);
+    width: 50%; /* Reduzi a largura para 40% */
+    height: auto; /* A altura é ajustada automaticamente com base no conteúdo */
+    flex-shrink: 0;
+    color: #fff;
+    padding: 15px;
+    box-sizing: border-box;
+    overflow: hidden; /* Removido o scroll */
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espaçamento entre os elementos */
+    position: relative;
+}
+.total-filtradas{
+    padding-top: 20px;
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.filtros h3 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 0px;
+}
+
+.filtros .sale-total {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 1px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.filtros .sale-total p {
+    margin: 5px 0;
+}
+
+.filtros .sale-total h3 {
+    color: #f1f1f1;
+}
+
+.filtros .sale-total p strong {
+    color: #ffeb3b;
+}
+.container {
+    display: flex;
+    flex-direction: row; /* Garante alinhamento horizontal */
+    width: 100%;
+    height: 88%;
+    box-sizing: border-box;
+    overflow: hidden;
+    border: 2px solid black;
+    padding: 20px;
+    position: relative;
+    border-radius: 10px;
+}
+
+.sales-history {
+    width: 50%;
+    gap: 10px;
+    justify-content: right;
+    margin-right: 10px;
+    flex: 1; /* Faz com que esta div ocupe o restante do espaço disponível */
+    width: auto; /* Ajusta automaticamente */
+}
+
+.vendas-filtradas{
+    display: flex;
+    flex-direction: row; /* Garante alinhamento horizontal */
+    width: auto;
+    height: 100%;
+    box-sizing: border-box;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-left: 30px;
+}
+.sale-card {
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.sale-card p {
+    margin: 5px 0;
+    font-size: 14px;
+    border-bottom: 2px dotted #0000003f; /* Adiciona a borda inferior pontilhada */
+}
+
+.sale-card span {
+    font-weight: bold;
+}
+
+.container-detalhes-vendas {
+    margin-top: 50px;
+    height: 90%;
+    width: 95%;
+    max-width: 100%; /* Não ultrapassa a largura do contêiner pai */
+    max-height: 100%; /* Não ultrapassa a altura do contêiner pai */
+    box-sizing: border-box;
+};
+
+.div-detalhes {
+    display: flex;
+    justify-content: right;  
+    align-items: center;      
+    width: 100%;
+    position: absolute;
+    border: 1px solid ;
+}
+
+.img-detalhes {
+    margin-left: 150px;
+    width: 210px;             /* Largura da imagem definida */
+    height: auto;             /* Mantém a proporção da imagem */
+    padding: 10px;
+    margin-top: 30px;
+    border-left: 2px solid black;
+    border-bottom: 2px solid black;
+    margin-left: 50px;
+    margin-top: 50px
+}
+

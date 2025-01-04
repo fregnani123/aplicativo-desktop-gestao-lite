@@ -6,8 +6,8 @@ function rendererCarrinho(carrinho, ulDescricaoProduto, createSpan) {
         produto.classList.add('li-produto');
 
         // Criação dos elementos usando a função createSpan
-        const indexProduto = createSpan('spanIndex', index + 1);
-        const codigoSpan = createSpan('spanEan', item.codigoEan);
+        const indexProduto = createSpan('spanIndex',`Item ${index + 1}`);
+        const codigoSpan = createSpan('spanEan', `Cod. ${item.codigoEan}`);
         const descricaoSpan = createSpan(
             'spanDescricao',
             `${item.descricao} R$${item.preco} x ${item.Qtd}${item.unidadeEstoqueID}`

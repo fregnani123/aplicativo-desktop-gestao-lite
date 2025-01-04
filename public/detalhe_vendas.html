@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../style/css/detalhe_vendas.css">
-    <title>Document</title>
+    <title>Gerenciamento de Vedas</title>
 </head>
+
 <body>
     <ul class="teste"></ul>
     <header>
@@ -16,11 +18,30 @@
         </nav>
     </header>
     <div class="container-detalhes-vendas">
-       <div>
-        
-       </div>
+        <ul class="menu-secundario" id="menu-secundario-fornecedor">
+            <li>
+                <a id="btn-flex">Histórico de Vendas</a>
+            </li>
+
+        </ul>
+        <div class="container">
+            <div class="filtros">
+                <p class='titulo-relatorio'>Relatório Vendas de Hoje</p>
+                <div class="total-filtradas"></div>
+            </div>
+            <div class="vendas-filtradas">
+                <div id="sales-history" class="sales-history">
+                    <!-- Dados da API serão inseridos aqui -->
+                </div>
+            </div>
+            <div class="div-detalhes">
+                <img class="img-detalhes" src="../style/img/detalhes vendas.png" alt="">
+            </div>
+        </div>
     </div>
-    
+
 </body>
-<script src="../Renderer/renderer_menu.js"></script>
+<script src="../Renderer/Menu/renderer_menu.js"></script>
+<script src="../Renderer/detalhe_vendas/detalhes_vendas.js"></script>
+
 </html>
