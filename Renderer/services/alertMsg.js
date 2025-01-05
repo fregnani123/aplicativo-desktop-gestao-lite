@@ -27,12 +27,12 @@ function alertMsg(msg, type = 'info',time) {
 
     // Define o texto da mensagem
     alertDiv.textContent = msg;
-
+    
     // Adiciona o alerta ao corpo do documento
     document.body.appendChild(alertDiv);
-
-    // Remove o alerta após 3 segundos
+    
     setTimeout(() => {
         document.body.removeChild(alertDiv);
+        codigoEan.focus();
     }, time);
 }

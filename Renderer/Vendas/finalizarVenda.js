@@ -41,6 +41,8 @@ async function FinalizarVenda() {
 
         // Busca os dados do pedido registrado e imprime
         await imprimirVenda(numeroPedido.value);
+        imgProduto.src = '../../style/img/img/produto.png';
+        
 
     } catch (error) {
         console.error('Erro ao processar a venda ou atualizar estoque:', error);
@@ -56,17 +58,22 @@ async function imprimirVenda(numeroPedido) {
         // Limpa os campos
         limparCampos();
         
+        
     } catch (error) {
         console.error('Erro ao buscar o último pedido para impressão:', error);
     }
 };
 
+
 // Função que limpa os campos ao registrar a venda
 function limparCampos() {
-
+    
     setTimeout(() => {
+        valorDinheiro.value = '';
+        PIX.value = '';
+        CartaoDebito.value = '';
+        CartaoCredito.value = '';
         dataVenda.value = '';
-        codigoEan.value = '';
         descricao.value = '';
         precoVenda.value = '';
         inputQtd.value = '';
@@ -86,15 +93,18 @@ function limparCampos() {
         inputExcluiItem.value = '';
         mensagemDiv.textContent = ''; // Remove mensagens adicionais
         inputTroco.value = '0,00'; // Zera o troco
-        imgProduto.src = '../style/img/produto.png';
+        valorDinheiro.value= '0,00';
+        codigoEan.value = '';
+        codigoEan.focus(); // Certifique-se de aplicar foco após todas as ações
+
+
         // Limpa o estado do carrinho
         carrinho = [];
         //renderiza input numero pedido - data da venda - cliente
         squareInputs.style.display = 'none';
         console.log('Todos os campos foram limpos.');
 
-        // Redefine o foco para o campo de código EAN
-        codigoEan.focus();
+        
     }, 6000);
 
 }

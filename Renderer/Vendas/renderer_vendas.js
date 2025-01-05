@@ -12,7 +12,7 @@ const inputTotalLiquido = document.querySelector('#total-liquido');
 const inputTotalPago = document.querySelector('#total-pago');
 const unidadeEstoqueRender = document.querySelector('#medidaEstoque');
 const divSelecionarQtd = document.querySelector('.div-qtd');
-const textSelecionarQtd = document.querySelector('.qtd-p-1');
+const textSelecionarQtd = document.querySelector('.qtd-selecionada');
 const alertLimparVenda = document.querySelector('.confirmation-clear');
 const alertExit = document.querySelector('.exit-venda');
 const alertRemoverItem = document.querySelector('.remove-item');
@@ -28,7 +28,7 @@ const CartaoCredito = document.getElementById('Cartao-Credito');
 const info_container = document.querySelector('.info-container');
 const imgProduto = document.querySelector('.img-produto');
 const impressaoCupom = document.getElementById('impressaoCupom');
-
+const div_qtd = document.querySelector('.product-quantity')
 
 // Estado do carrinho
 let carrinho = [];
@@ -49,7 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const divSelecionarQtd = document.querySelector('.div-qtd');
     const divPagamento = document.querySelector('.payment-form-section');
   
-    codigoEan.focus();
 
     document.addEventListener('keydown', (event) => {
         const visibleDivs = [alertRemoverItem, divPagamento, alertLimparVenda, divSelecionarQtd, alertExit].filter(div => div.style.display === 'block');
@@ -64,10 +63,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             case 'F3':
                 if (visibleDivs.length === 0) {
-                    divPagamento.style.display = 'flex';
+                    divPagamento.style.display = 'block';
                     valorDinheiro.focus();
                 }
                 break;
+                case 'F4':
+                    if (divPagamento.style.display === 'block') {
+                        FinalizarVenda();
+                        divPagamento.style.display = 'none';
+                        codigoEan.focus(); // Certifique-se de manter o foco aqui
+                    }
+                    break;
 
             case 'F5':
                 if (visibleDivs.length === 0) {
@@ -80,13 +86,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     alertLimparVenda.style.display = 'block';
                 }
                 break;
-
-            case 'Escape':
-                if (visibleDivs.length === 0) {
-                    alertExit.style.display = 'block';
-                }
-                break;
-
+                case 'Escape':
+                    if (visibleDivs.length === 0) {
+                        // Alterna o estado de alertExit
+                        alertExit.style.display = alertExit.style.display === 'block' ? 'none' : 'block';
+                        if(alertExit.style.display === 'block'){
+                            inputExitVenda.focus();
+                        }
+                    } else {
+                        // Fecha qualquer div visível (inclusive divPagamento)
+                        visibleDivs.forEach(div => div.style.display = 'none');
+                        codigoEan.focus();
+                    }
+                    break;  
             case 'Enter':
                 if (alertRemoverItem.style.display === 'block') {
                     const inputExcluiItem = document.querySelector('#numero-Item');
@@ -116,6 +128,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (alertLimparVenda.style.display === 'block') {
                     carrinho.length = 0; // Limpa o carrinho
                     alertLimparVenda.style.display = 'none';
+                    limparCampos();
+                    alertMsg('A venda foi reiniciada e todos os campos foram limpos.', 'orange', 4000);
                 }
                 break;
 
@@ -150,6 +164,7 @@ codigoEan.addEventListener('input', (e) => {
             );
             //renderiza input numero pedido - data da venda - cliente
             info_container.style.display = 'flex';
+            div_qtd.style.backgroundColor = '';
         }, 100);
     } else if (e.target.value.length === 0) resetInputs();
     getVenda(numeroPedido.value);
@@ -168,6 +183,8 @@ inputQtd.addEventListener('input', function (e) {
 
     // Atualiza o valor do input com o valor formatado
     e.target.value = value;
+    textSelecionarQtd.innerHTML = e.target.value;
+    div_qtd.style.backgroundColor = 'yellow';
 });
 
 

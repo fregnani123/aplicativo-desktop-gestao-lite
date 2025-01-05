@@ -30,7 +30,7 @@
         <div class="exit-venda" style="display: none;">
             <p>Digite a senha para sair da tela de vendas.</p>
             <input id="exit-key" type="text">
-            <p>Tecla Enter / Voltar</p>
+            <p>Tecla Esc p/ Voltar</p>
         </div>
 
         <div class="remove-item" style="display: none;">
@@ -54,7 +54,7 @@
                             <p class="titulo-cartao-d">F9: Cartão Débito</p>
                         </div>
                         <div>
-                            <p class="titulo-pix">Enter = Voltar</p>
+                            <p class="titulo-pix">Esc = Voltar</p>
                             <p class="finalizar">F4 = Confirmar Venda</p>
                         </div>
                     </div>
@@ -91,8 +91,9 @@
 
         <!-------------------------------------------------------------------------------------------->
         <!-- Caixa Aberto -->
+       
         <header class="header">
-            <section class="info-container">
+         
                 <div class="info-item-pedido">
                     <label class="info-container-label" for="numero-pedido">Nº Pedido:</label>
                     <input type="text" id="numero-pedido" readonly>
@@ -107,16 +108,17 @@
                     <input id="id-cliente" type="hidden" value="1">
                 </div>
                 <div class="info-item-time">
+                    <p class="caixa-aberto">CAIXA ABERTO</p>
                     <p class="square-time">
                     <p class="square-day"></p>
                     </p>
                 </div>
-            </section>
         </header>
+
         <!-- Dados do produto -->
         <section class="product-section">
             <div class="product-info">
-                <div class="product-img"><img class="img-produto" src="../style/img/produto.png" alt="Produto"></div>
+                <div class="div-img"><img class="img-produto" src="../style/img/produto.png" alt="Produto"></div>
                 <div class="product-codigo">
                     <label for="codigo">Código Barras (EAN)</label>
                     <input type="text" id="codigo">
@@ -151,6 +153,7 @@
                     <p class="atalhos-p">ESC = Sair (Menu)</p>
                 </div>
             </div>
+            
             <div class="payment-summary">
                 <div class="div-total-liquido">
                     <label class="label-total-liquido" for="total-liquido">Subtotal</label>
