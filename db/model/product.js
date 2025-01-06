@@ -715,7 +715,8 @@ async function postNewCliente(cliente) {
     }
 };
 
-async function historicoDeVendas({ startDate, endDate, clienteNome, produtoNome }) {
+
+async function historicoDeVendas({ startDate, endDate, clienteNome, numeroPedido }) {
     await ensureDBInitialized(); // Certifica-se de que o banco foi inicializado
     let connection;
 
@@ -738,19 +739,23 @@ async function historicoDeVendas({ startDate, endDate, clienteNome, produtoNome 
             queryParams.push(`%${clienteNome}%`);
         }
 
-        // Filtro por nome do produto
-        if (produtoNome) {
-            whereConditions.push('p.nome_produto LIKE ?');
-            queryParams.push(`%${produtoNome}%`);
+        // Filtro por número do pedido
+        if (numeroPedido) {
+            whereConditions.push('v.numero_pedido LIKE ?');
+            queryParams.push(`%${numeroPedido}%`);
         }
 
-        // Filtrando vendas de hoje
+        // **Adicionando o filtro de vendas do dia**
         const today = new Date();
-        const formattedDate = today.toISOString().split('T')[0]; // Formata como 'YYYY-MM-DD'
+        const day = String(today.getDate()).padStart(2, '0');
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const year = today.getFullYear();
+        const formattedDate = `${day}/${month}/${year}`; // Formata como 'DD/MM/YYYY'
+
         console.log("Data formatada de hoje:", formattedDate); // Log para depuração
 
-        // Adicionando o filtro de data de hoje com STR_TO_DATE para formato 'DD/MM/YYYY'
-        whereConditions.push('STR_TO_DATE(v.data_venda, "%d/%m/%Y") = ?');
+        // Adiciona a condição para comparar com vendas do dia
+        whereConditions.push('v.data_venda = ?');
         queryParams.push(formattedDate);
 
         // Caso haja filtros, adiciona a cláusula WHERE à consulta

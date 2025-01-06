@@ -28,6 +28,7 @@ function groupSalesByOrder(sales) {
                 data_venda: sale.data_venda,
                 cliente_nome: sale.cliente_nome,
                 produtos: [],
+                tipo_pagamento:sale.tipo_pagamento,
                 total_liquido: sale.total_liquido, // Usa o total fornecido pela API
                 valor_recebido: sale.valor_recebido,
                 troco: sale.troco,
@@ -79,6 +80,7 @@ function displaySalesHistory(groupedSales) {
             </p>
             ${productDetails}
             <p>
+            <strong>Forma de Pagamento:</strong> ${(saleGroup.tipo_pagamento)}<br>
             <strong>Total Líquido da Venda:</strong> R$ ${parseFloat(saleGroup.total_liquido).toFixed(2)}<br>
             <strong>Valor Recebido:</strong> R$ ${parseFloat(saleGroup.valor_recebido).toFixed(2)}<br>
             <strong>Troco:</strong> R$ ${parseFloat(saleGroup.troco).toFixed(2)}<br>
@@ -101,7 +103,6 @@ function displayTotalSales(totalRows) {
         saleTotal.innerHTML = `
             <h3>${item.tipo_pagamento}</h3>
             <p><strong>Total de Vendas:</strong> R$ ${parseFloat(item.total_vendas).toFixed(2)}</p>
-            <p><strong>Total Pago:</strong> R$ ${parseFloat(item.total_pago).toFixed(2)}</p>
         `;
 
         filtrosDiv.appendChild(saleTotal);
@@ -112,11 +113,11 @@ function displayTotalSales(totalRows) {
 function displayTotalLiquido(totalLiquido) {
     const filtrosDiv = document.querySelector('.filtros');
     const totalLiquidoDiv = document.createElement('div');
-    totalLiquidoDiv.className = 'sale-total';
+    totalLiquidoDiv.className = 'total-relatorio';
 
     totalLiquidoDiv.innerHTML = `
         <h3>Total Geral de Vendas Líquidas</h3>
-        <p><strong>Total Líquido:</strong> R$ ${totalLiquido.toFixed(2)}</p>
+        <p class='total-vendas'><strong>Total Líquido:</strong> R$ ${totalLiquido.toFixed(2)}</p>
     `;
 
     filtrosDiv.appendChild(totalLiquidoDiv);

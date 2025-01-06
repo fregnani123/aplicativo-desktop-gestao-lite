@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../style/css/detalhe_vendas.css">
-    <title>Gerenciamento de Vedas</title>
+    <link rel="stylesheet" href="../style/css/menu_interno.css">
+    <title>Gerenciamento de Vendas</title>
 </head>
-
 <body>
     <ul class="teste"></ul>
     <header>
@@ -22,24 +22,44 @@
             <li>
                 <a id="btn-flex">Histórico de Vendas</a>
             </li>
-
         </ul>
         <div class="container">
+            <div class="filtros-img">
+                <h3 class="titulo-dv">Filtrar Vendas</h3>
+                <!-- Seção de Filtros de Data -->
+                <div class="filtros-data">
+                    <div class="div-data">
+                        <div>
+                            <label for="startDate">Data Inicial:</label>
+                            <input type="date" id="startDate" />
+                        </div>
+                        <div>
+                            <label for="endDate">Data Final:</label>
+                            <input type="date" id="endDate" />
+                        </div>
+                    </div>
+                    <label for="nomeCliente">Nº Pedido:</label>
+                    <input type="input" id="numeroPedido" />
+                    <label for="nomeCliente">Cliente:</label>
+                    <input type="input" id="nomeCliente" />
+                    <button id="filterButton">Filtrar</button>
+                </div>
+                <div> <img class="img-detalhes" src="../style/img/detalhes vendas.png" alt=""></div>
+            </div>
+
             <div class="filtros">
-                <p class='titulo-relatorio'>Relatório Vendas de Hoje</p>
+                <p class='titulo-relatorio'>Relatório Vendas</p>
                 <div class="total-filtradas"></div>
             </div>
             <div class="vendas-filtradas">
+                <div>
                 <div id="sales-history" class="sales-history">
                     <!-- Dados da API serão inseridos aqui -->
                 </div>
             </div>
-            <div class="div-detalhes">
-                <img class="img-detalhes" src="../style/img/detalhes vendas.png" alt="">
             </div>
         </div>
     </div>
-
 </body>
 <script src="../Renderer/Menu/renderer_menu.js"></script>
 <script src="../Renderer/detalhe_vendas/detalhes_vendas.js"></script>
