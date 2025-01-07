@@ -14,7 +14,6 @@ function createWindow() {
         width: 1200,
         height: 800,
         webPreferences: {
-            preload: path.join(__dirname, '../Renderer/renderer.js'),
             nodeIntegration: true,
             contextIsolation: false // Dependendo da configuração, isso pode ser necessário
         },
@@ -24,6 +23,8 @@ function createWindow() {
     // Carregar o arquivo HTML
     mainWindow.loadFile(path.join(__dirname, '../public/index.html'));
     mainWindow.maximize();
+    // Abre as ferramentas de desenvolvedor
+    // mainWindow.webContents.openDevTools();
 }
 
 app.whenReady().then(() => {

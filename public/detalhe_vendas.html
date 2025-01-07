@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' http://localhost:3000;">
     <link rel="stylesheet" href="../style/css/detalhe_vendas.css">
     <link rel="stylesheet" href="../style/css/menu_interno.css">
     <title>Gerenciamento de Vendas</title>
@@ -11,7 +12,6 @@
 <body>
     <ul class="teste"></ul>
     <header>
-        <!-- <p class="logoMenu"><img id="logo-img" src="../img/logo.png" alt=""></p> -->
         <nav>
             <ul id="ul-Menu">
             </ul>
@@ -38,7 +38,7 @@
                             <input type="date" id="endDate" />
                         </div>
                     </div>
-                    <label for="nomeCliente">Nº Pedido:</label>
+                    <label for="numeroPedido">Nº Pedido:</label>
                     <input type="input" id="numeroPedido" />
                     <label for="nomeCliente">Cliente:</label>
                     <input type="input" id="nomeCliente" />
@@ -48,11 +48,13 @@
             </div>
 
             <div class="filtros">
-                <p class='titulo-relatorio'>Relatório Vendas</p>
-                <div class="total-filtradas"></div>
+                <p class='titulo-relatorio' id="titulo-relatorio"></p>
+                <div class="total-filtradas">
+                </div>
             </div>
             <div class="vendas-filtradas">
-                <div>
+                <p class="comprovantes-vendas">Comprovantes de Vendas</p>
+                <div class="comprovantes-div">
                 <div id="sales-history" class="sales-history">
                     <!-- Dados da API serão inseridos aqui -->
                 </div>
@@ -62,6 +64,10 @@
     </div>
 </body>
 <script src="../Renderer/Menu/renderer_menu.js"></script>
+<script src="../Renderer/services/converte_moeda.js"></script>
+<script src="../Renderer/services/formatters.js"></script>
 <script src="../Renderer/detalhe_vendas/detalhes_vendas.js"></script>
+<script src="../Renderer/detalhe_vendas/api_detalhes_vendas.js"></script>
+
 
 </html>

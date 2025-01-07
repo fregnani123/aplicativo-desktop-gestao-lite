@@ -744,19 +744,11 @@ async function historicoDeVendas({ startDate, endDate, clienteNome, numeroPedido
             whereConditions.push('v.numero_pedido LIKE ?');
             queryParams.push(`%${numeroPedido}%`);
         }
-
-        // **Adicionando o filtro de vendas do dia**
-        const today = new Date();
-        const day = String(today.getDate()).padStart(2, '0');
-        const month = String(today.getMonth() + 1).padStart(2, '0');
-        const year = today.getFullYear();
-        const formattedDate = `${day}/${month}/${year}`; // Formata como 'DD/MM/YYYY'
-
-        console.log("Data formatada de hoje:", formattedDate); // Log para depuração
-
-        // Adiciona a condição para comparar com vendas do dia
-        whereConditions.push('v.data_venda = ?');
-        queryParams.push(formattedDate);
+        
+        if (numeroPedido) {
+            whereConditions.push('v.numero_pedido LIKE ?');
+            queryParams.push(`%${numeroPedido}%`);
+        }
 
         // Caso haja filtros, adiciona a cláusula WHERE à consulta
         const whereClause = whereConditions.length > 0 ? 'WHERE ' + whereConditions.join(' AND ') : '';

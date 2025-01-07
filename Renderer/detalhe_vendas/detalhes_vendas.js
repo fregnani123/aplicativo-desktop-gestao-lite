@@ -1,25 +1,69 @@
-// Fetch dados da API
-async function fetchSalesHistory() {
-    try {
-        const response = await fetch('http://localhost:3000/getHistoricoVendas');
-        if (!response.ok) throw new Error(`Erro na API: ${response.status}`);
-        const data = await response.json();
-        console.log(data);
+const filtrosDiv = document.querySelector('.total-filtradas');
+const filterButton = document.getElementById('filterButton');
+const startDate = document.getElementById('startDate');
+const endDate = document.getElementById('endDate');
+const titulo_relatorio = document.getElementById('titulo-relatorio');
+// const numero_pedido = document.getElementById('numeroPedido');
+// const nomeCliente = document.getElementById('titulo-relatorio');
 
-        const groupedSales = groupSalesByOrder(data.rows);
-        displaySalesHistory(groupedSales);
 
-        // Supondo que 'data.totalRows' seja o array de totais agrupados por forma de pagamento
-        const totalRows = data.totalRows;
-        displayTotalSales(totalRows); // Exibe os totais de vendas
-        const totalLiquido = calculateTotalSales(groupedSales); // Soma os totais líquidos
-        displayTotalLiquido(totalLiquido); // Exibe o total de vendas líquidas
-    } catch (error) {
-        console.error('Erro ao buscar o histórico de vendas:', error);
-    }
+document.addEventListener('DOMContentLoaded', () => {
+    // Obtenha a data atual considerando o fuso horário local
+    const today = new Date();
+    today.setMinutes(today.getMinutes() - today.getTimezoneOffset()); // Ajusta para o fuso horário local
+    const formattedToday = today.toISOString().split('T')[0]; // Formata como YYYY-MM-DD
+
+    // Define o valor padrão nos campos de data
+    startDate.value = formattedToday;
+    endDate.value = formattedToday;
+
+    titulo_relatorio.innerHTML = `Forma de Pagamento<br>Período: ${startDate.value} - ${endDate.value}`;
+
+    console.log('Default Start Date:', startDate.value); // Verifique o valor no console
+    console.log('Default End Date:', endDate.value); // Verifique o valor no console
+
+    // Chama a função de filtro automaticamente
+    filterVendas();
+});
+
+
+
+// Adicionando o evento de clique no filtro
+filterButton.addEventListener('click', filterVendas);
+
+// Função de filtro de vendas
+function filterVendas() {
+
+    titulo_relatorio.innerHTML = `Forma de Pagamento<br>Período: ${validarDataVenda(startDate.value)} - ${validarDataVenda(endDate.value)}`
+
+    // Verifique se as datas são capturadas corretamente
+    console.log('Start Date:', startDate.value); // Verifique se o valor está sendo capturado
+    console.log('End Date:', endDate.value); // Verifique se o valor está sendo capturado
+
+    // Captura as datas diretamente, pois já estão no formato adequado para a API (YYYY-MM-DD)
+    const startDateFormated = startDate.value;
+    const endDateFormated = endDate.value;
+
+    // Verifique se as datas formatadas estão corretas
+    console.log('startDateFormated: ', startDateFormated);
+    console.log('endDateFormated: ', endDateFormated);
+
+    const filtros = {
+        startDate: startDateFormated,  // Data inicial no formato aceito pela API
+        endDate: endDateFormated,      // Data final no formato aceito pela API
+        clienteNome: '',              // Nome do cliente como filtro
+        numeroPedido: '',             // Número do pedido como filtro
+    };
+
+    // Exibe as datas no console para depuração
+    console.log('Filtros:', filtros);
+
+    // Chama a função para pegar o histórico de vendas com os filtros
+    fetchSalesHistory(filtros);
+
 }
 
-// Agrupar vendas por número do pedido
+// Funções de agrupamento e exibição
 function groupSalesByOrder(sales) {
     return sales.reduce((grouped, sale) => {
         if (!grouped[sale.numero_pedido]) {
@@ -28,8 +72,8 @@ function groupSalesByOrder(sales) {
                 data_venda: sale.data_venda,
                 cliente_nome: sale.cliente_nome,
                 produtos: [],
-                tipo_pagamento:sale.tipo_pagamento,
-                total_liquido: sale.total_liquido, // Usa o total fornecido pela API
+                tipo_pagamento: sale.tipo_pagamento,
+                total_liquido: sale.total_liquido,
                 valor_recebido: sale.valor_recebido,
                 troco: sale.troco,
             };
@@ -48,14 +92,21 @@ function groupSalesByOrder(sales) {
     }, {});
 }
 
-// Calcular o total de vendas líquidas
+function formatarDataISOParaBR(dataISO) {
+    const date = new Date(dataISO);
+    const dia = String(date.getDate()).padStart(2, '0');
+    const mes = String(date.getMonth() + 1).padStart(2, '0'); // Janeiro é 0
+    const ano = date.getFullYear();
+    return `${dia}/${mes}/${ano}`;
+}
+
+// Funções de exibição (displaySalesHistory, displayTotalSales, etc.)
 function calculateTotalSales(groupedSales) {
     return Object.values(groupedSales).reduce((total, saleGroup) => {
         return total + parseFloat(saleGroup.total_liquido);
     }, 0);
 }
 
-// Exibir dados de vendas agrupadas
 function displaySalesHistory(groupedSales) {
     const salesHistory = document.getElementById('sales-history');
     salesHistory.innerHTML = ''; // Limpa os dados anteriores
@@ -75,7 +126,7 @@ function displaySalesHistory(groupedSales) {
         saleCard.innerHTML = `
             <p>
             <strong>Comprovante de Venda Nº000${saleGroup.numero_pedido}</strong><br>
-            <strong>Data da Venda:</strong> ${saleGroup.data_venda}<br>
+            <strong>Data da Venda:</strong> ${formatarDataISOParaBR(saleGroup.data_venda)}<br>
             <strong>Cliente:</strong> ${saleGroup.cliente_nome}
             </p>
             ${productDetails}
@@ -91,10 +142,20 @@ function displaySalesHistory(groupedSales) {
     });
 }
 
-// Exibir totais de vendas por forma de pagamento
 function displayTotalSales(totalRows) {
-    const filtrosDiv = document.querySelector('.total-filtradas'); // Seleciona a div para exibir os totais
+    const filtrosDiv = document.querySelector('.total-filtradas');
     filtrosDiv.innerHTML = ''; // Limpa a div para evitar duplicações
+
+    if (totalRows.length === 0) {
+        // Caso não haja vendas, exibe a mensagem
+        const noSalesMessage = document.createElement('div');
+        noSalesMessage.className = 'no-sales-message';
+        noSalesMessage.innerHTML = `
+            <p>Sem vendas para o filtro selecionado</p>
+        `;
+        filtrosDiv.appendChild(noSalesMessage);
+        return;
+    }
 
     totalRows.forEach(item => {
         const saleTotal = document.createElement('div');
@@ -109,19 +170,23 @@ function displayTotalSales(totalRows) {
     });
 }
 
-// Exibir o total de vendas líquidas
 function displayTotalLiquido(totalLiquido) {
     const filtrosDiv = document.querySelector('.filtros');
+
+    // Verifique se já existe a div 'total-relatorio' e remova-a antes de adicionar uma nova
+    const existingTotalLiquidoDiv = filtrosDiv.querySelector('.total-relatorio');
+    if (existingTotalLiquidoDiv) {
+        existingTotalLiquidoDiv.remove();
+    }
+
     const totalLiquidoDiv = document.createElement('div');
     totalLiquidoDiv.className = 'total-relatorio';
 
     totalLiquidoDiv.innerHTML = `
-        <h3>Total Geral de Vendas Líquidas</h3>
-        <p class='total-vendas'><strong>Total Líquido:</strong> R$ ${totalLiquido.toFixed(2)}</p>
+        <h3>Total de Vendas filtradas: R$ ${converteMoeda(totalLiquido)}</h3>
+       
     `;
 
     filtrosDiv.appendChild(totalLiquidoDiv);
 }
 
-// Inicia o carregamento dos dados
-document.addEventListener('DOMContentLoaded', fetchSalesHistory);

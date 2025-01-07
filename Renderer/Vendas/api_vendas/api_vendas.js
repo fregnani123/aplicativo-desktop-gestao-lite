@@ -32,7 +32,10 @@ async function getProduto(descricaoElement, codigoDeBarras, precoVendaElement) {
         const getOneProduct = `${apiEndpoints.findOneProduct}/${codigoDeBarras}`;
         const response = await fetch(getOneProduct, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
 
-        if (!response.ok) throw new Error('Produto não encontrado');
+        if (!response.ok){alertMsg('Produto não encontrado. Por favor, verifique se o item está cadastrado corretamente.','orange',6000);
+            codigoEan.value = '';
+
+        } 
 
         const data = await response.json();
         console.log("Dados recebidos:", data);

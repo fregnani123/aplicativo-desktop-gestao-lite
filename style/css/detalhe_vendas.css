@@ -4,9 +4,10 @@
 }
 
 /* Geral */
-.container, .vendas-filtradas, .sale-card {
+.container, .sale-card {
     box-sizing: border-box;
     display: flex;
+    position: relative;
 }
 
 .container {
@@ -15,7 +16,6 @@
     height: 88%;
     padding: 20px;
     border: 2px solid black;
-    border-radius: 10px;
     position: relative;
     overflow: hidden;
 }
@@ -26,13 +26,11 @@
     align-items: center;
     gap: 15px;
     padding: 15px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
     width: 40%;
     box-sizing: border-box;
     overflow: hidden; 
     margin-right: 15px;
+    border: 1px solid black;
 }
 
 .div-data {
@@ -121,20 +119,36 @@
 .titulo-relatorio{
     display: flex;
     justify-content: center;
-    font-size: 1.3rem;
-}
-.vendas-filtradas {
-    display: flex;
-    justify-content: center;
-    width: 25%;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    margin-left: 10px;
+    font-size: 1.1rem;
+    text-align: center;
 }
 
-.sale-card {
-    background-color: #fff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.titulo-dv{
+    width: 100%;
+    padding: 1%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    background-color: rgb(230, 230, 230);
+}
+
+.vendas-filtradas { 
+ margin-top: 0.3%;
+ width: 32%;
+ height: 100%;
+ overflow-y: scroll;
+ border: 1px solid black;
+ margin-left: 1%;
+}
+.comprovantes-div{
+    display: flex;
+    justify-content: center;
+    border: 1px dotted black;
+    margin-left: 4%;
+    margin-right: 4%;
+}
+
+.sale-card{
     padding: 15px;
     width: 300px;
     flex-direction: column;
@@ -154,8 +168,8 @@
 
 /* Filtros */
 .filtros {
-    background: var(--header-background-color);
     width: 30%;
+    height: 100%;
     flex-shrink: 0;
     color: #fff;
     padding: 15px;
@@ -163,6 +177,8 @@
     flex-direction: column;
     gap: 15px;
     position: relative;
+    border: 1px solid black;
+    box-sizing: border-box;
 }
 
 .filtros h3 {
@@ -171,29 +187,41 @@
     margin-bottom: 0;
 }
 
-.filtros .sale-total ,.total-relatorio {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
+.filtros .sale-total ,.total-relatorio,.no-sales-message {
     padding: 2%;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    margin-top: 2%;
+}
+.sale-total{
+   border: 1px solid black;
 }
 
+.sales-history{
+    padding-top: 5%;
+}
 
-.filtros .sale-total p {
+.filtros, .no-sales-message, .sale-total p {
     margin: 5px 0;
 }
+.no-sales-message{
+background-color: rgb(230, 230, 230);
+display: flex;
+justify-content: center;
+font-size: 1.2rem;
+}
 
-.filtros .sale-total h3 {
-    color: #f1f1f1;
+.filtros, .no-sales-message, .sale-total h3 {
+    color: #000000;
 }
 
 .filtros .sale-total p strong {
-    color: #ffeb3b;
+    color: #00a70b;
 }
 .total-relatorio{
     margin: 5px 0;
     display: flex;
     flex-direction: column;
+    height: 100%;
+    border: 1px solid black;
 }
 .total-vendas{
     margin-top: 5px;
@@ -216,4 +244,13 @@
 }
 #numeroPedido{
     width: 50%;
+}
+.comprovantes-vendas {
+  position: absolute;
+  z-index: 100;
+  background-color:#f9f9f9;
+  text-align: center;
+  width: 28.2%;
+  padding: .5%;
+  border-bottom: 1px solid black;
 }

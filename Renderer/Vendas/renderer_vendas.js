@@ -74,7 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         codigoEan.focus(); // Certifique-se de manter o foco aqui
                     }
                     break;
-
             case 'F5':
                 if (visibleDivs.length === 0) {
                     alertRemoverItem.style.display = 'block';
@@ -162,8 +161,7 @@ codigoEan.addEventListener('input', (e) => {
                 inputTotalLiquido,
                 textSelecionarQtd
             );
-            //renderiza input numero pedido - data da venda - cliente
-            info_container.style.display = 'flex';
+          
             div_qtd.style.backgroundColor = '';
         }, 100);
     } else if (e.target.value.length === 0) resetInputs();

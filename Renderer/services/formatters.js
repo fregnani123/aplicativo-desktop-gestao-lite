@@ -163,6 +163,36 @@ function formatarCEP(input) {
             input.value = value.replace(/^(\d{5})(\d{0,3})/, '$1-$2');
         }
     });
-}
+};
 
+// // Função para validar e formatar a data
+// function validarDataVenda(dataVenda) {
+//     const regex = /^\d{2}\/\d{2}\/\d{4}$/; // Verifica formato DD/MM/YYYY
+//     if (!regex.test(dataVenda)) return null;
+
+//     const [dia, mes, ano] = dataVenda.split('/');
+//     const date = new Date(`${ano}-${mes}-${dia}`);
+//     return isNaN(date.getTime()) ? null : `${ano}-${mes}-${dia}`; // Retorna no formato YYYY-MM-DD
+// };
+
+
+// Função para validar e formatar a data
+function validarDataVenda(dataVenda) {
+    const regexBR = /^\d{2}\/\d{2}\/\d{4}$/; // Verifica formato DD/MM/YYYY
+    const regexISO = /^\d{4}-\d{2}-\d{2}$/; // Verifica formato YYYY-MM-DD
+
+    if (regexBR.test(dataVenda)) {
+        // Converte de DD/MM/YYYY para YYYY-MM-DD
+        const [dia, mes, ano] = dataVenda.split('/');
+        const date = new Date(`${ano}-${mes}-${dia}`);
+        return isNaN(date.getTime()) ? null : `${ano}-${mes}-${dia}`;
+    } else if (regexISO.test(dataVenda)) {
+        // Converte de YYYY-MM-DD para DD/MM/YYYY
+        const [ano, mes, dia] = dataVenda.split('-');
+        const date = new Date(`${ano}-${mes}-${dia}`);
+        return isNaN(date.getTime()) ? null : `${dia}/${mes}/${ano}`;
+    }
+
+    return null; // Retorna null se o formato for inválido
+}
 

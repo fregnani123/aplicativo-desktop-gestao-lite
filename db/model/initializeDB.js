@@ -140,7 +140,7 @@ async function initializeDB() {
 
             `CREATE TABLE IF NOT EXISTS venda (
                 venda_id INT NOT NULL AUTO_INCREMENT,
-                data_venda VARCHAR(10) NOT NULL,
+                data_venda DATE,
                 cliente_id INT NULL,
                 total_liquido DECIMAL(10,2) NOT NULL,
                 valor_recebido DECIMAL(10,2) NOT NULL,

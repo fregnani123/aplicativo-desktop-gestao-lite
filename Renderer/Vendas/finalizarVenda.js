@@ -1,3 +1,4 @@
+
 async function FinalizarVenda() {
     if (carrinho.length === 0) {
         alertMsg("Seu carrinho está vazio. Adicione itens antes de concluir a venda.", 'warning', 4000);
@@ -20,7 +21,7 @@ async function FinalizarVenda() {
     }));
 
     const venda = {
-        data_venda: dataVenda.value,
+        data_venda: validarDataVenda(dataVenda.value),
         itens: carrinhoId,
         cliente_id: clienteId.value,
         total_liquido: totalLiquido.toFixed(2),
@@ -52,22 +53,17 @@ async function FinalizarVenda() {
 
 async function imprimirVenda(numeroPedido) {
     try {
-        
         getUltimoPedidoImprimir(numeroPedido);
-
         // Limpa os campos
         limparCampos();
-        
-        
     } catch (error) {
         console.error('Erro ao buscar o último pedido para impressão:', error);
     }
 };
 
-
-// Função que limpa os campos ao registrar a venda
 function limparCampos() {
-    
+    // Limpa o carrinho imediatamente
+    carrinho = [];
     setTimeout(() => {
         valorDinheiro.value = '';
         PIX.value = '';
@@ -82,30 +78,22 @@ function limparCampos() {
         inputTotalLiquido.value = '0,00'; // Zera o total líquido
         inputTotalPago.value = '0,00'; // Zera o total pago
         unidadeEstoqueRender.value = '';
-        unidadeEstoqueRender.value = '';
         divSelecionarQtd.style.display = 'none'; // Esconde a div de seleção de quantidade
         textSelecionarQtd.textContent = ''; // Limpa o texto da quantidade selecionada
         alertLimparVenda.style.display = 'none'; // Esconde alerta de limpar venda
         alertExit.style.display = 'none'; // Esconde alerta de saída
         alertRemoverItem.style.display = 'none'; // Esconde alerta de remover item
-        formaPagamento.style.display = 'none'; // Esconde alerta de forma de pagamento
         inputExitVenda.value = '';
         inputExcluiItem.value = '';
         mensagemDiv.textContent = ''; // Remove mensagens adicionais
         inputTroco.value = '0,00'; // Zera o troco
-        valorDinheiro.value= '0,00';
+        valorDinheiro.value = '0,00';
         codigoEan.value = '';
         codigoEan.focus(); // Certifique-se de aplicar foco após todas as ações
 
 
-        // Limpa o estado do carrinho
-        carrinho = [];
-        //renderiza input numero pedido - data da venda - cliente
-        squareInputs.style.display = 'none';
+        // AQUI você pode adicionar uma linha para não tocar no relógio
         console.log('Todos os campos foram limpos.');
-
-        
     }, 6000);
-
 }
 

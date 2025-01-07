@@ -331,20 +331,20 @@ const controllers = {
     getHistoricoDeVenda: async (req, res) => {
         try {
             // Extrai parâmetros de filtros e paginação da requisição
-            const { startDate, endDate, clienteNome, produtoNome } = req.query;
+            const { startDate, endDate, clienteNome, numeroPedido } = req.query;
 
             // Verifica se os parâmetros de data estão presentes, caso contrário, define como NULL
             const startDateFormatted = startDate || null;
             const endDateFormatted = endDate || null;
             const clienteNomeFormatted = clienteNome || null;
-            const produtoNomeFormatted = produtoNome || null;
+            const numeroPedidoFormatted = numeroPedido || null;
 
             // Chama a função para buscar o histórico de vendas com os filtros
             const historicoVendas = await historicoDeVendas({
                 startDate: startDateFormatted,
                 endDate: endDateFormatted,
                 clienteNome: clienteNomeFormatted,
-                produtoNome: produtoNomeFormatted,
+                numeroPedido: numeroPedidoFormatted,
             });
 
             res.json(historicoVendas); // Retorna os dados como JSON
