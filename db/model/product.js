@@ -741,13 +741,8 @@ async function historicoDeVendas({ startDate, endDate, clienteNome, numeroPedido
 
         // Filtro por número do pedido
         if (numeroPedido) {
-            whereConditions.push('v.numero_pedido LIKE ?');
-            queryParams.push(`%${numeroPedido}%`);
-        }
-        
-        if (numeroPedido) {
-            whereConditions.push('v.numero_pedido LIKE ?');
-            queryParams.push(`%${numeroPedido}%`);
+            whereConditions.push('v.numero_pedido = ?');
+            queryParams.push(numeroPedido);
         }
 
         // Caso haja filtros, adiciona a cláusula WHERE à consulta
@@ -764,9 +759,9 @@ async function historicoDeVendas({ startDate, endDate, clienteNome, numeroPedido
         FROM 
             venda v
         LEFT JOIN 
-            forma_pagamento fp 
-        ON 
-            v.venda_id = fp.venda_id
+            forma_pagamento fp ON v.venda_id = fp.venda_id
+        LEFT JOIN 
+            cliente c ON v.cliente_id = c.cliente_id -- Adicionado o JOIN na tabela cliente
         ${whereClause}
         GROUP BY fp.tipo_pagamento;
         `;
@@ -818,7 +813,6 @@ async function historicoDeVendas({ startDate, endDate, clienteNome, numeroPedido
         if (connection) connection.release(); // Libera a conexão com o banco
     }
 };
-
 
 
 async function getVendasPorNumeroVenda(numeroPedido) {

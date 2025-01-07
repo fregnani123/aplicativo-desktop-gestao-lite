@@ -6,7 +6,7 @@ async function fetchSalesHistory({ startDate, endDate, clienteNome, numeroPedido
 
         if (startDate) params.append('startDate', startDate);
         if (endDate) params.append('endDate', endDate);
-        if (clienteNome) params.append('clienteNome', clienteNome);
+        if (clienteNome) params.append('nomeClienteFiltro', clienteNome);
         if (numeroPedido) params.append('numeroPedido', numeroPedido);
 
         // Faz a requisição com os parâmetros
@@ -28,3 +28,7 @@ async function fetchSalesHistory({ startDate, endDate, clienteNome, numeroPedido
         console.error('Erro ao buscar o histórico de vendas:', error);
     }
 };
+
+// const filtrar = { startDate :'', endDate: '', clienteNome:'Consumidor Final', numeroPedido:''}
+
+// fetchSalesHistory(filtrar);

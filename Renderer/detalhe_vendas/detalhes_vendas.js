@@ -3,29 +3,22 @@ const filterButton = document.getElementById('filterButton');
 const startDate = document.getElementById('startDate');
 const endDate = document.getElementById('endDate');
 const titulo_relatorio = document.getElementById('titulo-relatorio');
-// const numero_pedido = document.getElementById('numeroPedido');
-// const nomeCliente = document.getElementById('titulo-relatorio');
+const numeroPedidoFiltro = document.getElementById('numeroPedidoFiltro');
+const nomeClienteFiltro = document.getElementById('nomeClienteFiltro');
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Obtenha a data atual considerando o fuso horário local
-    const today = new Date();
-    today.setMinutes(today.getMinutes() - today.getTimezoneOffset()); // Ajusta para o fuso horário local
-    const formattedToday = today.toISOString().split('T')[0]; // Formata como YYYY-MM-DD
+    // Atualiza o título do relatório com base nas datas
+    if (startDate.value && endDate.value) {
+        titulo_relatorio.innerHTML = `Forma de Pagamento<br>Período: ${startDate.value} - ${endDate.value}`;
+    } else {
+        titulo_relatorio.innerHTML = `Forma de Pagamento<br>Período: não selecionado`;
+    }
 
-    // Define o valor padrão nos campos de data
-    startDate.value = formattedToday;
-    endDate.value = formattedToday;
+    console.log('Start Date:', startDate.value || 'não selecionada'); // Verifica o valor no console
+    console.log('End Date:', endDate.value || 'não selecionada'); // Verifica o valor no console
 
-    titulo_relatorio.innerHTML = `Forma de Pagamento<br>Período: ${startDate.value} - ${endDate.value}`;
-
-    console.log('Default Start Date:', startDate.value); // Verifique o valor no console
-    console.log('Default End Date:', endDate.value); // Verifique o valor no console
-
-    // Chama a função de filtro automaticamente
-    filterVendas();
 });
-
 
 
 // Adicionando o evento de clique no filtro
@@ -39,24 +32,28 @@ function filterVendas() {
     // Verifique se as datas são capturadas corretamente
     console.log('Start Date:', startDate.value); // Verifique se o valor está sendo capturado
     console.log('End Date:', endDate.value); // Verifique se o valor está sendo capturado
+    console.log('nome Cliente:', nomeClienteFiltro.value); // Verifique se o valor está sendo capturado
+    console.log('numero Pedido :', numeroPedidoFiltro.value); // Verifique se o valor está sendo capturado
 
     // Captura as datas diretamente, pois já estão no formato adequado para a API (YYYY-MM-DD)
     const startDateFormated = startDate.value;
     const endDateFormated = endDate.value;
-
-    // Verifique se as datas formatadas estão corretas
-    console.log('startDateFormated: ', startDateFormated);
-    console.log('endDateFormated: ', endDateFormated);
+    const nomeClienteFiltroFormated = nomeClienteFiltro.value;
+    const numeroPedidoFiltroFormated = numeroPedidoFiltro.value;
 
     const filtros = {
         startDate: startDateFormated,  // Data inicial no formato aceito pela API
         endDate: endDateFormated,      // Data final no formato aceito pela API
-        clienteNome: '',              // Nome do cliente como filtro
-        numeroPedido: '',             // Número do pedido como filtro
+        clienteNome: nomeClienteFiltroFormated,  // Nome do cliente como filtro
+        numeroPedido: numeroPedidoFiltroFormated, // Número do pedido como filtro
     };
 
     // Exibe as datas no console para depuração
     console.log('Filtros:', filtros);
+
+    if (!startDateFormated || !endDateFormated){
+        titulo_relatorio.innerHTML = `Forma de Pagamento<br>Período: não selecionado`;
+    }
 
     // Chama a função para pegar o histórico de vendas com os filtros
     fetchSalesHistory(filtros);
