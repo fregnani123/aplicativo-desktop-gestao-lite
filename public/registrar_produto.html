@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' http://localhost:3000;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' http://localhost:3000; img-src 'self' data:;">
     <link rel="stylesheet" href="../style/css/register_produto.css">
+    <link rel="stylesheet" href="../style/css/menu_interno.css">
     <title>Cadastro de Produto</title>
 </head>
 
@@ -16,15 +17,11 @@
             </ul>
         </nav>
     </header>
-
-    <!-- Não excluir este container, aqui renderiza o grupo e subgrupo -->
-    <div class="container-register"></div>
-
-
     <div class="container-register-form">
+  <!-- Não excluir este container, aqui renderiza o grupo e subgrupo -->
+  <div class="container-register"></div>
 
         <div class="div-fornecedor">
-
             <!-- Título do Formulário -->
             <ul class="menu-secundario" id="menu-secundario-fornecedor">
                 <li>
@@ -36,10 +33,10 @@
                 <li class="li-sair">
                     <button class="botaoSair" id="botaoSair">Voltar</button>
                 </li>
-
             </ul>
             <!-- Formulário -->
             <div class="div-container-form">
+    
                 <div class="div-form">
                     <div class="linha-inputs">
                         <div>
@@ -123,7 +120,6 @@
     </div>
 
     <div class="divForm">
-
         <ul class="menu-secundario">
             <li id="cadastro-produto" class="li-menu2">
                 <a class="a2">Cadastro de Produtos</a>

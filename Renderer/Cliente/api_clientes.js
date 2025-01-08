@@ -6,7 +6,7 @@ async function postNewCliente(clienteData) {
     const postNewClienteData = apiEndpoints.postNewCliente;
 
     if (!clienteData.cpf || !clienteData.nome) {
-        alert('Erro: CPF e nome são obrigatórios.');
+        alertMsg('CPF e nome são obrigatórios.','orange', 4000);
         return;
     }
 

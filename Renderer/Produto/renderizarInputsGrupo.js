@@ -109,7 +109,8 @@ function renderizarInputsGrupo() {
             };
 
             if (!inputNewGrupo.value.trim()) {
-                alert('O campo de grupo não pode estar vazio!');
+                alertMsg('O campo de grupo não pode estar vazio!','orange',4000);
+                inputNewGrupo.focus();
                 return;
             }
 
@@ -140,7 +141,8 @@ function renderizarInputsSubGrupo() {
             };
 
             if (!inputNewSubGrupo.value.trim()) {
-                alert('O campo de sub-grupo não pode estar vazio!');
+                alertMsg('O campo de sub-grupo não pode estar vazio!','orange',4000);
+                inputNewSubGrupo.focus();
                 return;
             }
             postNewSubGrupoProduto(newSubGrupo);

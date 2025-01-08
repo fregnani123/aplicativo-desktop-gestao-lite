@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' http://localhost:3000;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' http://localhost:3000; img-src 'self' data:;">
     <link rel="stylesheet" href="../style/css/detalhe_vendas.css">
     <link rel="stylesheet" href="../style/css/menu_interno.css">
     <title>Gerenciamento de Vendas</title>
@@ -38,10 +38,10 @@
                             <input type="date" id="endDate" />
                         </div>
                     </div>
-                    <label for="numeroPedido">Nº Pedido:</label>
-                    <input type="input" id="numeroPedidoFiltro" />
-                    <label for="nomeCliente">Cliente:</label>
-                    <input type="input" id="nomeClienteFiltro" />
+                    <div><label for="numeroPedido">Nº Pedido:</label>
+                        <input type="input" id="numeroPedidoFiltro" /></div>
+                    <div><label for="nomeCliente">Cliente:</label>
+                        <input type="input" id="nomeClienteFiltro" /></div>
                     <button id="filterButton">Filtrar</button>
                 </div>
                 <div> <img class="img-detalhes" src="../style/img/detalhes vendas.png" alt=""></div>

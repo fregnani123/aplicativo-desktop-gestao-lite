@@ -62,13 +62,10 @@ async function sendNewFornecedor() {
 
     // Validar Razão Social
     if (!newFornecedor.razao_social) {
-        alert("O campo 'Razão Social' é obrigatório.");
+        alertMsg(`${'CNPJ e nome fantasia são obrigatórios.'}`, 'orange', 4000);
         return;
     }
-
-     await postNewFornecedor(newFornecedor); // Chama a função para enviar os dados
-     
-      
+     await postNewFornecedor(newFornecedor); // Chama a função para enviar os dados 
 }
 
 

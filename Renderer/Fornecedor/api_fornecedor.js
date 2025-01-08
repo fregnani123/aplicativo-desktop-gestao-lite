@@ -7,7 +7,7 @@ async function postNewFornecedor(fornecedorData) {
     const postNewFornecedorData = apiEndpoints.postNewFornecedor;
 
     if (!fornecedorData.cnpj || !fornecedorData.nome_fantasia) {
-        alert('Erro: CNPJ e nome fantasia são obrigatórios.');
+        console.log(`${'Erro: CNPJ e nome fantasia são obrigatórios.'}`, 'orange', 4000);
         return;
     }
 

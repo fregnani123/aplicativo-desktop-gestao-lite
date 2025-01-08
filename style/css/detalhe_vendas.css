@@ -3,6 +3,43 @@
     --header-background-color: #333; /* Exemplo de cor */
 }
 
+   .menu-item-3 a {
+      color: rgb(0, 0, 0);
+      padding: 8px;
+      border-radius: 5px;
+      background-color: #ffffff;
+      width: 100%;
+  }
+  .menu-secundario {
+    list-style: none;
+    padding: 10px;
+    margin: 0 0 20px 0; /* Margem inferior para dar espaço entre o menu e o restante */
+    display: flex;
+    gap: 10px;
+    background-color: var(--menu-background-color);
+    color: white;
+    border-radius: 8px;
+    width: 100%;
+}
+
+.menu-secundario li {
+    margin: 0;
+}
+
+.menu-secundario li a {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    padding: 8px 12px;
+    display: block;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.menu-secundario li a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
 /* Geral */
 .container, .sale-card {
     box-sizing: border-box;
@@ -15,12 +52,14 @@
     width: 100%;
     height: 88%;
     padding: 20px;
-    border: 2px solid black;
     position: relative;
     overflow: hidden;
+    
 }
 
 .filtros-img {
+    margin-top: .3%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -38,34 +77,31 @@
     gap: 10px; 
 }
 
-.div-data label {
-    font-size: 14px; 
-    font-weight: bold; 
-    margin-bottom: 5px; 
-    color: #333; 
+
+input,
+select {
+    width: 100%;
+    padding: 1%; /* Ajusta o preenchimento */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1.3rem;
+    height: 40px; /* Define a mesma altura para todos */
+    box-sizing: border-box; /* Garante que padding e border sejam inclusos na altura */
+    align-items: center;
+    text-align: center;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); 
 }
 
-/* Container para os inputs, para posicioná-los lado a lado */
-.div-data .inputs-container {
-    display: flex;
-    gap: 10px; 
+input:focus {
+    border-color: #007bff; 
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
 }
-
-.div-data input {
-    width: 100%; 
-    max-width: 200px;
-    padding: 8px; 
-    font-size: 14px;
-    border: 1px solid #ccc; 
-    border-radius: 5px; 
-    box-sizing: border-box; 
-}
-
 
 .filtros-img img.img-detalhes {
     display: block;
     margin: 0 auto; 
-    width: 210px;          
+    width: 100px;          
     height: auto;            
     padding: 10px;
 }
@@ -77,42 +113,26 @@
     gap: 10px; 
 }
 
-.filtros-data label {
-    font-size: 14px;
-    color: #333; 
-    margin-bottom: 0px;
-    font-weight: bold;
+label{
+    font-size: 1.2rem;
 }
 
-.filtros-data input {
-    width: 100%;
-    padding: 8px; 
-    font-size: 14px;
-    border: 1px solid #ccc; 
-    border-radius: 5px;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); 
-}
-
-.filtros-data input:focus {
-    border-color: #007bff; 
-    outline: none;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
-}
-
-.filtros-data button {
-    background-color: #007bff; 
-    color: #fff;
-    font-size: 14px;
-    font-weight: bold;
-    padding: 10px;
+button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #5cb85c;
+    color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
+    font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s;
 }
 
-.filtros-data button:hover {
-    background-color: #0056b3;
+button:hover {
+    background-color: #4cae4c;
 }
 
 
@@ -236,11 +256,15 @@ font-size: 1.2rem;
 
 /* Detalhes de vendas */
 .container-detalhes-vendas {
-    margin-top: 50px;
-    height: 90%;
-    width: 95%;
-    max-width: 100%;
-    max-height: 100%;
+    margin-top: 2.6%;
+    background-color:fff;
+    border: 2px solid black;
+    width: 90%;
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    height: 40vw;
 }
 #numeroPedido{
     width: 50%;
