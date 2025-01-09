@@ -2,7 +2,6 @@
 :root {
     --header-background-color: #333; /* Exemplo de cor */
 }
-
    .menu-item-3 a {
       color: rgb(0, 0, 0);
       padding: 8px;
@@ -39,7 +38,10 @@
 .menu-secundario li a:hover {
     background-color: rgba(255, 255, 255, 0.2);
 }
-
+#menu-secundario-fornecedor{
+display: flex;
+justify-content: left;
+}
 /* Geral */
 .container, .sale-card {
     box-sizing: border-box;

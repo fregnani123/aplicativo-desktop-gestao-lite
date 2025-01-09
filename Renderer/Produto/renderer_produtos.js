@@ -11,7 +11,7 @@ const selectUnidadeEstoque = document.querySelector('#unidadeEstoque');
 const selectCorProduto = document.querySelector('#corProduto');
 
 // Seleciona todos os campos de input
-const inputCodigoEAN = document.querySelector('#codigoDeBarras');
+const inputCodigoEANProduto = document.querySelector('#codigoDeBarras');
 const inputNomeProduto = document.querySelector('#nomeProduto');
 const inputObservacoes = document.querySelector('#observacoes');
 const inputMassa = document.querySelector('#massaNumero');
@@ -21,8 +21,6 @@ const inputQuantidadeEstoque = document.querySelector('#estoqueQtd');
 const inputQuantidadeVendido = document.querySelector('#Qtd_vendido'); //Input Oculto, salva codidade 0 
 const inputPathImg = document.querySelector('#produto-imagem');
 const divImgProduct = document.querySelector('.quadro-img');
-const btnExit = document.querySelector('#botaoSair');
-const containerRegisterForm = document.querySelector('.container-register-form'); //Renderizar Div Fornecedor
 const btnFornecedorMenu = document.querySelector('.li-fornecedor');
 const containerRegister = document.querySelector('.container-register');
 const btnCadGrupo = document.querySelector('#add-grupo');
@@ -46,16 +44,19 @@ getMedidaVolume(selectMedidaVolume);
 getCorProduto(selectCorProduto);
 getunidadeDeMassa(selectUnidadeMassa);
 
-inputMaxCaracteres(inputNomeProduto, 150); //max caracteres input
-inputMaxCaracteres(inputObservacoes, 150);
 
-inputCodigoEAN.addEventListener('input', (e) => {
-    inputCodigoEAN.value = e.target.value;
-    e.preventDefault();
-    formatarCodigoEAN(inputCodigoEAN);
+
+inputCodigoEANProduto.addEventListener('input', (e) => {
+    formatarCodigoEAN(e.target);
 });
+inputNomeProduto.addEventListener('input', (e) => {
+    inputMaxCaracteres(inputNomeProduto,150);
+});
+// inputObservacoes.addEventListener('input', (e) => {
+//     inputMaxCaracteres(inputObservacoes, 150);
+// });
 
-inputCodigoEAN.focus();
+inputCodigoEANProduto.focus();
 
 // Função para formatar valores como moeda brasileira (R$)
 function formatarMoeda(valor) {
@@ -130,18 +131,6 @@ btnCadSubGrupo.addEventListener('click', (e) => {
     renderizarInputsSubGrupo();
 });
 
-
-btnExit.addEventListener('click', (e) => {
-    e.preventDefault();
-    containerRegisterForm.style.display = 'none';
-    btnFornecedorMenu.classList.remove('li-fornecedor-active');
-})
-
-btnFornecedorMenu.addEventListener('click', (e) => {
-    e.preventDefault();
-    containerRegisterForm.style.display = 'flex';
-    btnFornecedorMenu.classList.add('li-fornecedor-active');
-});
 
 // Função para tratar campos de valores monetários
 function tratarCampoMonetario(valor) {
@@ -284,3 +273,4 @@ function limparImagem() {
     divImgProduct.innerHTML = `<img class="img-produto" src="../style/img/produto.png" alt="imagem produto">`;
     inputPathImg.value = '';
 }
+

@@ -165,16 +165,6 @@ function formatarCEP(input) {
     });
 };
 
-// // Função para validar e formatar a data
-// function validarDataVenda(dataVenda) {
-//     const regex = /^\d{2}\/\d{2}\/\d{4}$/; // Verifica formato DD/MM/YYYY
-//     if (!regex.test(dataVenda)) return null;
-
-//     const [dia, mes, ano] = dataVenda.split('/');
-//     const date = new Date(`${ano}-${mes}-${dia}`);
-//     return isNaN(date.getTime()) ? null : `${ano}-${mes}-${dia}`; // Retorna no formato YYYY-MM-DD
-// };
-
 
 // Função para validar e formatar a data
 function validarDataVenda(dataVenda) {

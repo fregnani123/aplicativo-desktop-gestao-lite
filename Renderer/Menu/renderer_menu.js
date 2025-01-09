@@ -5,7 +5,7 @@ const menuPainel1 = [
     { id: '4', texto: 'Produto', to: '../public/registrar_produto.html' },
     { id: '7', texto: 'Cadastro de cliente', to: '../public/registrar_cliente.html' },
     { id: '8', texto: 'Cadastro de Fornecedor', to: '../public/fornecedor.html' },
-    { id: '9', texto: 'Controle de entrada ', to: '../public/controle-entrada.html' },
+    { id: '9', texto: 'Controle de Estoque ', to: '../public/controle_estoque.html' },
 ];
 
 const ulMenu = document.getElementById('ul-Menu');

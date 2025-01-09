@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' http://localhost:3000; img-src 'self' data:;">
-    <link rel="stylesheet" href="../style/css/detalhe_vendas.css">
-    <link rel="stylesheet" href="../style/css/menu_interno.css">
+    <link rel="stylesheet" href="../style/css/detalhes_vendas/detalhe_vendas.css">
+    <link rel="stylesheet" href="../style/css/login_menu/menu_interno.css">
+    <style>#li-Histórico-vendas a{ background-color: rgb(255, 255, 255); color:black;}</style>
     <title>Gerenciamento de Vendas</title>
 </head>
 <body>
@@ -19,7 +20,7 @@
     </header>
     <div class="container-detalhes-vendas">
         <ul class="menu-secundario" id="menu-secundario-fornecedor">
-            <li>
+            <li id="li-Histórico-vendas">
                 <a id="btn-flex">Histórico de Vendas</a>
             </li>
         </ul>

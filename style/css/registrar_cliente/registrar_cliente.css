@@ -18,12 +18,19 @@ body {
     padding: 10px;
     display: flex;
     gap: 10px;
-    background-color: var(--menu-background-color);
     color: white;
     border-radius: 8px;
     width: 100%;
     justify-content: left;
     margin-top: -1%;
+}
+
+.menu-item-7 a {
+    color: rgb(0, 0, 0);
+    padding: 8px;
+    border-radius: 5px;
+    background-color: #ffffff;
+    width: 100%;
 }
 
 .menu-secundario li {
@@ -48,6 +55,7 @@ body {
     display: flex;
     justify-content: left;
     gap: 2%;
+    margin-top: -1.1%;
 }
 .divForm {
     border: 2px solid black;

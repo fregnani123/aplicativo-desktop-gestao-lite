@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' http://localhost:3000;">
-    <link rel="stylesheet" href="../style/css/menu_interno.css">
-    <link rel="stylesheet" href="../style/css/fornecedor.css">
+    <link rel="stylesheet" href="../style/css/login_menu/menu_interno.css">
+    <link rel="stylesheet" href="../style/css/fornecedor/fornecedor.css">
+    <style>#cadastro-fornecedor a{background-color: rgb(255, 255, 255); color:black;}</style>
     <title>Cadastro de Fornecedor</title>
 </head>
 
@@ -20,7 +21,7 @@
     <div class="divForm">
         <!-- Título do Formulário -->
         <ul class="menu-secundario" id="menu-secundario-fornecedor">
-            <li>
+            <li id="cadastro-fornecedor">
                 <a id="btn-flex">Cadastro de Fornecedor</a>
             </li>
             <li>
@@ -104,7 +105,7 @@
                 </div>
             </div>
             <div class="div-produto-img">
-                <img class="fornecedor-img" src="../style/img/pacotes.png" alt="">
+                <img class="fornecedor-img" src="../style/img/fornecedor.png" alt="">
             </div>
         </div>
     </div>

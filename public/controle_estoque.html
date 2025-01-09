@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' http://localhost:3000;">
+    <link rel="stylesheet" href="../style/css/login_menu/menu_interno.css">
+    <link rel="stylesheet" href="../style/css/controle_estoque/controle_estoque.css">
+    <style>#cadastro-fornecedor a{background-color: rgb(255, 255, 255); color:black;}</style>
+    <title>Controle de Estoque</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul id="ul-Menu">
+            </ul>
+        </nav>
+    </header>
+    <div class="divForm">
+        <!-- Título do Formulário -->
+        <ul class="menu-secundario" id="menu-secundario-fornecedor">
+            <li id="cadastro-fornecedor">
+                <a id="btn-flex">Controle Manual de Estoque</a>
+            </li>
+        </ul>
+        <!-- Formulário -->
+        <div class="div-container-form">
+            <div class="div-form">
+                <div class="form-group">
+                    <div>
+                        <label class="labelCodigoEan" for="cnpj">Digite o Coódio(EAN) do Produto</label>
+                        <input type="text" id="CodigoEanBuscar">
+                    </div>
+                    <div>
+                        <label class="labelFornecedor" for="ie">?</label>
+                        <input type="text" id="ie">
+                    </div>
+                    
+                </div>
+
+                <div class="form-group">
+                    <div>
+                        <label class="labelFornecedor" for="razaoSocial">?</label>
+                        <input type="text" id="razaoSocial">
+                    </div>
+                    <div>
+                        <label class="labelFornecedor" for="nomeFantasia">?</label>
+                        <input type="text" id="nomeFantasia">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="div-btnFornecedor">
+                        <!-- Botão de Cadastro -->
+                        <button id="btn-cad-fornecedor"><img class="img-disquete"
+                                src="../style//img/disquete.png">Gravar Alteração</button>
+                    </div>
+                </div>
+            </div>
+            <div class="div-produto-img">
+                <img class="fornecedor-img" src="../style/img/caixa-de-entrada.png" alt="">
+            </div>
+        </div>
+    </div>
+   
+    </div>
+    <script src="../Renderer/Menu/renderer_menu.js"></script>
+    <script src="../Renderer/services/formatters.js"></script>
+    <script src="../Renderer/Fornecedor/fornecedor.js"></script>
+    <script src="../Renderer/Fornecedor/api_fornecedor.js"></script>
+    <script src="../Renderer/services/cidadesPorEstados.js"></script>
+    <script src="../Renderer/services/alertMsg.js"></script>
+</body>
+</html>

@@ -73,6 +73,7 @@ a {
     width: 100%;
     padding: 0px 0px;
     display: block;
+    cursor: pointer;
 }
 
 /* Estilo do menu principal */

@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' http://localhost:3000; img-src 'self' data:;">
-    <link rel="stylesheet" href="../style/css/register_produto.css">
-    <link rel="stylesheet" href="../style/css/menu_interno.css">
+    <link rel="stylesheet" href="../style/css/registrar_produto/registrar_produto.css">
+    <link rel="stylesheet" href="../style/css/login_menu/menu_interno.css">
+    <style>#cadastro-produto a{background-color: rgb(255, 255, 255); color:black;}</style>
     <title>Cadastro de Produto</title>
 </head>
 
@@ -17,107 +18,9 @@
             </ul>
         </nav>
     </header>
-    <div class="container-register-form">
+ 
   <!-- Não excluir este container, aqui renderiza o grupo e subgrupo -->
-  <div class="container-register"></div>
-
-        <div class="div-fornecedor">
-            <!-- Título do Formulário -->
-            <ul class="menu-secundario" id="menu-secundario-fornecedor">
-                <li>
-                    <a id="btn-flex">Cadastro de Fornecedor</a>
-                </li>
-                <li>
-                    <a>Alterar Cadastro de Fornecedor</a>
-                </li>
-                <li class="li-sair">
-                    <button class="botaoSair" id="botaoSair">Voltar</button>
-                </li>
-            </ul>
-            <!-- Formulário -->
-            <div class="div-container-form">
-    
-                <div class="div-form">
-                    <div class="linha-inputs">
-                        <div>
-                            <label class="labelFornecedor" for="cnpj">CNPJ</label>
-                            <input type="text" id="cnpj">
-                        </div>
-                        <div>
-                            <label class="labelFornecedor" for="ie">Inscrição Estadual / IE</label>
-                            <input type="text" id="ie">
-                        </div>
-                        <div>
-                            <label class="labelFornecedor" for="razaoSocial">Razão Social</label>
-                            <input type="text" id="razaoSocial">
-                        </div>
-                    </div>
-
-                    <div class="linha-inputs">
-                        <div>
-                            <label class="labelFornecedor" for="nomeFantasia">Nome Fantasia</label>
-                            <input type="text" id="nomeFantasia">
-                        </div>
-                        <div>
-                            <label class="labelFornecedor" for="cep">Cep</label>
-                            <input type="text" id="cep">
-                        </div>
-                    </div>
-
-                    <div class="linha-inputs">
-                        <div>
-                            <label class="labelFornecedor" for="endereco">Endereço</label>
-                            <input type="text" id="endereco">
-                        </div>
-                        <div>
-                            <label class="labelFornecedor" for="bairro">Bairro</label>
-                            <input type="text" id="bairro">
-                        </div>
-                        <div>
-                            <label class="labelFornecedor" for="uf">UF</label>
-                            <select id="uf">
-                            
-                            </select>
-                        </div>
-                        <div>
-                            <label class="labelFornecedor" for="cidade">Cidade</label>
-                            <select id="cidade">
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="linha-inputs">
-                        <div>
-                            <label class="labelFornecedor" for="telefone">Telefone</label>
-                            <input type="text" id="telefone">
-                        </div>
-                        <div>
-                            <label class="labelFornecedor" for="email">Email</label>
-                            <input type="email" id="email">
-                        </div>
-                    </div>
-                    <div class="linha-inputs">
-                        <div class="text-area">
-                            <label class="label" for="observacoes">Observações</label>
-                            <textarea id="observacoes" name="observacoes"
-                                placeholder="Informações adicionais sobre o cliente"></textarea>
-                        </div>
-                        <div class="div-btnFornecedor">
-                            <!-- Botão de Cadastro -->
-                            <button id="btn-cad-fornecedor"><img class="img-disquete"
-                                    src="../style//img/disquete.png">Gravar Fornecedor</button>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="div-img">
-                    <img class="img-fornecedor" src="../style/img/pacotes.png" alt="">
-                </div>
-            </div>
-
-        </div>
-
-    </div>
+    <div class="container-register"></div>
 
     <div class="divForm">
         <ul class="menu-secundario">
@@ -133,11 +36,8 @@
             <li class="li-menu2">
                 <a class="a2" href="">Informações Produtos</a>
             </li>
-            <li class="li-fornecedor">
-                <a class="a2" href="">Cadastro de Fornecedor</a>
-            </li>
         </ul>
-        <!-- <p class="barra">Cadastrar Novo Produto</p> -->
+        
         <div class="div-form-container">
             <div class="form">
                 <div class="form-group">
@@ -289,14 +189,12 @@
         </div>
     </div>
     <script src="../Renderer/Menu/renderer_menu.js"></script>
-    <script src="../Renderer/cidadesPorEstados.js"></script>
     <script src="../Renderer/services/converte_moeda.js"></script>
-    <script src="../Renderer/fornecedor.js"></script>
     <script src="../Renderer/Produto/renderizarInputsGrupo.js"></script>
-    <script src="../Renderer/services/formatters.js"></script>
     <script src="../Renderer/Produto/apiEndpoints.js"></script>
     <script src="../Renderer/services/alertMsg.js"></script>
     <script src="../Renderer/Produto/renderer_produtos.js"></script>
+    <script src="../Renderer/services/formatters.js"></script>
 </body>
 
 </html>

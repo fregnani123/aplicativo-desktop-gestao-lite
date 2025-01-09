@@ -13,52 +13,9 @@ const apiEndpoints = {
     postNewProduto: 'http://localhost:3000/postNewProduto',
     postNewGrupoProduto: 'http://localhost:3000/newGrupo',
     postNewSubGrupoProduto: 'http://localhost:3000/newSubGrupo',
-    postNewFornecedor: 'http://localhost:3000/newFornecedor',
-
-    // getHistoricoVendas: 'http://localhost:3000/getHistoricoVendas',
     getVendaPorNumeroPedido: 'http://localhost:3000/getVendaPorNumeroPedido'
 };
 
-async function postNewFornecedor(fornecedorData) {
-    const postNewFornecedorData = apiEndpoints.postNewFornecedor;
-
-    if (!fornecedorData.cnpj || !fornecedorData.nome_fantasia) {
-        alert('Erro: CNPJ e nome fantasia são obrigatórios.');
-        return;
-    }
-
-    try {
-        const response = await fetch(postNewFornecedorData, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(fornecedorData),
-        });
-
-        if (!response.ok) {
-            const errorResponse = await response.json();
-            throw new Error(errorResponse.error); // Lança a mensagem detalhada do backend
-        }
-
-        const data = await response.json();
-        console.log('Fornecedor adicionado com sucesso:', data);
-        alertMsg(`${'Fornecedor adicionado com sucesso'}`, 'success', 4000);
-        limparFormulario();
-        getFornecedor(selectFornecedor);
-        selectFornecedor.value = ''; // Limpa o campo após o envio
-        // Limpa as opções atuais do select e redefine a primeira como "Selecione"
-        selectFornecedor.innerHTML = '<option value="">Selecione</option>';
-        containerRegisterForm.style.display = 'none';
-
-        return data;
-
-    } catch (error) {
-        console.error('Erro ao adicionar fornecedor:', error.message);
-        alertMsg(`${error.message}`, 'error', 4000); // Exibe o erro retornado pelo backend
-        throw error;
-    }
-};
 
 function getGrupo(renderer) {
     const getGrupo = apiEndpoints.getGrupo;
@@ -312,30 +269,3 @@ async function postNewProdutoWithImage(produtoData, selectedFile) {
         return;
     }
 };
-
-
-// async function getHistoricoVendas(filters) {
-//     const getVendaEndpoint = apiEndpoints.getHistoricoVendas;
-
-//     // Construção dos parâmetros de consulta (query string)
-//     const params = new URLSearchParams(filters).toString();
-
-//     try {
-//         const response = await fetch(`${getVendaEndpoint}?${params}`, {
-//             method: 'GET',
-//         });
-
-//         if (!response.ok) {
-//             throw new Error(`Erro ao buscar vendas: ${response.statusText}`);
-//         }
-
-//         const data = await response.json();
-//         console.log('Dados das vendas:', data);
-//         return data; // Retorna os dados para serem usados no front-end
-//     } catch (error) {
-//         console.error('Erro ao buscar dados das vendas:', error);
-//         return null;
-//     }
-// };
-
-// getHistoricoVendas()
