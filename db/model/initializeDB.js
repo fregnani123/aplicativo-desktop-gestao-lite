@@ -169,6 +169,24 @@ async function initializeDB() {
             FOREIGN KEY (venda_id) REFERENCES venda(venda_id) 
             )  ENGINE = InnoDB;`,
 
+            `CREATE TABLE IF NOT EXISTS controle_estoque (
+             controle_estoque_id INT NOT NULL AUTO_INCREMENT,
+             produto_id INT NOT NULL,
+             preco_compra_anterior DECIMAL(10,2) NOT NULL,
+             preco_compra_atual DECIMAL(10,2) NOT NULL,
+             preco_markup_anterior DECIMAL(5,2) NULL,
+             preco_markup_atual DECIMAL(5,2) NULL,
+             preco_venda_anterior DECIMAL(10,2) NOT NULL,
+             preco_venda_atual DECIMAL(10,2) NOT NULL,
+             situacao_movimento VARCHAR(50) NOT NULL,
+             motivo_movimentacao VARCHAR(50) NOT NULL,
+             venda_id INT NULL,
+             PRIMARY KEY (controle_estoque_id),
+             FOREIGN KEY (produto_id) REFERENCES produto(produto_id),
+             FOREIGN KEY (venda_id) REFERENCES venda(venda_id)
+             ) ENGINE = InnoDB;
+             `,
+
             // Criar Tabela produto
             `CREATE TABLE IF NOT EXISTS produto (
                 produto_id INT NOT NULL AUTO_INCREMENT,

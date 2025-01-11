@@ -1,24 +1,30 @@
 /* Variáveis e estilos globais */
 :root {
-    --header-background-color: #333; /* Exemplo de cor */
+    --header-background-color: #333;
+    /* Exemplo de cor */
 }
-   .menu-item-3 a {
-      color: rgb(0, 0, 0);
-      padding: 8px;
-      border-radius: 5px;
-      background-color: #ffffff;
-      width: 100%;
-  }
-  .menu-secundario {
+
+.menu-item-3 a {
+    color: rgb(0, 0, 0);
+    padding: 8px;
+    border-radius: 5px;
+    background-color: #ffffff;
+    width: 100%;
+}
+
+.menu-secundario {
     list-style: none;
     padding: 10px;
-    margin: 0 0 20px 0; /* Margem inferior para dar espaço entre o menu e o restante */
+    margin: 0 0 20px 0;
+    /* Margem inferior para dar espaço entre o menu e o restante */
     display: flex;
     gap: 10px;
     background-color: var(--menu-background-color);
     color: white;
     border-radius: 8px;
     width: 100%;
+    display: flex;
+    justify-content: left;
 }
 
 .menu-secundario li {
@@ -38,12 +44,10 @@
 .menu-secundario li a:hover {
     background-color: rgba(255, 255, 255, 0.2);
 }
-#menu-secundario-fornecedor{
-display: flex;
-justify-content: left;
-}
+
 /* Geral */
-.container, .sale-card {
+.container,
+.sale-card {
     box-sizing: border-box;
     display: flex;
     position: relative;
@@ -56,7 +60,7 @@ justify-content: left;
     padding: 20px;
     position: relative;
     overflow: hidden;
-    
+
 }
 
 .filtros-img {
@@ -69,42 +73,46 @@ justify-content: left;
     padding: 15px;
     width: 40%;
     box-sizing: border-box;
-    overflow: hidden; 
+    overflow: hidden;
     margin-right: 15px;
     border: 1px solid black;
 }
 
 .div-data {
     display: flex;
-    gap: 10px; 
+    gap: 10px;
 }
 
 
 input,
+
 select {
     width: 100%;
-    padding: 1%; /* Ajusta o preenchimento */
+    padding: 1%;
+    /* Ajusta o preenchimento */
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 1.3rem;
-    height: 40px; /* Define a mesma altura para todos */
-    box-sizing: border-box; /* Garante que padding e border sejam inclusos na altura */
+    height: 40px;
+    /* Define a mesma altura para todos */
+    box-sizing: border-box;
+    /* Garante que padding e border sejam inclusos na altura */
     align-items: center;
     text-align: center;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); 
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 input:focus {
-    border-color: #007bff; 
+    border-color: #007bff;
     outline: none;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 .filtros-img img.img-detalhes {
     display: block;
-    margin: 0 auto; 
-    width: 100px;          
-    height: auto;            
+    margin: 0 auto;
+    width: 100px;
+    height: auto;
     padding: 10px;
 }
 
@@ -112,10 +120,10 @@ input:focus {
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: 10px; 
+    gap: 10px;
 }
 
-label{
+label {
     font-size: 1.2rem;
 }
 
@@ -138,14 +146,14 @@ button:hover {
 }
 
 
-.titulo-relatorio{
+.titulo-relatorio {
     display: flex;
     justify-content: center;
     font-size: 1.1rem;
     text-align: center;
 }
 
-.titulo-dv{
+.titulo-dv {
     width: 100%;
     padding: 1%;
     display: flex;
@@ -154,15 +162,16 @@ button:hover {
     background-color: rgb(230, 230, 230);
 }
 
-.vendas-filtradas { 
- margin-top: 0.3%;
- width: 32%;
- height: 100%;
- overflow-y: scroll;
- border: 1px solid black;
- margin-left: 1%;
+.vendas-filtradas {
+    margin-top: 0.3%;
+    width: 32%;
+    height: 100%;
+    overflow-y: scroll;
+    border: 1px solid black;
+    margin-left: 1%;
 }
-.comprovantes-div{
+
+.comprovantes-div {
     display: flex;
     justify-content: center;
     border: 1px dotted black;
@@ -170,7 +179,7 @@ button:hover {
     margin-right: 4%;
 }
 
-.sale-card{
+.sale-card {
     padding: 15px;
     width: 300px;
     flex-direction: column;
@@ -209,45 +218,56 @@ button:hover {
     margin-bottom: 0;
 }
 
-.filtros .sale-total ,.total-relatorio,.no-sales-message {
+.filtros .sale-total,
+.total-relatorio,
+.no-sales-message {
     padding: 2%;
     margin-top: 2%;
 }
-.sale-total{
-   border: 1px solid black;
+
+.sale-total {
+    border: 1px solid black;
 }
 
-.sales-history{
+.sales-history {
     padding-top: 5%;
 }
 
-.filtros, .no-sales-message, .sale-total p {
+.filtros,
+.no-sales-message,
+.sale-total p {
     margin: 5px 0;
 }
-.no-sales-message{
-background-color: rgb(230, 230, 230);
-display: flex;
-justify-content: center;
-font-size: 1.2rem;
+
+.no-sales-message {
+    background-color: rgb(230, 230, 230);
+    display: flex;
+    justify-content: center;
+    font-size: 1.2rem;
 }
 
-.filtros, .no-sales-message, .sale-total h3 {
+.filtros,
+.no-sales-message,
+.sale-total h3 {
     color: #000000;
 }
 
 .filtros .sale-total p strong {
     color: #00a70b;
 }
-.total-relatorio{
+
+.total-relatorio {
     margin: 5px 0;
     display: flex;
     flex-direction: column;
     height: 100%;
     border: 1px solid black;
 }
-.total-vendas{
+
+.total-vendas {
     margin-top: 5px;
 }
+
 .total-filtradas {
     width: 100%;
     height: 100%;
@@ -259,7 +279,7 @@ font-size: 1.2rem;
 /* Detalhes de vendas */
 .container-detalhes-vendas {
     margin-top: 2.6%;
-    background-color:fff;
+    background-color: fff;
     border: 2px solid black;
     width: 90%;
     padding: 20px;
@@ -268,15 +288,17 @@ font-size: 1.2rem;
     flex-wrap: wrap;
     height: 40vw;
 }
-#numeroPedido{
+
+#numeroPedido {
     width: 50%;
 }
+
 .comprovantes-vendas {
-  position: absolute;
-  z-index: 100;
-  background-color:#f9f9f9;
-  text-align: center;
-  width: 28.2%;
-  padding: .5%;
-  border-bottom: 1px solid black;
+    position: absolute;
+    z-index: 100;
+    background-color: #f9f9f9;
+    text-align: center;
+    width: 28.2%;
+    padding: .5%;
+    border-bottom: 1px solid black;
 }

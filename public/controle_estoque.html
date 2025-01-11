@@ -20,46 +20,79 @@
     </header>
     <div class="divForm">
         <!-- Título do Formulário -->
-        <ul class="menu-secundario" id="menu-secundario-fornecedor">
+        <ul class="menu-secundario" style="margin-top: -15.7%;">
             <li id="cadastro-fornecedor">
                 <a id="btn-flex">Controle Manual de Estoque</a>
             </li>
         </ul>
         <!-- Formulário -->
         <div class="div-container-form">
+
             <div class="div-form">
                 <div class="form-group">
-                    <div>
-                        <label class="labelCodigoEan" for="cnpj">Digite o Coódio(EAN) do Produto</label>
+                    <div class="div-codigoEanFind">
+                        <label  for="cnpj">Coódio(EAN) do Produto:</label>
                         <input type="text" id="CodigoEanBuscar">
                     </div>
-                    <div>
-                        <label class="labelFornecedor" for="ie">?</label>
-                        <input type="text" id="ie">
+                    <div class="div-produtoEncontrado">
+                        <label for="">Produto Encontrado:</label>
+                        <input type="text" id="produtoEncontrado" readonly>
                     </div>
-                    
                 </div>
 
                 <div class="form-group">
-                    <div>
-                        <label class="labelFornecedor" for="razaoSocial">?</label>
-                        <input type="text" id="razaoSocial">
+                    <div class="div-precoCompra">
+                        <label for="alterarPreco">Habilitar alterar valores:</label>
+                        <select id="alterarPreco">
+                            <option value="1">Não</option>
+                            <option value="2">Sim</option>
+                        </select>
                     </div>
-                    <div>
-                        <label class="labelFornecedor" for="nomeFantasia">?</label>
-                        <input type="text" id="nomeFantasia">
+                    <div class="div-precoCompra">
+                        <label for="inputPrecoCompra">Preço de Compra:</label>
+                        <input style="background-color: #007bff00;" id="inputPrecoCompra" type="text" readonly>
+                    </div>
+                    <div class="div-precoCompra">
+                        <label class="" for="">Markup %:</label>
+                      <input style="background-color: #007bff00;" id="MarkupEstoque" type="text" readonly>
+                    </div>
+                    <div class="div-precoCompra">
+                        <label class="" for="">Preço de Venda:</label>
+                      <input style="background-color: #007bff00;" id="precoVendaEstoque" type="text" readonly type="text">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="selectSituacao">
+                        <label class="labelFornecedor" for="razaoSocial">Situação do Movimento:</label>
+                        <select name="" id="situacao">
+                            <option value="">Selecione</option>
+                            <option value="1">Entrada</option>
+                            <option value="2">Saída</option>
+                        </select>
+                    </div>
+                    <div class="selectSituacao">
+                        <label class="labelFornecedor" for="">Motivo da Movimentação:</label>
+                        <select name="" id="movimento">
+                            <option value="">Selecione</option>
+                        </select>
+                    </div>
+                    <div style="display:flex;" class="selectSituacao">
+                        <label class="labelFornecedor" for="">Numero da venda </label>
+                       <input id="" type="text">
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="div-btnFornecedor">
-                        <!-- Botão de Cadastro -->
-                        <button id="btn-cad-fornecedor"><img class="img-disquete"
-                                src="../style//img/disquete.png">Gravar Alteração</button>
+                    <div class="selectSituacao">
+                        <label class="labelFornecedor" for="">Data:</label>
+                       <input id="dateEstoque" type="date" readonly>
                     </div>
+                    <button id="btn-estoque"><img class="img-disquete"
+                        src="../style//img/disquete.png">Alterar Estoque</button>
                 </div>
             </div>
             <div class="div-produto-img">
-                <img class="fornecedor-img" src="../style/img/caixa-de-entrada.png" alt="">
+                <img class="estoque-img" src="../style/img/caixa-de-entrada.png" alt="">
             </div>
         </div>
     </div>
@@ -67,9 +100,8 @@
     </div>
     <script src="../Renderer/Menu/renderer_menu.js"></script>
     <script src="../Renderer/services/formatters.js"></script>
-    <script src="../Renderer/Fornecedor/fornecedor.js"></script>
-    <script src="../Renderer/Fornecedor/api_fornecedor.js"></script>
-    <script src="../Renderer/services/cidadesPorEstados.js"></script>
     <script src="../Renderer/services/alertMsg.js"></script>
+    <script src="../Renderer/controle_estoque/api_controle_estoque.js"></script>
+    <script src="../Renderer/controle_estoque/controle_estoque.js"></script>
 </body>
 </html>

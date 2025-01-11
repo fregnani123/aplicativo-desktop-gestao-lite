@@ -14,7 +14,6 @@ function formatarCodigoEAN(inputElement) {
     inputElement.value = value;
 }
 
-
 // Função para formatar o telefone (ex: (XX) XXXX-XXXX)
 function formatarTelefone(input) {
     input.addEventListener('input', function () {
@@ -186,3 +185,41 @@ function validarDataVenda(dataVenda) {
     return null; // Retorna null se o formato for inválido
 }
 
+function SituaçaoMovimento (e) {
+    const situacaoSelecionada = e.target.value;
+
+    // Limpar o select de movimento
+    movimentoSelect.innerHTML = '<option value="">Selecione</option>';
+
+    // Verificar se há motivos para a situação selecionada
+    if (motivos[situacaoSelecionada]) {
+        // Preencher o select de movimento com os motivos correspondentes
+        motivos[situacaoSelecionada].forEach((motivo, index) => {
+            const option = document.createElement('option');
+            option.value = index + 1; // Pode ajustar o valor conforme necessário
+            option.textContent = motivo;
+            movimentoSelect.appendChild(option);
+        });
+    }
+};
+
+function liberarInputs() {
+    // Verificar se o valor do select é "2"
+    if (alterarPreco.value === '2') {
+        inputPrecoCompra.readOnly = false; // Habilitar edição
+        inputMarkupEstoque.readOnly = false;
+        inputprecoVendaEstoque.readOnly = false;
+
+        inputPrecoCompra.style.background = 'white';
+        inputMarkupEstoque.style.background = 'white';
+        inputprecoVendaEstoque.style.background = 'white';
+    } else {
+        inputPrecoCompra.readOnly = true; // Tornar somente leitura
+        inputMarkupEstoque.readOnly = true;
+        inputprecoVendaEstoque.readOnly = true;
+
+        inputPrecoCompra.style.background = '#007bff00';
+        inputMarkupEstoque.style.background = '#007bff00';
+        inputprecoVendaEstoque.style.background = '#007bff00';
+    }
+}

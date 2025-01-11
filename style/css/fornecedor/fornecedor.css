@@ -136,8 +136,8 @@ button img {
 
 .div-produto-img {
     width: 80%;
-    max-width: 200px;
-    height: 200px;
+    max-width: 250px;
+    height: 250px;
     display: flex;
     justify-content: center;
     align-items: center;

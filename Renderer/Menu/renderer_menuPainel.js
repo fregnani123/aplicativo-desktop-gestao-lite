@@ -9,7 +9,7 @@ const menuPainel2 = [
     /* Menu id:6 oculto, disponível para futuras novas do painel opções */
     { id: '6', texto: '', src: '', to: '' },
     { id: '7', texto: 'Cadastro de cliente', src: '../style/img/cadastroCliente.png', to: '../public/registrar_cliente.html' },
-    { id: '8', texto: 'Controle de entrada ', src: '../style/img/caixa-de-entrada.png', to: '../public/controle_estoque.html' },
+    { id: '8', texto: 'Controle de estoque ', src: '../style/img/caixa-de-entrada.png', to: '../public/controle_estoque.html' },
     { id: '9', texto: 'Suporte', src: '../style/img/suporte.png', to: 'https://api.whatsapp.com/send?phone=5548996607600' },
     { id: '10', texto: 'Sair', src: '../style/img/sair.png', to: '../public/index.html' },
 ];
