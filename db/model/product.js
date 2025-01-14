@@ -674,6 +674,39 @@ async function UpdateEstoque(produto) {
     }
 };
 
+async function UpdateValores(produto) {
+    let connection;
+    try {
+        connection = await pool.getConnection();
+
+        // Query para atualizar apenas os campos permitidos
+        const query = `
+            UPDATE produto
+            SET 
+                preco_compra = ?, 
+                markup = ?, 
+                preco_venda = ?
+            WHERE codigo_ean = ?
+        `;
+
+        // Executa a query com os valores
+        const [result] = await connection.query(query, [
+            produto.preco_compra,  
+            produto.markup, 
+            produto.preco_venda,  
+            produto.codigo_ean       
+        ]);
+
+        console.log('Registro valores atualizado com sucesso:', result);
+        return result;
+    } catch (error) {
+        console.error('Erro ao atualizar MySQL: valores', error);
+        throw error;
+    } finally {
+        if (connection) connection.release();
+    }
+};
+
 async function postNewCliente(cliente) {
     await ensureDBInitialized();
     let connection;
@@ -873,9 +906,70 @@ async function getVendasPorNumeroVenda(numeroPedido) {
     } finally {
         if (connection) connection.release(); // Libera a conexão
     }
+};
+
+async function postControleEstoque(controleEstoque) {
+    await ensureDBInitialized();
+    let connection;
+    try {
+        connection = await pool.getConnection();
+
+        // Verifica se o controle_estoque com o mesmo controle_estoque_id já existe
+        const checkQuery = 'SELECT controle_estoque_id FROM controle_estoque WHERE controle_estoque_id = ?';
+        const [existingControle] = await connection.query(checkQuery, [controleEstoque.controle_estoque_id]);
+
+        if (existingControle.length > 0) {
+            // Retorna uma mensagem de erro detalhada
+            throw new Error('Um controle_estoque com o mesmo controle_estoque_id já existe.');
+        }
+
+        // Query de inserção no controle_estoque
+        const insertQuery = `
+        INSERT INTO controle_estoque (
+            produto_id,
+            qtde_movimentada,
+            preco_compra_anterior,
+            preco_compra_atual,
+            preco_markup_anterior,
+            preco_markup_atual,
+            preco_venda_anterior,
+            preco_venda_atual,
+            situacao_movimento,
+            motivo_movimentacao,
+            numero_compra_fornecedor,
+            venda_id,
+            data_movimentacao
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+        const values = [
+            controleEstoque.produto_id,
+            controleEstoque.qtde_movimentada,
+            controleEstoque.preco_compra_anterior,
+            controleEstoque.preco_compra_atual,
+            controleEstoque.preco_markup_anterior || null,
+            controleEstoque.preco_markup_atual || null,
+            controleEstoque.preco_venda_anterior,
+            controleEstoque.preco_venda_atual,
+            controleEstoque.situacao_movimento,
+            controleEstoque.motivo_movimentacao,
+            controleEstoque.numero_compra_fornecedor || null,
+            controleEstoque.venda_id || null,
+            controleEstoque.data_movimentacao
+        ];
+
+        const [result] = await connection.query(insertQuery, values);
+
+        // Retorna o ID gerado para a nova entrada
+        return { insertId: result.insertId };
+    } catch (error) {
+        console.error('Erro ao inserir no controle_estoque:', error.message);
+
+        // Envia um erro com uma mensagem JSON para o frontend
+        throw { status: 400, message: error.message };
+    } finally {
+        if (connection) connection.release();
+    }
 }
-
-
 
 
 module.exports = {
@@ -903,5 +997,7 @@ module.exports = {
     UpdateEstoque,
     postNewCliente,
     historicoDeVendas,
-    getVendasPorNumeroVenda
+    getVendasPorNumeroVenda,
+    postControleEstoque,
+    UpdateValores
 };

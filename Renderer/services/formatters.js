@@ -1,18 +1,15 @@
 
 // Método para formatar código EAN
-function formatarCodigoEAN(inputElement) {
-    let value = inputElement.value;
 
-    // Remove qualquer caractere que não seja número
-    value = value.replace(/\D/g, '');
-
-    // Limita o comprimento para 13 caracteres
-    if (value.length > 13) {
-        value = value.substring(0, 13);
-    }
-
-    inputElement.value = value;
-}
+function formatarCodigoEAN(inputEan){
+    inputEan.addEventListener('input', (e) => {
+      // Remove non-numeric characters and limit the input to 13 characters
+      e.target.value = e.target.value.replace(/\D/g, '').slice(0, 13);
+      if (e.target.value.length === 13) {
+        getProdutoEstoque(e.target.value);
+      }
+    });
+  }
 
 // Função para formatar o telefone (ex: (XX) XXXX-XXXX)
 function formatarTelefone(input) {
@@ -185,7 +182,7 @@ function validarDataVenda(dataVenda) {
     return null; // Retorna null se o formato for inválido
 }
 
-function SituaçaoMovimento (e) {
+function SituaçaoMovimento(e) {
     const situacaoSelecionada = e.target.value;
 
     // Limpar o select de movimento
@@ -194,32 +191,65 @@ function SituaçaoMovimento (e) {
     // Verificar se há motivos para a situação selecionada
     if (motivos[situacaoSelecionada]) {
         // Preencher o select de movimento com os motivos correspondentes
-        motivos[situacaoSelecionada].forEach((motivo, index) => {
+        motivos[situacaoSelecionada].forEach((item, index) => {
             const option = document.createElement('option');
             option.value = index + 1; // Pode ajustar o valor conforme necessário
-            option.textContent = motivo;
+            option.textContent = item.motivo; // Acessar a propriedade `motivo`
             movimentoSelect.appendChild(option);
         });
     }
-};
+}
 
 function liberarInputs() {
     // Verificar se o valor do select é "2"
     if (alterarPreco.value === '2') {
         inputPrecoCompra.readOnly = false; // Habilitar edição
         inputMarkupEstoque.readOnly = false;
-        inputprecoVendaEstoque.readOnly = false;
+        inputprecoVenda.readOnly = false;
 
         inputPrecoCompra.style.background = 'white';
         inputMarkupEstoque.style.background = 'white';
-        inputprecoVendaEstoque.style.background = 'white';
+        inputprecoVenda.style.background = 'white';
     } else {
         inputPrecoCompra.readOnly = true; // Tornar somente leitura
         inputMarkupEstoque.readOnly = true;
-        inputprecoVendaEstoque.readOnly = true;
+        inputprecoVenda.readOnly = true;
 
         inputPrecoCompra.style.background = '#007bff00';
         inputMarkupEstoque.style.background = '#007bff00';
-        inputprecoVendaEstoque.style.background = '#007bff00';
+        inputprecoVenda.style.background = '#007bff00';
     }
+}
+
+function liberarInputsCV() {
+    if (situacaoSelect.value === '1' && movimentoSelect.value === '1') {
+        inputinputqtChaveCompra.readOnly = false;
+        inputinputqtChaveCompra.style.background = 'white';
+    } else {
+        inputinputqtChaveCompra.readOnly = true; // Tornar somente leitura
+        inputinputqtChaveCompra.style.background = '#007bff00';
+    }
+}
+
+function liberarInputsNV() {
+    if (situacaoSelect.value === '2' && movimentoSelect.value === '1' || situacaoSelect.value === '1' && movimentoSelect.value === '2' ) {
+        inputqtvenda_id.readOnly = false;
+        inputqtvenda_id.style.background = 'white';
+    } else {
+        inputqtvenda_id.readOnly = true; // Tornar somente leitura
+        inputqtvenda_id.style.background = '#007bff00';
+    }
+}
+
+// Função para formatar a data no formato 'yyyy-mm-dd HH:mm:ss'
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Adiciona zero à esquerda se o mês for 1-9
+    const day = String(date.getDate()).padStart(2, '0'); // Adiciona zero à esquerda se o dia for 1-9
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }

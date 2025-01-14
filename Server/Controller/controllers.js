@@ -27,7 +27,9 @@ const {
     UpdateEstoque,
     postNewCliente,
     historicoDeVendas,
-    getVendasPorNumeroVenda
+    getVendasPorNumeroVenda,
+    postControleEstoque,
+    UpdateValores
 
 } = require(path.join(__dirname, '../../db/model/product'));
 
@@ -256,6 +258,7 @@ const controllers = {
         }
     },
 
+ 
     postNewProductGrupo: async (req, res) => {
         try {
             const grupoData = req.body;
@@ -398,6 +401,20 @@ const controllers = {
         }
     },
 
+    UpdateValores: async (req, res) => {
+        try {
+            const produto = req.body; // Renomear para evitar confusão
+            await UpdateValores(produto); // Chamar a função importada/definida
+
+            res.json({
+                message: 'UpdateValores alterado com sucesso!',
+            });
+        } catch (error) {
+            console.error('Erro ao alterar UpdateValores:', error);
+            res.status(500).json({ error: 'Erro ao alterar UpdateValores.' });
+        }
+    },
+
     postNewCliente: async (req, res) => {
         try {
             const clienteData = req.body; // Dados do fornecedor recebidos do frontend
@@ -419,6 +436,26 @@ const controllers = {
             res.status(500).json({ error: 'Erro ao inserir o fornecedor.' });
         }
     },
+
+    postNewControleEstoque: async (req, res) => {
+        try {
+            const controleEstoqueData = req.body; 
+            const newControleEstoqueId = await postControleEstoque(controleEstoqueData);
+
+            res.json({
+                message: 'Controle estoque inserido com sucesso!',
+                controle_estoque_id: newControleEstoqueId
+            });
+        } catch (error) {
+            console.error('Erro ao inserir o controleEstoque:', error);
+
+            if (error.message) {
+                return res.status(400).json({ error: error.message }); 
+            }
+            res.status(500).json({ error: 'Erro ao inserir o controleEstoqueId.' });
+        }
+    },
+
 
 
 };

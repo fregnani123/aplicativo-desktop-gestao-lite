@@ -123,7 +123,7 @@ async function initializeDB() {
                 cliente_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                 nome VARCHAR(255) NOT NULL,
                 cpf VARCHAR(14) NOT NULL UNIQUE,
-                data_nascimento DATE,
+                data_nascimento DATE NOT NULL,
                 telefone VARCHAR(20) NOT NULL,
                 email VARCHAR(255) NOT NULL UNIQUE,
                 cep VARCHAR(10) NOT NULL,
@@ -140,7 +140,7 @@ async function initializeDB() {
 
             `CREATE TABLE IF NOT EXISTS venda (
                 venda_id INT NOT NULL AUTO_INCREMENT,
-                data_venda DATE,
+                data_venda DATE NOT NULL,
                 cliente_id INT NULL,
                 total_liquido DECIMAL(10,2) NOT NULL,
                 valor_recebido DECIMAL(10,2) NOT NULL,
@@ -172,15 +172,18 @@ async function initializeDB() {
             `CREATE TABLE IF NOT EXISTS controle_estoque (
              controle_estoque_id INT NOT NULL AUTO_INCREMENT,
              produto_id INT NOT NULL,
+             qtde_movimentada INT NOT NULL,
              preco_compra_anterior DECIMAL(10,2) NOT NULL,
              preco_compra_atual DECIMAL(10,2) NOT NULL,
              preco_markup_anterior DECIMAL(5,2) NULL,
              preco_markup_atual DECIMAL(5,2) NULL,
              preco_venda_anterior DECIMAL(10,2) NOT NULL,
              preco_venda_atual DECIMAL(10,2) NOT NULL,
-             situacao_movimento VARCHAR(50) NOT NULL,
-             motivo_movimentacao VARCHAR(50) NOT NULL,
+             situacao_movimento VARCHAR(70) NOT NULL,
+             motivo_movimentacao VARCHAR(70) NOT NULL,
+             numero_compra_fornecedor VARCHAR(100) NULL,
              venda_id INT NULL,
+             data_movimentacao DATE NOT NULL,
              PRIMARY KEY (controle_estoque_id),
              FOREIGN KEY (produto_id) REFERENCES produto(produto_id),
              FOREIGN KEY (venda_id) REFERENCES venda(venda_id)
@@ -212,6 +215,7 @@ async function initializeDB() {
                 caminho_img_produto VARCHAR(280) NULL,
                 cor_produto_id INT NULL,
                 observacoes VARCHAR(390) NULL,
+                produto_ativado BOOLEAN DEFAULT TRUE,
                 PRIMARY KEY(produto_id),
                 INDEX fk_produto_categoria1_idx (grupo_id ASC) VISIBLE,
                 INDEX fk_produto_setor_produto1_idx (sub_grupo_id ASC) VISIBLE,
@@ -669,3 +673,134 @@ module.exports = {
     insertCorProduto,
     insertClienteDefault
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const situacaoSelect = document.getElementById('situacao');
+// const movimentoSelect = document.getElementById('movimento');
+// const dateEstoque = document.getElementById('dateEstoque');
+// const alterarPreco = document.getElementById('alterarPreco');
+// const inputPrecoCompra = document.getElementById('inputPrecoCompra');
+// const inputMarkupEstoque = document.getElementById('MarkupEstoque');
+// const inputprecoVendaEstoque = document.getElementById('precoVendaEstoque');
+// const inputCodigoEanBuscar = document.getElementById('CodigoEanBuscar');
+// const inputprodutoEncontrado = document.getElementById('produtoEncontrado');
+// const inputqtdeMovimentacao = document.getElementById('qtdeMovimentacao');
+// const inputqtvenda_id = document.getElementById('venda_id');
+// const inputqtCompraFornecedor = document.getElementById('inputqtCompraFornecedor');
+
+// const btnEstoque = document.getElementById('btn-estoque');
+
+// document.addEventListener('DOMContentLoaded', () => {
+//   const inputElement = inputCodigoEanBuscar;
+//   if (inputElement) {
+//     inputElement.focus();
+//   }
+// });
+
+// inputCodigoEanBuscar.addEventListener('input', (e) => {
+//   // Remove non-numeric characters and limit the input to 13 characters
+//   e.target.value = e.target.value.replace(/\D/g, '').slice(0, 13);
+//   if (e.target.value.length === 13) {
+//     getProdutoEstoque(e.target.value);
+//   } else if (e.target.value.length === 0) {
+//     resetInputs();
+//   }
+// });
+
+
+// // Obter a data atual
+// const today = new Date();
+
+// // Formatar a data no formato "YYYY-MM-DD"
+// const formattedDate = today.toISOString().split('T')[0];
+
+// // Definir o valor no campo de entrada
+// dateEstoque.value = formattedDate;
+
+
+// // Objeto contendo os motivos para cada situação
+// const motivos = {
+//   "1": ["Compra de estoque", "Devolução de venda", "Ajuste de inventário"],
+//   "2": ["Venda de produto", "Transferência", "Perda de estoque"],
+// };
+
+// situacaoSelect.addEventListener('change', SituaçaoMovimento);
+// alterarPreco.addEventListener('change', liberarInputs);
+// btnEstoque.addEventListener('click', alterarEstoque);
+
+// function formatDateToMySQL(date) {
+//   const year = date.getFullYear();
+//   const month = String(date.getMonth() + 1).padStart(2, '0'); // Meses começam do zero
+//   const day = String(date.getDate()).padStart(2, '0');
+//   const hours = String(date.getHours()).padStart(2, '0');
+//   const minutes = String(date.getMinutes()).padStart(2, '0');
+//   const seconds = String(date.getSeconds()).padStart(2, '0');
+//   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+// }
+
+
+// async function alterarEstoque(e) {
+//       e.preventDefault(); 
+
+//       const movimentacaoEstoque = {
+//         produto_id: produtoID,
+//         qtde_movimentada: inputqtdeMovimentacao.value,
+//         preco_compra_anterior: preco_compra_anterior,
+//         preco_compra_atual: inputPrecoCompra.value,
+//         preco_markup_anterior: markup_anterior,
+//         preco_markup_atual: inputMarkupEstoque.value,
+//         preco_venda_anterior: preco_venda_anterior,
+//         preco_venda_atual: inputprecoVendaEstoque.value,
+//         situacao_movimento: situacaoSelect.value,
+//         motivo_movimentacao: inputqtdeMovimentacao.value,
+//         numero_compra_fornecedor: inputqtCompraFornecedor.value || null,
+//         venda_id: inputqtvenda_id || null,
+//         data_movimentacao: "2025-01-05"
+//     };
+    
+
+// try{
+//  await postMovimentarEstoque(movimentacaoEstoque);
+//         alertMsg('Estoque alterado com sucesso!','success', 5000)
+// }catch{
+//       alertMsg('Alteração do estoque não concluída. Por favor, verifique se todos os campos foram preenchidos corretamente!','warning',6000);
+//       return
+// }
+
+// }

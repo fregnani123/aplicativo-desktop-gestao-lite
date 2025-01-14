@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' http://localhost:3000; img-src 'self' data:;">
+    <link rel="stylesheet" href="../style/css/registrar_produto/registrar_produto.css">
+    <link rel="stylesheet" href="../style/css/login_menu/menu_interno.css">
+    <style>#Informações-Produtos a{background-color: rgb(255, 255, 255); color:black;}</style>
+    <title></title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul id="ul-Menu">
+            </ul>
+        </nav>
+    </header>
+ 
+  <!-- Não excluir este container, aqui renderiza o grupo e subgrupo -->
+    <div class="container-register"></div>
+
+    <div class="divForm">
+        <ul class="menu-secundario">
+            <li class="li-menu2">
+                <a href="./registrar_produto.html" class="a2">Cadastro de Produtos</a>
+            </li>
+            <li class="li-menu2">
+                <a class="a2" href="">Alterar Informações do Produto</a>
+            </li>
+            <li class="li-menu2">
+                <a class="a2" href="">Desabilitar Produto</a>
+            </li>
+            <li id="Informações-Produtos"  class="li-menu2">
+                <a class="a2" href="">Informações Produtos</a>
+            </li>
+        </ul>
+        
+        <div class="div-form-container">
+     
+        </div>
+    </div>
+    <script src="../Renderer/Menu/renderer_menu.js"></script>
+    <script src="../Renderer/services/converte_moeda.js"></script>
+    <script src="../Renderer/Produto/renderizarInputsGrupo.js"></script>
+    <script src="../Renderer/Produto/apiEndpoints.js"></script>
+    <script src="../Renderer/services/alertMsg.js"></script>
+    <script src="../Renderer/Produto/renderer_produtos.js"></script>
+    <script src="../Renderer/services/formatters.js"></script>
+</body>
+
+</html>
