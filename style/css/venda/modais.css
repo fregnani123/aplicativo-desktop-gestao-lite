@@ -84,6 +84,18 @@ input[type="number"] {
     display: block;
 }
 
+/* Remove as setas dos navegadores mais comuns */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield; /* Para Firefox */
+}
+
+
 /* Animação de entrada */
 @keyframes popIn {
     0% {
@@ -96,7 +108,3 @@ input[type="number"] {
     }
 }
 
-/* Efeito ao passar o mouse */
-.div-qtd:hover {
-    box-shadow: 0 0.75rem 1.5625rem rgba(0, 0, 0, 0.5); /* 12px x 25px */
-}

@@ -18,6 +18,7 @@ const alertExit = document.querySelector('.exit-venda');
 const alertRemoverItem = document.querySelector('.remove-item');
 const formaPagamento = document.querySelector('.square-2-2-2-4');
 const inputExitVenda = document.querySelector('#exit-key');
+const inputlimparTelakey = document.querySelector('#limpar-tela-key');
 const inputExcluiItem = document.querySelector('#numero-Item');
 const mensagemDiv = document.querySelector('#mensagem');
 const inputTroco = document.querySelector('#troco');
@@ -40,7 +41,6 @@ codigoEan.focus();
 document.addEventListener('DOMContentLoaded', () => {
     const numeroPedido = document.querySelector('#numero-pedido');
     getVenda(numeroPedido);
-    const carrinho = [];
     const codigoEan = document.querySelector('#codigo');
     const inputQtd = document.querySelector('#input-qtd');
     const alertLimparVenda = document.querySelector('.confirmation-clear');
@@ -77,15 +77,41 @@ document.addEventListener('DOMContentLoaded', () => {
             case 'F5':
                 if (visibleDivs.length === 0) {
                     alertRemoverItem.style.display = 'block';
+                    inputExcluiItem.focus();
                 }
                 break;
 
             case 'F12':
                 if (visibleDivs.length === 0) {
                     alertLimparVenda.style.display = 'block';
+                   
                 }
                 break;
-                case 'Escape':
+                case 'Delete':
+                    console.log("carrinho: ",carrinho)
+                    if (alertRemoverItem.style.display === 'block') {
+                        const index = parseInt(inputExcluiItem.value, 10) - 1;
+                        if (!isNaN(index) && index >= 0 && index < carrinho.length) {
+                            carrinho.splice(index, 1);
+                            calCarrinho(
+                                carrinho,
+                                converteMoeda,
+                                inputTotalLiquido,
+                                textSelecionarQtd
+                            );
+                            rendererCarrinho(carrinho, ulDescricaoProduto, createSpan);
+                            console.log(`Item ${index + 1} removido.`);
+                        }
+                        inputExcluiItem.value = '';
+                        inputExcluiItem.focus();
+                    }
+                break;
+
+            case 'Escape':
+
+            inputExcluiItem.value = '';
+            inputExitVenda.value = '';
+
                     if (visibleDivs.length === 0) {
                         // Alterna o estado de alertExit
                         alertExit.style.display = alertExit.style.display === 'block' ? 'none' : 'block';
@@ -97,8 +123,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         visibleDivs.forEach(div => div.style.display = 'none');
                         codigoEan.focus();
                     }
-                    break;  
-            case 'Enter':
+                    break; 
+                   
+            case 'Enter': // Adiciona qtde escolhida no input apertando enter 
                 if (alertRemoverItem.style.display === 'block') {
                     const inputExcluiItem = document.querySelector('#numero-Item');
                     inputExcluiItem.focus();
@@ -107,40 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     codigoEan.focus();
                 }
                 break;
-
-            case 'c':
-            case 'C':
-                if (alertRemoverItem.style.display === 'block') {
-                    const inputExcluiItem = document.querySelector('#numero-Item');
-                    const index = parseInt(inputExcluiItem.value, 10) - 1;
-                    if (!isNaN(index) && index >= 0 && index < carrinho.length) {
-                        carrinho.splice(index, 1);
-                        console.log(`Item ${index + 1} removido.`);
-                    }
-                    inputExcluiItem.value = '';
-                    inputExcluiItem.focus();
-                }
-                break;
-
-            case 's':
-            case 'S':
-                if (alertLimparVenda.style.display === 'block') {
-                    carrinho.length = 0; // Limpa o carrinho
-                    alertLimparVenda.style.display = 'none';
-                    limparCampos();
-                    alertMsg('A venda foi reiniciada e todos os campos foram limpos.', 'orange', 4000);
-                }
-                break;
-
-            case 'n':
-            case 'N':
-                if (alertLimparVenda.style.display === 'block') {
-                    alertLimparVenda.style.display = 'none';
-                }
-                break;
-
-            default:
-                break;
+      
         }
     });
 });
@@ -186,14 +180,42 @@ inputQtd.addEventListener('input', function (e) {
 });
 
 
-// Lógica para redirecionamento no alertExit
+
 const handleInputExit = (e) => {
-    if (e.target.value === 'a') {
-        window.location.href = '../public/menu.html';
-        inputExitVenda.removeEventListener('input', handleInputExit);
-    }
+    if (e.key === 'Enter') { // Verifica se a tecla pressionada foi Enter
+        if (inputExitVenda.value === 'adm') {
+            window.location.href = '../public/menu.html';
+        } else {
+            alertMsg('Senha incorreta, tente novamente.', 'error', 3000);
+            inputExitVenda.value ='';
+
+            setTimeout(() => {
+                inputExitVenda.focus();
+            }, 4000);
+        }
+        }
 };
-inputExitVenda.addEventListener('input', handleInputExit, { once: true });
+
+const limparTelakey = (e) => {
+    if (e.key === 'Enter') { // Verifica se a tecla pressionada foi Enter
+        if (inputlimparTelakey.value === 'adm') {
+            alertMsg('Todos os campos serão limpos e a venda será reiniciada.', 'warning', 6000);
+            limparCampos();
+        } else {
+            alertMsg('Senha incorreta, tente novamente.', 'error', 3000);
+            inputlimparTelakey.value ='';
+            setTimeout(() => {
+                inputlimparTelakey.focus();
+            }, 4000);
+        }
+        }
+};
+
+
+// Adiciona o evento keydown ao campo de entrada
+inputExitVenda.addEventListener('keydown', handleInputExit);
+inputlimparTelakey.addEventListener('keydown', limparTelakey);
+
 
 
 

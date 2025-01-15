@@ -87,10 +87,12 @@ function limparCampos() {
         inputExcluiItem.value = '';
         mensagemDiv.textContent = ''; // Remove mensagens adicionais
         inputTroco.value = '0,00'; // Zera o troco
+        inputlimparTelakey.value = '';
         valorDinheiro.value = '0,00';
         codigoEan.value = '';
         codigoEan.focus(); // Certifique-se de aplicar foco após todas as ações
-
+        div_qtd.style.backgroundColor = '';
+      
 
         // AQUI você pode adicionar uma linha para não tocar no relógio
         console.log('Todos os campos foram limpos.');

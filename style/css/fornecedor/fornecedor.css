@@ -13,6 +13,7 @@ body {
     flex-direction: column;
 }
 
+
 .menu-item-8 a {
     color: rgb(0, 0, 0);
     padding: 8px;
@@ -20,6 +21,9 @@ body {
     background-color: #ffffff;
     width: 100%;
 }
+#cadastro-fornecedor a{
+    background-color: rgb(255, 255, 255); 
+    color:black;}
 
 .menu-secundario {
     list-style: none;
@@ -136,8 +140,8 @@ button img {
 
 .div-produto-img {
     width: 80%;
-    max-width: 250px;
-    height: 250px;
+    max-width: 180px;
+    height: 200px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -146,11 +150,10 @@ button img {
     overflow: hidden;
     padding: 1%;
     margin-left: 2%;
-    margin-top: 3%;
 }
 
 .fornecedor-img {
-    max-width: 100%;
+    width: 150%;
     max-height: 100%;
     object-fit: contain;
 }
@@ -167,6 +170,8 @@ input[type="file"] {
 .div-container-form {
     display: flex;
     width: 100%;
+    height: 90%;
+    margin-top: -1%;
     justify-content: center;
 }
 .div-btnFornecedor{

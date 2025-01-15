@@ -67,6 +67,7 @@ body {
     flex: 1;
     display: flex;
     gap: 20px;
+    height: 90%;
 }
 
 .form {

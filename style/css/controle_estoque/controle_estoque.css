@@ -32,7 +32,6 @@ body {
     border-radius: 8px;
     width: 100%;
     justify-content: flex-start;
-    margin-top: -6.7%;
 }
 
 .menu-secundario li {
@@ -65,10 +64,6 @@ body {
     height: 40vw;
 }
 
-.div-form {
-    width: 100%;
-    margin-top: -20%;
-}
 
 .form-group {
     display: flex;
@@ -148,7 +143,6 @@ button img {
     overflow: hidden;
     padding: 1%;
     margin-left: 2%;
-    margin-top: -20%;
 }
 
 .estoque-img {
@@ -166,6 +160,11 @@ input[type="file"] {
     display: flex;
     width: 100%;
     justify-content: center;
+    /* background-color: red; */
+    height: 90%;
+}
+.div-form {
+    width: 100%;
 }
 
 .div-btnFornecedor {

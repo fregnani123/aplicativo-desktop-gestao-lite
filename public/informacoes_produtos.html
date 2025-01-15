@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' http://localhost:3000; img-src 'self' data:;">
     <link rel="stylesheet" href="../style/css/registrar_produto/registrar_produto.css">
+    <link rel="stylesheet" href="../style/css/registrar_produto/informacoes_produtos.css">
     <link rel="stylesheet" href="../style/css/login_menu/menu_interno.css">
     <style>#Informações-Produtos a{background-color: rgb(255, 255, 255); color:black;}</style>
     <title></title>
@@ -39,16 +40,28 @@
         </ul>
         
         <div class="div-form-container">
-     
+            <div class="filtros">
+            <label for="">Desenvolvimento</label>
+             <input type="text">
+            <label for="">Desenvolvimento</label>
+             <input type="text">
+            <label for="">Desenvolvimento</label>
+             <input type="text">
+            <label for="">Desenvolvimento</label>
+             <input type="text">
+            </div>
+            <div class="filtrados">
+             <ul id="ul-filtros">
+                <li class="header-li"><span>Código EAN</span><span>Descrição Produto</span><span>Preco Compra</span><span>Preco venda</span><span>Estoque Atual</span></li>
+             </ul>
+            </div>
+         
         </div>
     </div>
     <script src="../Renderer/Menu/renderer_menu.js"></script>
-    <script src="../Renderer/services/converte_moeda.js"></script>
-    <script src="../Renderer/Produto/renderizarInputsGrupo.js"></script>
-    <script src="../Renderer/Produto/apiEndpoints.js"></script>
     <script src="../Renderer/services/alertMsg.js"></script>
-    <script src="../Renderer/Produto/renderer_produtos.js"></script>
     <script src="../Renderer/services/formatters.js"></script>
+    <script src="../Renderer/Produto/getAllProducts.js"></script>
 </body>
 
 </html>

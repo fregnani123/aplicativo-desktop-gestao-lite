@@ -625,7 +625,7 @@ async function insertFornecedorPadrao() {
     }
 };
 
- async function insertClienteDefault() {
+async function insertClienteDefault() {
     let connection;
     try {
         connection = await pool.getConnection();
@@ -644,11 +644,11 @@ async function insertFornecedorPadrao() {
             INSERT INTO cliente (
                 nome, cpf, telefone, email, cep, estado, cidade
             ) VALUES (
-                'Consumidor Final', '', '', '', '', '', ''
+                'Consumidor Final', '000.000.000-00', '', '', '', 'SP', 'São Paulo'
             );
         `;
         const [result] = await connection.query(query);
-        console.log('Cliente Default inserido com sucesso.');
+        console.log('Cliente Default inserido com sucesso. ID:', result.insertId);
         return result;
     } catch (error) {
         console.error('Erro ao inserir Cliente Default no MySQL:', error);

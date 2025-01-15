@@ -18,27 +18,28 @@
         <div id="impressaoCupom"></div>
 
         <div class="div-qtd" style="display: none;">
-            <label for="input-qtd">Inserir quantidade (Qtd)</label>
+            <label for="input-qtd">Informe a quantidade.</label>
             <input type="text" id="input-qtd">
-            <p class="hint">Tecla ENTER= Adicionar / voltar</p>
+            <p class="p-info">Pressione <strong>Esc</strong> para voltar ou <strong>Enter</strong> para confirmar.</p>
         </div>
 
         <div class="confirmation-clear" style="display: none;">
             <p>Confirmar início de nova venda?</p>
-            <p><span>S / Sim</span><span>N / Não</span></p>
+            <input id="limpar-tela-key" type="password" >
+            <p class="p-info">Pressione <strong>Esc</strong> para voltar ou <strong>Enter</strong> para confirmar.</p>
         </div>
 
         <div class="exit-venda" style="display: none;">
-            <p>Digite a senha para sair da tela de vendas.</p>
-            <input id="exit-key" type="text">
-            <p>Tecla Esc p/ Voltar</p>
+            <label for="exit-key">Digite a senha para voltar ao menu principal:</label>
+            <input id="exit-key" type="password" >
+            <p class="p-info">Pressione <strong>Esc</strong> para voltar ou <strong>Enter</strong> para confirmar.</p>
         </div>
 
         <div class="remove-item" style="display: none;">
-            <p class="titulo-delete-item">Digite o número do item que deseja remover do carrinho.</p>
+            <p class="titulo-delete-item">Digite o número do <strong>item</strong> para remover.</p>
             <input id="numero-Item" type="number">
             <p id="mensagem"></p>
-            <p>Tecla C / Confirmar</p>
+            <p class="p-info">Pressione <strong>Esc</strong> para voltar ou <strong>Delete</strong> para confirmar.</p>
         </div>
 
         <div class="payment-form-section">

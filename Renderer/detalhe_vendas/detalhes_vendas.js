@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         titulo_relatorio.innerHTML = `Forma de Pagamento<br>Período: não selecionado`;
     }
 
+
     console.log('Start Date:', startDate.value || 'não selecionada'); // Verifica o valor no console
     console.log('End Date:', endDate.value || 'não selecionada'); // Verifica o valor no console
 
@@ -57,8 +58,8 @@ function filterVendas() {
 
     // Chama a função para pegar o histórico de vendas com os filtros
     fetchSalesHistory(filtros);
-
 }
+
 
 // Funções de agrupamento e exibição
 function groupSalesByOrder(sales) {

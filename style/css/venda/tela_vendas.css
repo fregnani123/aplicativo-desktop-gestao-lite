@@ -368,4 +368,24 @@ font-size: 1.5rem;
     width: 100%;
    justify-content: center;
 }
+.remove-item{
+    margin-left: -18%;
+}
+#exit-key,#limpar-tela-key{
+    font-size:  1.2rem;
+    display: flex;
+    text-align: center;
+}
 
+.p-info{
+    margin-top: 2%;
+}
+
+.exit-venda{
+    margin-left: -18%;
+}
+
+/* Efeito ao passar o mouse */
+.div-qtd,.exit-venda,.remove-item{
+    box-shadow: 0 0.75rem 1.5625rem rgba(0, 0, 0, 0.5); /* 12px x 25px */
+}
