@@ -23,6 +23,9 @@ function getProdutos(renderer) {
                 const spanPrecoVenda = document.createElement('span');
                 spanPrecoVenda.textContent = `R$ ${produto.preco_venda}`;
 
+                const spanVendido = document.createElement('span');
+                spanVendido.textContent = `${produto.quantidade_vendido
+                }`;
                 const spanEstoqueAtual = document.createElement('span');
                 spanEstoqueAtual.textContent = `${produto.quantidade_estoque
                 }`;
@@ -31,6 +34,7 @@ function getProdutos(renderer) {
                 li.appendChild(spanNome);
                 li.appendChild(spanPrecoCompra);
                 li.appendChild(spanPrecoVenda);
+                li.appendChild(spanVendido);
                 li.appendChild(spanEstoqueAtual);
 
                 renderer.appendChild(li);

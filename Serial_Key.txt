@@ -1,0 +1,20 @@
+ABC-6581-7492-3841 - Fabiano Fregnani da Silva
+EC9-G80W-SPRH-ELM5 - Julio Cesar Lemos  
+WBY-NAD4-1N13-10FB
+CC3-IV4V-WP5C-9GYI
+PAN-T4S9-ZEOR-1R1D
+633-8BZZ-G274-BUU6
+Z0T-K8JV-45NM-W7O8
+YKV-GXVF-2TFK-WTUK
+X7U-U9O2-ZVKO-JLT3
+GBB-NOQA-7IED-6R9X
+PLB-T8F5-AS6V-EGF9
+
+
+4. Estratégia recomendada:
+Use uma tabela de status no banco de dados:
+sql
+Copiar código
+ALTER TABLE produtos ADD COLUMN status ENUM('ativo', 'inativo') DEFAULT 'ativo';
+Produtos "inativos" não aparecem nas listas padrão, mas permanecem no banco de dados.
+Inclua uma tela para inativar ou reativar produtos, permitindo flexibilidade sem comprometer a integridade do sistema.

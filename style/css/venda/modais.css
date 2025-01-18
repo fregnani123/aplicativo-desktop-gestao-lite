@@ -2,6 +2,7 @@
 .div-qtd,
 .confirmation-clear,
 .exit-venda,
+.desconto-venda,
 .remove-item,
 .payment-section {
     position: absolute;
@@ -24,6 +25,7 @@
 
 /* Estilo para quando as divs estão visíveis */
 .div-qtd.active,
+.desconto-venda.active,
 .confirmation-clear.active,
 .exit-venda.active,
 .remove-item.active,

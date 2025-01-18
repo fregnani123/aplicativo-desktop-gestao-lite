@@ -1,15 +1,29 @@
+function parseCurrency(value) {
+    if (!value) return 0;
+    
+    // Remove caracteres não numéricos (exceto vírgula e ponto)
+    value = value.replace(/[^\d,-]/g, '');
 
-async function FinalizarVenda() {
+    // Substitui vírgula por ponto, para tratar como decimal
+    value = value.replace(',', '.');
+
+    // Converte para número
+    return parseFloat(value) || 0;
+}
+
+
+async function FinalizarVenda(){
     if (carrinho.length === 0) {
         alertMsg("Seu carrinho está vazio. Adicione itens antes de concluir a venda.", 'warning', 4000);
         return;
     }
 
     const totalLiquido = parseCurrency(inputTotalLiquido.value);
-    const valorPago = calculateTotalPago();
+    const valorPago = calcularValores();
 
     if (valorPago < totalLiquido) {
         alertMsg('O valor pago está menor que o valor da compra.', 'warning', 3000);
+        console.log('O valor pago está menor que o valor da compra.')
         return;
     }
 
@@ -53,7 +67,7 @@ async function FinalizarVenda() {
 
 async function imprimirVenda(numeroPedido) {
     try {
-        getUltimoPedidoImprimir(numeroPedido);
+        getUltimoPedidoImprimirFolha(numeroPedido);
         // Limpa os campos
         limparCampos();
     } catch (error) {
@@ -99,3 +113,12 @@ function limparCampos() {
     }, 6000);
 }
 
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && divPagamento.style.display === 'block') {
+        console.log('Enter pressionado.');
+        console.log('FinalizarVenda chamado.');
+        FinalizarVenda();
+        divPagamento.style.display = 'none';
+        codigoEan.focus();
+    }
+});

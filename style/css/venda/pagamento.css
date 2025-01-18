@@ -5,15 +5,19 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
-    max-width: 37.5rem; /* 600px em rem */
+    max-width: 40.5rem; /* 600px em rem */
     z-index: 999;
-    padding: 1.25rem; /* 20px em rem */
+    padding: 1.5rem; /* 20px em rem */
     background-color: #fff;
     border-radius: 0.5rem; /* 8px em rem */
-    box-shadow: 0 0.25rem 0.375rem rgba(0, 0, 0, 0.1); /* 4px 6px em rem */
+    box-shadow: 0 0.75rem 1.5625rem rgba(0, 0, 0, 0.5); /* 12px x 25px */
 }
 
 .div-pagamento {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
     width: 100%;
     padding: 1.25rem; /* 20px em rem */
     border: 1px solid #ccc;
@@ -21,11 +25,34 @@
     background-color: #f9f9f9;
 }
 
-.titulo-choose-item,
+
 .titulo-choose-item-2 {
     font-size: 1.2rem; /* 1.2em em rem */
     margin-bottom: 0.625rem; /* 10px em rem */
-    color: #333;
+    color: #ffffff;
+    width: 100%; 
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    background-color:rgb(5, 90, 0);
+    padding: 2%;
+    border-radius: 5px;
+    font-weight: normal;
+}
+
+.info-pag {
+    font-size: 1rem;
+    margin-bottom: 0.625rem;
+    color: #000000;
+    width: 100%; 
+    display: inline-block; /* Garante que o texto fique em linha */
+    text-align: center;
+    background-color: rgb(229, 229, 229);
+    padding: 2%; 
+    margin-top: 3%;
+    border-radius: 5px;
+    font-weight: normal;
+    white-space: nowrap; /* Impede que o texto quebre em várias linhas */
 }
 
 .div-choose {
@@ -35,20 +62,26 @@
 .opcoes-pagamento {
     display: flex;
     justify-content: space-between;
+    border: 1px solid gray;
+    padding: 2%;
+    border-radius: 0.5rem;
 }
 
 .opcoes-pagamento div {
     width: 45%;
+    
 }
 
 .opcoes-pagamento p {
     font-size: 1rem; /* 1em em rem */
     color: #666;
+    
 }
 
 .pagamento-container {
     display: flex;
     flex-direction: column;
+   
 }
 
 .pagamento-default {
@@ -59,7 +92,8 @@
 
 .pagamento-default-1 {
     display: flex;
-    justify-content: space-between;
+    justify-content: right;
+    width: 100%;
     align-items: center;
 }
 
@@ -82,6 +116,7 @@
     outline: none;
 }
 
+
 #div-valorDinheiro,
 #div-PIX,
 #div-Cartao-Debito,
@@ -89,6 +124,7 @@
     display: none;
 }
 
+#div-Desconto.active,
 #div-valorDinheiro.active,
 #div-PIX.active,
 #div-Cartao-Debito.active,
@@ -119,5 +155,27 @@
 #div-PIX input,
 #div-Cartao-Debito input,
 #div-Cartao-Credito input {
-    max-width: 18.75rem; /* 300px em rem */
+    max-width: 20.75rem; /* 300px em rem */
+}
+#valorDinheiro,#Cartao-Credito,#Cartao-Debito,#PIX{
+    font-size: 1.3rem;
+}
+
+.pagamento{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    border: 1px solid white;
+    padding: 2%;
+}
+p{
+   margin-bottom: 1%;
+}
+
+h3 {
+    color: white;
+    font-weight: normal;
+    margin-bottom: 3%;
+    font-size: 1.3rem;
+    border-bottom: 1px solid white;
 }

@@ -42,11 +42,18 @@
             <p class="p-info">Pressione <strong>Esc</strong> para voltar ou <strong>Delete</strong> para confirmar.</p>
         </div>
 
-        <div class="payment-form-section">
+        <div class="desconto-venda" style="display: none;">
+                <label for="desconto">Informe a porcentagem de desconto para a venda:</label>
+                <input id="desconto"  type="text">
+            <p id="mensagem"></p>
+            <p class="p-info">Pressione <strong>Esc</strong> para voltar ou <strong>Enter</strong> para confirmar.</p>
+        </div>
+
+       <div class="payment-form-section"><strong>
             <div class="div-pagamento">
-                <p class="titulo-choose-item">Precione a tecla (atalhos) para selecionar o Pagamento</p>
+                <!-- <p class="titulo-choose-item">Precione a tecla (atalhos) para selecionar o Pagamento</p> -->
                 <div class="div-choose">
-                    <div class="opcoes-pagamento">
+                   <!-- <div class="opcoes-pagamento">
                         <div>
                             <p class="titulo-dinheiro">F6: À Vista</p>
                             <p class="titulo-pix">F7: PIX</p>
@@ -56,33 +63,38 @@
                             <p class="titulo-cartao-d">F9: Cartão Débito</p>
                         </div>
                         <div>
-                            <p class="titulo-pix">Esc = Voltar</p>
-                            <p class="finalizar">F4 = Confirmar Venda</p>
+                            <p class="titulo-pix">Esc: Voltar</p>
+                            <p class="finalizar">Enter: Confirmar Pagto</p>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
-                <p class="titulo-choose-item-2">Adicione mais opções de pagamento: Shift + Atalho</p>
+                <p class="titulo-choose-item-2"><strong>Finalize a venda pressionando Enter.</strong></p>
                 <div class="pagamento-container">
                     <div class="pagamento-default">
                         <div class="pagamento-default-1" id="div-valorDinheiro">
                             <label for="valorDinheiro">À Vista (Dinheiro):</label>
-                            <input id="valorDinheiro" type="text" placeholder="0,00">
+                            <input id="valorDinheiro" type="text" value="0,00">
                         </div>
                         <div class="pagamento-default-1" id="div-PIX">
                             <label for="PIX">PIX:</label>
-                            <input id="PIX" type="text" placeholder="0,00">
+                            <input id="PIX" type="text" value="0,00">
                         </div>
                         <div class="pagamento-default-1" id="div-Cartao-Debito">
                             <label for="Cartao-Debito">Cartão Débito:</label>
-                            <input id="Cartao-Debito" type="text" placeholder="0,00">
+                            <input id="Cartao-Debito" type="text" value="0,00">
                         </div>
                         <div class="pagamento-default-1" id="div-Cartao-Credito">
                             <label for="Cartao-Credito">Cartão Crédito:</label>
-                            <input id="Cartao-Credito" type="text" placeholder="0,00">
-                        </div>
+                            <input id="Cartao-Credito" type="text" value="0,00">
+                        </div>                    
                     </div>
+                    <p class="info-pag">
+                        Pressione <strong>Shift + Atalho</strong> Pgto para adicionar mais opções de Pgto
+                    </p>
+                    
                 </div>
             </div>
+        </strong> 
         </div>
 
         <!-- Quantidade, Descrição -->
@@ -140,18 +152,21 @@
         <!-- Totais -->
         <section class="totals-section">
             <div class="atalhos">
-                <div>
-                    <p class="atalhos-p">Enter = retornar EAN</p>
-                    <p class="atalhos-p">F1 = Alterar Qtd</p>
-                    <p class="atalhos-p">F3 = Selecionar Pagamento</p>
+                <div class="pagamento"> <H3>Selecione o Pagamento</H3>
+                    <p class="atalhos-p">F1 = Pagamento Dinheiro</p>
+                    <p class="atalhos-p">F2 = Pagamento PIX</p>
+                    <p class="atalhos-p">F3 = Pgto Cartão Crédito </p>
+                    <p class="atalhos-p">F4 = Pgto Cartão Débito</p>
                 </div>
                 <div>
-                    <p class="atalhos-p">F4 = Confirmar Venda</p>
-                    <p class="atalhos-p">F5 = Cancelar Item</p>
-                    <p class="atalhos-p">F12 = Nova Venda</p>
+                    <p class="atalhos-p">F6 = Cancelar Item</p>
+                    <p class="atalhos-p">F9 = Alterar Qtd</p>
+                    <p class="atalhos-p">F10 = Desconto Venda</p>
                 </div>
                 <div>
+                    <p class="atalhos-p">F12 = Reiniciar Venda</p>
                     <p class="atalhos-p">ESC = Sair (Menu)</p>
+                    <p class="atalhos-p">Enter = Finalizar Venda</p>
                 </div>
             </div>
             

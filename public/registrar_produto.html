@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' http://localhost:3000; img-src 'self' data:;">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' http://localhost:3000; img-src 'self' data:;">
     <link rel="stylesheet" href="../style/css/registrar_produto/registrar_produto.css">
     <link rel="stylesheet" href="../style/css/login_menu/menu_interno.css">
-    <style>#cadastro-produto a{background-color: rgb(255, 255, 255); color:black;}</style>
+    <style>
+        #cadastro-produto a {
+            background-color: rgb(255, 255, 255);
+            color: black;
+        }
+    </style>
     <title>Cadastro de Produto</title>
 </head>
 
@@ -18,10 +23,8 @@
             </ul>
         </nav>
     </header>
- 
-  <!-- Não excluir este container, aqui renderiza o grupo e subgrupo -->
+    <!-- Não excluir este container, aqui renderiza o grupo e subgrupo -->
     <div class="container-register"></div>
-
     <div class="divForm">
         <ul class="menu-secundario">
             <li id="cadastro-produto" class="li-menu2">
@@ -37,10 +40,9 @@
                 <a class="a2" href="./informacoes_produtos.html">Informações Produtos</a>
             </li>
         </ul>
-        
         <div class="div-form-container">
             <div class="form">
-                <div class="form-group">
+                <div  class="form-group">
                     <div class="div-codigoDeBarras">
                         <label for="codigoDeBarras">Código / Cód. Barras</label>
                         <input type="number" id="codigoDeBarras" name="codigoDeBarras" autocomplete="off">
@@ -50,9 +52,8 @@
                         <input type="text" id="nomeProduto" name="nome" autocomplete="off">
                     </div>
                 </div>
-
                 <div class="form-group">
-                    <div class="select-wrapper">
+                    <div id="divGrupo" class="select-wrapper">
                         <label for="categoria-produto">Grupo:</label>
                         <div class="input-select-wrapper">
                             <select id="grupo" name="grupo">
@@ -61,7 +62,7 @@
                             <button id="add-grupo" add-grupo><span class="cad">Cad</span></button>
                         </div>
                     </div>
-                    <div class="select-wrapper">
+                    <div id="divSubGrupo" class="select-wrapper">
                         <label for="grupo">Sub-Grupo</label>
                         <div class="input-select-wrapper">
                             <select id="sub-grupo" name="grupo">
@@ -70,32 +71,97 @@
                             <button id="add-subGrupo"><span class="cad">Cad</span></button>
                         </div>
                     </div>
-                    <div class="select-wrapper">
-                        <label for="fornecedor">Fornecedor:</label>
+                </div>
+                <div id="form-group-choose" class="form-group">
+                    <div class="escolhaUnDiv">
+                        <label for="escolhaUM"><strong>Escolha a unidade de Medida:</strong></label>
                         <div class="input-select-wrapper">
-                            <select id="fornecedor" name="fornecedor">
+                            <select id="escolhaUM">
+                                <option value="">Selecione</option>
+                                <option value="Tamanho - P/GG">Tamanho - P/GG</option>
+                                <option value="Tamanho - Numeração">Tamanho - Numeração</option>
+                                <option value="Medida de Volume">Medida de Volume</option>
+                                <option value="Unidade Comprimento">Unidade Comprimento</option>
+                                <option value="Unidade de Massa">Unidade de Massa</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="volumeDiv">
+                        <label for="volumeNumero">Medida de Volume:</label>
+                        <div class="input-select-wrapper">
+                            <input id="volumeNumero" type="number" value="">
+                            <select id="medidaVolume" name="medidaVolume">
                                 <option value="">Selecione</option>
                             </select>
                         </div>
                     </div>
-
+                    <div id="comprimentoDiv">
+                        <label for="unidadeComprimento">Unidade Comprimento:</label>
+                        <div class="input-select-wrapper">
+                            <input id="comprimento" type="number" value="">
+                            <select id="unidadeComprimento" name="unidadeComprimento">
+                                <option value="">Selecione</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="massaDiv">
+                        <label for="massaNumero">Unidade de Massa:</label>
+                        <div class="input-select-wrapper">
+                            <input id="massaNumero" type="number" value="">
+                            <select id="unidadeDeMassa" name="unidadeMassa">
+                                <option value="">Selecione</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="divTamanho">
+                        <label for="tamanho">Tamanho - P/GG:</label>
+                        <select id="tamanhoLetras" name="tamanhoLetras">
+                            <option value="">Selecione</option>
+                        </select>
+                    </div>
+                    <div id="divTamanhoNUm">
+                        <label for="tamanhoNumeros">Tamanho - Numeração:</label>
+                        <select id="tamanhoNumeros" name="tamanho">
+                            <option value="">Selecione</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="form-group">
-
+                    <div id="divColor" class="select-wrapper">
+                        <label for="cor">Cor do Produto:</label>
+                        <div class="input-select-wrapper">
+                            <select id="corProduto" name="corProduto">
+                                <option value="">Selecione</option>
+                            </select>
+                            <button id="add-grupo" add-grupo><span class="cad">Cad</span></button>
+                        </div>
+                    </div>
+                    <div id="estoqueDiv" class="select-wrapper">
+                        <label for="estoqueQtd">Estoque Inicial:</label>
+                        <div class="input-select-wrapper">
+                            <input value="" type="number" id="estoqueQtd" name="estoqueQtd" autocomplete="off">
+                            <select id="unidadeEstoque" name="unidadeEstoque">
+                                <option value="">Selecione</option>
+                            </select>
+                            <input type="hidden" id="Qtd_vendido" name="variavelOculta" value="">
+                        </div>
+                    </div>
+                </div>
+                <div id="precoCustoDiv" class="form-group">
                     <div>
                         <label for="precoCusto">Preço de Custo</label>
-                        <input value="0,00" id="precoCusto" name="preco" autocomplete="off" >
+                        <input value="0,00" id="precoCusto" name="preco" autocomplete="off">
                     </div>
 
                     <div class="input-wrapper">
                         <label for="markup">Markup % </label>
-                        <input   value="0" id="inputMarkup" style="position: relative;">
+                        <input value="0" id="inputMarkup">
                         <span class="percent-symbol">%</span>
                     </div>
 
                     <div class="select-wrapper">
                         <label for="lucro">Lucro Bruto (R$)</label>
-                        <input style="background-color: #007bff00;" value="0,00"  id="lucro" name="" autocomplete="off" readonly>
+                        <input value="0,00" id="lucro" name="" autocomplete="off" readonly>
                     </div>
 
                     <div class="select-wrapper">
@@ -105,74 +171,21 @@
                 </div>
 
                 <div class="form-group">
-                    <div>
-                        <label for="tamanho">Tamanho - P/GG:</label>
-                        <select id="tamanhoLetras" name="tamanhoLetras">
-                            <option value="">Selecione</option>
-                        </select>
-                    </div>
-                    <div class="select-wrapper">
-                        <label for="tamanhoNumeros">Tamanho/Numeração:</label>
-                        <select id="tamanhoNumeros" name="tamanho">
-                            <option value="">Selecione</option>
-                        </select>
-                    </div>
-                    <div class="select-wrapper">
-                        <label for="cor">Cor do Produto:</label>
-                        <select id="corProduto" name="corProduto">
-                            <option value="">Selecione</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-      <!-- A princípio, não está finalizado, portanto não ficará disponível para o cliente. -->
-                    <div style="display: none;">
-                        <label for="volumeNumero">Medida de Volume:</label>
-                        <div class="input-select-wrapper">
-                            <input id="volumeNumero" type="number" value="">
-                            <select id="medidaVolume" name="medidaVolume">
-                                <option value="">Selecione</option>
-                            </select>
-                        </div>
-                    </div>
 
-        <!-- A princípio, não está finalizado, portanto não ficará disponível para o cliente. -->
-                    <div class="select-wrapper" style="display: none;">
-                        <label for="unidadeComprimento">Unidade Comprimento:</label>
-                        <div class="input-select-wrapper">
 
-                            <input id="comprimento" type="number" value="">
-                            <select id="unidadeComprimento" name="unidadeComprimento">
-                                <option value="">Selecione</option>
-                            </select>
-                        </div>
-                    </div>
-
-            <!-- A princípio, não está finalizado, portanto não ficará disponível para o cliente. -->
-                    <div class="select-wrapper" style="display: none;">
-                        <label for="massaNumero">Unidade de Massa:</label>
-                        <div class="input-select-wrapper">
-                            <input id="massaNumero" type="number" value="">
-                            <select id="unidadeDeMassa" name="unidadeMassa">
-                                <option value="">Selecione</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
                     <!-- <label class="label-Observacoes" for="Observações">Observações:</label> -->
                     <textarea style="display: none;" id="observacoes" name="observacoes" autocomplete="off"></textarea>
-                    <div class="select-wrapper">
-                        <label for="estoque1">Estoque Inicial:</label>
+
+                    <div id="divFornecedor" class="select-wrapper">
+                        <label for="fornecedor">Fornecedor:</label>
                         <div class="input-select-wrapper">
-                            <input value="" type="number" id="estoqueQtd" name="estoqueQtd" autocomplete="off">
-                            <select id="unidadeEstoque" name="unidadeEstoque">
+                            <select id="fornecedor" name="fornecedor">
                                 <option value="">Selecione</option>
                             </select>
-                            <input type="hidden" id="Qtd_vendido" name="variavelOculta" value="">
                         </div>
                     </div>
-                    <button id="btn-cadastrar-produto"><img class="img-disquete" src="../style//img/disquete.png" alt="">Gravar
+                    <button id="btn-cadastrar-produto"><img class="img-disquete" src="../style//img/disquete.png"
+                            alt="">Gravar
                         Produto</button>
                 </div>
             </div>

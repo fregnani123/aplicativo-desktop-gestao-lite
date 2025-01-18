@@ -469,17 +469,13 @@ async function insertUnidadeMassa() {
             console.log('As unidades_massa dos produtos já foram inseridos.');
             return;
         }
-
-        const query = `INSERT INTO unidade_massa (unidade_nome) 
-    VALUES 
-    ('g'), 
-    ('kg'), 
-    ('mg'), 
-    ('lb'), 
-    ('oz'), 
-    ('ton')
-    ON DUPLICATE KEY UPDATE unidade_nome = VALUES(unidade_nome);
-`;
+        const query = `INSERT INTO unidade_massa (unidade_nome)
+        VALUES 
+            ('G'),
+            ('KG'),
+            ('MG'),
+            ('TON')
+        ON DUPLICATE KEY UPDATE unidade_nome = VALUES(unidade_nome);`;        
 
         const [result] = await connection.query(query);
         return result;
@@ -504,23 +500,13 @@ async function insertUnidadeVolume() {
         }
 
         const query = `INSERT INTO medida_volume (medida_nome) 
-VALUES 
-    ('ml'), 
-    ('l'), 
-    ('cl'), 
-    ('dl'), 
-    ('m³'), 
-    ('cm³'), 
-    ('ft³'), 
-    ('in³'), 
-    ('gal'), 
-    ('qt'), 
-    ('pt'), 
-    ('cup'), 
-    ('tbsp'), 
-    ('tsp')
-ON DUPLICATE KEY UPDATE medida_nome = VALUES(medida_nome);
-`;
+        VALUES 
+        ('ML'),
+        ('L'),
+        ('M³'),
+        ('CM³')
+        ON DUPLICATE KEY UPDATE medida_nome = VALUES(medida_nome);`;
+
         const [result] = await connection.query(query);
         return result;
     } catch (error) {
@@ -542,19 +528,13 @@ async function insertUnidadeComprimento() {
             console.log('As unidade_comprimento dos produtos já foram inseridos.');
             return;
         }
-
         const query = `INSERT INTO unidade_comprimento (unidade_nome) 
-VALUES 
-    ('mm'), 
-    ('cm'), 
-    ('m'), 
-    ('km'), 
-    ('in'), 
-    ('ft'), 
-    ('yd'), 
-    ('mi')
-ON DUPLICATE KEY UPDATE unidade_nome = VALUES(unidade_nome);
-`;
+        VALUES 
+            ('MM'),
+            ('CM'),
+            ('M')
+        ON DUPLICATE KEY UPDATE unidade_nome = VALUES(unidade_nome);`;
+        
 
         const [result] = await connection.query(query);
         return result;
@@ -641,12 +621,12 @@ async function insertClienteDefault() {
 
         // Insere o cliente padrão
         const query = `
-            INSERT INTO cliente (
-                nome, cpf, telefone, email, cep, estado, cidade
-            ) VALUES (
-                'Consumidor Final', '000.000.000-00', '', '', '', 'SP', 'São Paulo'
-            );
-        `;
+    INSERT INTO cliente (
+        nome, cpf, telefone, email, cep, estado, cidade, data_nascimento
+    ) VALUES (
+        'Consumidor Final', '000.000.000-00', '', '', '', 'SP', 'São Paulo', NOW()
+    );
+`;
         const [result] = await connection.query(query);
         console.log('Cliente Default inserido com sucesso. ID:', result.insertId);
         return result;

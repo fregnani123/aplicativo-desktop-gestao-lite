@@ -75,7 +75,7 @@ body {
 .form-group {
     display: flex;
     gap: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 1%;
 }
 
 .form-group div {
@@ -161,6 +161,7 @@ button img {
 .div-container-form{
     width: 100%;
     display: flex;
+    margin-top: -1%;
 }
 .form-actions{
     display: flex;
@@ -168,4 +169,7 @@ button img {
     justify-content: center;
 }
 
-
+#div-nome,#div-cpf,#div-date,#div-tel,#div-email,#div-cep,#div-logradouro,#div-numero,#div-numero,#div-uf,#div-bairro,#div-cidade,#div-observacoes{
+    background-color: rgb(228, 228, 228);
+    padding: 1%;
+}

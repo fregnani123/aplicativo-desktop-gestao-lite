@@ -1,141 +1,218 @@
-//************************************ Forma de pagamento **************** */
+// inputTotalLiquido.value;
+    // inputTotalPago.value;  // soma dos valores inseridos nas formas de pagamentos.
+    // inputTroco.value;  // diminuição  inputTotalPago.value - inputTotalLiquido.value; 
+// Função genérica para formatar valores em moeda brasileira com limite máximo
 
-// Referências aos elementos de forma de pagamento
-const elementosPagamento = {
-    valorDinheiro: document.getElementById('valorDinheiro'),
-    divValorDinheiro: document.getElementById('div-valorDinheiro'),
-    PIX: document.getElementById('PIX'),
-    divPIX: document.getElementById('div-PIX'),
-    CartaoDebito: document.getElementById('Cartao-Debito'),
-    divCartaoDebito: document.getElementById('div-Cartao-Debito'),
-    CartaoCredito: document.getElementById('Cartao-Credito'),
-    divCartaoCredito: document.getElementById('div-Cartao-Credito'),
-};
+// divPIX 
+// divCartaoDebito 
+// divCartaoCredito 
+// divDesconto  
 
-const inputsPagamento = Object.values(elementosPagamento).filter(item => item.tagName === 'INPUT');
 
-// Inicializar os campos de pagamento com 0,00 e estilo padrão
-inputsPagamento.forEach(input => {
-    input.value = formatCurrency(0);
-    input.style.border = '1px solid transparent';
-    input.style.color = 'black';
+// Função para permitir navegação entre os campos com setas para cima e para baixo
+function navegarCampos(evento, campos) {
+    let index = campos.indexOf(document.activeElement);
+  
+    if (evento.key === 'ArrowDown') {
+      // Mover para o próximo campo
+      index = (index + 1) % campos.length;
+    } else if (evento.key === 'ArrowUp') {
+      // Mover para o campo anterior
+      index = (index - 1 + campos.length) % campos.length;
+    }
+  
+    const campoDestino = campos[index];
+    campoDestino.focus();
+  
+    // Garante que o cursor vai para o final do campo ao focar
+    const length = campoDestino.value.length;
+    campoDestino.setSelectionRange(length, length);
+  }
+  
+  // Função para formatar os campos como moeda
+  function formatarMoeda(elemento) {
+    try {
+      // Define o limite máximo (exemplo: R$ 1.000.000,00)
+      const limiteMaximo = 1000000.00;
+  
+      // Remove todos os caracteres que não sejam dígitos
+      let value = elemento.value.replace(/\D/g, '');
+  
+      // Converte o valor para o formato de moeda brasileira
+      if (value) {
+        value = parseInt(value, 10) / 100; // Divide por 100 para obter o valor decimal
+  
+        // Verifica se o valor excede o limite máximo
+        if (value > limiteMaximo) {
+          value = limiteMaximo; // Ajusta para o valor máximo permitido
+        }
+  
+        // Formata para moeda brasileira
+        value = value.toFixed(2)
+          .replace('.', ',') // Troca o ponto decimal por vírgula
+          .replace(/\B(?=(\d{3})+(?!\d))/g, '.'); // Adiciona pontos como separador de milhar
+      } else {
+        value = "0,00"; // Valor padrão se o campo estiver vazio
+      }
+  
+      // Atualiza o valor do campo formatado
+      elemento.value = value;
+  
+      // Move o cursor para o final
+      elemento.setSelectionRange(value.length, value.length);
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+  
+  // Adiciona o evento a todos os campos de pagamento
+  const camposPagamento = [
+    document.getElementById('valorDinheiro'),
+    document.getElementById('PIX'),
+    document.getElementById('Cartao-Debito'),
+    document.getElementById('Cartao-Credito'),
+    document.getElementById('total-pago')
+  ];
+  
+  // Itera pelos campos e associa o evento 'input' à função genérica
+  camposPagamento.forEach(campo => {
+    if (campo) {
+      campo.addEventListener('input', () => formatarMoeda(campo));
+  
+      // Garante que o cursor começa no lado direito ao focar no campo
+      campo.addEventListener('focus', () => {
+        const length = campo.value.length;
+        campo.setSelectionRange(length, length);
+      });
+  
+      // Adiciona navegação por teclas de seta (apenas para cima e para baixo)
+      campo.addEventListener('keydown', (evento) => {
+        // Só permite navegação com as setas para cima e para baixo
+        if (evento.key === 'ArrowUp' || evento.key === 'ArrowDown') {
+          navegarCampos(evento, camposPagamento);
+        }
+      });
+    }
+  });
 
-    input.addEventListener('input', (e) => handleInput(e));
-});
+  function getFormasDePagamento() {
+    const formasDePagamento = [];
 
-// Formatar valores como moeda
-function formatCurrency(value) {
-    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value || 0);
+    const valorDinheiro = parseCurrency(document.getElementById('valorDinheiro').value);
+    const valorPIX = parseCurrency(document.getElementById('PIX').value);
+    const valorCartaoDebito = parseCurrency(document.getElementById('Cartao-Debito').value);
+    const valorCartaoCredito = parseCurrency(document.getElementById('Cartao-Credito').value);
+
+    if (valorDinheiro > 0) {
+        formasDePagamento.push({ tipo: 'Dinheiro', valor: valorDinheiro.toFixed(2) });
+    }
+    if (valorPIX > 0) {
+        formasDePagamento.push({ tipo: 'PIX', valor: valorPIX.toFixed(2) });
+    }
+    if (valorCartaoDebito > 0) {
+        formasDePagamento.push({ tipo: 'Cartão Débito', valor: valorCartaoDebito.toFixed(2) });
+    }
+    if (valorCartaoCredito > 0) {
+        formasDePagamento.push({ tipo: 'Cartão Crédito', valor: valorCartaoCredito.toFixed(2) });
+    }
+
+    return formasDePagamento;
 }
 
-// Converter valor para número
+// Função para converter valores monetários para números
 function parseCurrency(value) {
-    const parsedValue = parseFloat(value.replace(/[^\d,]/g, '').replace(',', '.'));
+    const parsedValue = parseFloat(value.replace(/\./g, '').replace(',', '.'));
     return isNaN(parsedValue) ? 0 : parsedValue;
 }
 
-// Lógica para atualizar os valores
-function atualizarValores() {
-    const totalLiquido = parseCurrency(inputTotalLiquido.value);
-    const valorPago = calculateTotalPago();
-    const troco = Math.max(0, valorPago - totalLiquido);
+  
+  function calcularValores() {
+    // Seleciona e obtém os valores de todos os campos
+    const camposPagamentoCalc = [
+      document.getElementById('valorDinheiro').value,
+      document.getElementById('PIX').value,
+      document.getElementById('Cartao-Debito').value,
+      document.getElementById('Cartao-Credito').value,
+    ];
+  
+    // Converte os valores para números e soma com reduce
+    const totalPago = camposPagamentoCalc.reduce((total, valor) => {
+      // Remove caracteres não numéricos e converte para número
+      const valorNumerico = parseFloat(valor.replace(/\./g, '').replace(',', '.')) || 0;
+      return total + valorNumerico;
+    }, 0); // Começa a soma com 0
 
-    inputTotalPago.value = formatCurrency(valorPago.toFixed(2));
-    inputTroco.value = formatCurrency(troco.toFixed(2));
-}
+    inputTotalPago.value = converteMoeda(totalPago)  ;
+  
+    return totalPago;
+  }
 
-// Calcula o total pago
-function calculateTotalPago() {
-    return inputsPagamento.reduce((acc, input) => acc + parseCurrency(input.value), 0);
-}
+// Função genérica para calcular e atualizar o troco
+function atualizarTroco() {
+    // Formatar o total líquido
+    const totalLiquidoFormatado = parseFloat(inputTotalLiquido.value.replace(/\./g, '').replace(',', '.')) || 0;
+    
+    // Calcular o troco
+    const trocoCliente = calcularValores() - totalLiquidoFormatado;
+  
+    // Atualizar o campo de troco
+    inputTroco.value = trocoCliente < 0 ? '0,00' : converteMoeda(trocoCliente);
+  }
+  
+  // Adicionando o evento de 'input' a todos os campos de pagamento
+  const camposPagamentoTroco = [
+    valorDinheiro,
+    PIX,
+    CartaoCredito,
+    CartaoDebito
+  ];
 
-// Manipula a entrada de dados nos campos de pagamento
-function handleInput(e) {
-    let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não for número
-    value = (parseFloat(value) / 100).toFixed(2); // Converte para decimal
-    e.target.value = formatCurrency(value); // Formata como moeda
+  // Itera pelos campos e associa o evento 'input' à função genérica
+  camposPagamentoTroco.forEach(campo => {
+    if (campo) {
+      campo.addEventListener('input', atualizarTroco);
+    }
+  });
 
-    // Verificar o que está sendo capturado
-    console.log(`Valor digitado no campo ${e.target.id}: ${e.target.value}`);
-
-    // Atualiza a borda e a cor com base no valor
-    const isValid = parseCurrency(e.target.value) > 0;
-    e.target.style.border = isValid ? '1px solid green' : '1px solid transparent';
-    e.target.style.color = isValid ? 'green' : 'black';
-
-    atualizarValores(); // Atualiza os cálculos
-}
-
-// Mapear os atalhos para as divisões correspondentes
-const formasPagamento = {
-    "F3": 'valorDinheiro',
-    "F6": 'valorDinheiro',
-    "F7": 'PIX',
-    "F8": 'CartaoDebito',
-    "F9": 'CartaoCredito',
-};
-
-// Tornar todas as divisões invisíveis inicialmente
-Object.values(formasPagamento).forEach(inputId => {
-    elementosPagamento['div' + inputId.charAt(0).toUpperCase() + inputId.slice(1)].style.display = 'none';
-});
-
-// Controlar as divisões ativas
-let divsAtivas = new Set();
-
-// Alternar entre formas de pagamento com atalhos
-document.addEventListener('keydown', (e) => {
-    if (formasPagamento[e.key]) {
-        handleKeyDown(e);
+ // Adicionar evento de tecla no campo de desconto
+inputdescontoPorcentagem.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        aplicarDesconto();
     }
 });
 
-// Lógica de alternância de divisões de pagamento
-function handleKeyDown(e) {
-    const divKey = formasPagamento[e.key];
-    const div = elementosPagamento['div' + divKey.charAt(0).toUpperCase() + divKey.slice(1)];
-    const input = elementosPagamento[divKey]; // Obtém o input correspondente
 
-    // Mostrar a div selecionada
-    if (e.shiftKey) {
-        div.style.display = 'flex';
-        divsAtivas.add(div);
-    } else {
-        divsAtivas.forEach(divAtiva => divAtiva.style.display = 'none');
-        divsAtivas.clear();
-        div.style.display = 'flex';
-        divsAtivas.add(div);
-    }
+// Função para aplicar o desconto
+function aplicarDesconto() {
+    try {
+        // Remove caracteres inválidos, permitindo apenas números e um único ponto decimal
+        let value = inputdescontoPorcentagem.value;
 
-    // Adiciona um pequeno atraso para garantir que o input esteja visível
-    setTimeout(() => {
-        if (input) {
-            input.focus();
-        } else {
-            console.error('Input não encontrado para o key: ', divKey);
+        // Substitui caracteres que não sejam números ou pontos
+        value = value.replace(/[^0-9.]/g, '');
+
+        // Garante que apenas o primeiro ponto seja mantido
+        const parts = value.split('.');
+        if (parts.length > 2) {
+            value = parts[0] + '.' + parts.slice(1).join(''); // Remove pontos adicionais
         }
-    }, 100); // Ajuste o tempo conforme necessário
+
+        // Limita a duas casas decimais
+        if (value.indexOf('.') !== -1) {
+            value = value.slice(0, value.indexOf('.') + 3); // mantém duas casas após o ponto
+        }
+
+        // Atualiza o campo de entrada com o valor limpo e com no máximo 2 casas decimais
+        inputdescontoPorcentagem.value = value;
+
+        // Chama a função de cálculo com os valores
+        descontoVenda(inputTotalLiquido, inputdescontoPorcentagem);
+
+    } catch (error) {
+        console.error(error.message);
+    }
 }
 
-function getFormasDePagamento() {
-    const pagamentos = [];
-    const valorDinheiroFormatted = parseCurrency(valorDinheiro.value); // Formata o valor do Dinheiro
-    const valorPIXFormatted = parseCurrency(PIX.value); // Formata o valor do PIX
-    const valorCartaoDebitoFormatted = parseCurrency(CartaoDebito.value); // Formata o valor do Cartão de Débito
-    const valorCartaoCreditoFormatted = parseCurrency(CartaoCredito.value); // Formata o valor do Cartão de Crédito
 
-    if (valorDinheiroFormatted > 0) {
-        pagamentos.push({ tipo: 'Dinheiro', valor: valorDinheiroFormatted.toFixed(2) });
-    }
-    if (valorPIXFormatted > 0) {
-        pagamentos.push({ tipo: 'PIX', valor: valorPIXFormatted.toFixed(2) });
-    }
-    if (valorCartaoDebitoFormatted > 0) {
-        pagamentos.push({ tipo: 'Cartão Débito', valor: valorCartaoDebitoFormatted.toFixed(2) });
-    }
-    if (valorCartaoCreditoFormatted > 0) {
-        pagamentos.push({ tipo: 'Cartão Crédito', valor: valorCartaoCreditoFormatted.toFixed(2) });
-    }
-
-    return pagamentos;
-}
+   
+ 

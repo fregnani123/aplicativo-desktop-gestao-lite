@@ -45,6 +45,34 @@ getMedidaVolume(selectMedidaVolume);
 getCorProduto(selectCorProduto);
 getunidadeDeMassa(selectUnidadeMassa);
 
+document.addEventListener("DOMContentLoaded", function () {
+  const select = document.getElementById("escolhaUM");
+
+  // Mapeamento dos valores do select para os IDs dos divs
+  const sections = {
+      "Tamanho - P/GG": "divTamanho",
+      "Tamanho - Numeração": "divTamanhoNUm",
+      "Medida de Volume": "volumeDiv",
+      "Unidade Comprimento": "comprimentoDiv",
+      "Unidade de Massa": "massaDiv"
+  };
+
+  // Evento para mudar a exibição
+  select.addEventListener("change", function () {
+      // Oculta todos os divs
+      Object.values(sections).forEach(id => {
+          document.getElementById(id).style.display = "none";
+      });
+
+      // Exibe o div correspondente, se um valor válido for selecionado
+      const selectedValue = select.value;
+      if (sections[selectedValue]) {
+          document.getElementById(sections[selectedValue]).style.display = "flex";
+      }
+  });
+});
+
+
 
 // Função para calcular lucro
 function calcularLucro() {

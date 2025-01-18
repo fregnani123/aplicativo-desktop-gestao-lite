@@ -22,52 +22,52 @@
         <!-- Título do Formulário -->
         <ul class="menu-secundario">
             <li id="cadastro-fornecedor">
-                <a id="btn-flex">Controle Manual de Estoque</a>
+                <a id="btn-flex">Controle Manual de Estoque - Entrada/Saída</a>
             </li>
         </ul>
         <!-- Formulário -->
         <div class="div-container-form">
             <div class="div-form">
                 <div class="form-group">
-                    <div class="div-codigoEanFind">
+                    <div id="div-estoque" class="div-codigoEanFind">
                         <label  for="cnpj">Coódio(EAN) do Produto:</label>
                         <input type="text" id="CodigoEanBuscar">
                     </div>
-                    <div class="div-produtoEncontrado">
+                    <div id="div-estoque" class="div-produtoEncontrado">
                         <label for="">Produto Encontrado:</label>
                         <input type="text" id="produtoEncontrado" readonly>
                     </div>
-                    <div class="div-qtdeMovimentacao">
+                    <div id="div-estoque" class="div-qtdeMovimentacao">
                         <label class="" for="">Qtde a ser Movimentada:</label>
                       <input  id="qtdeMovimentacao" >
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <div class="div-precoCompra">
+                    <div id="div-estoque" class="div-precoCompra">
                         <label for="alterarPreco">(Habilitar) Alterar valores:</label>
                         <select id="alterarPreco">
                             <option value="1">Não</option>
                             <option value="2">Sim</option>
                         </select>
                     </div>
-                    <div class="div-precoCompra">
+                    <div id="div-estoque" class="div-precoCompra">
                         <label for="inputPrecoCompra">Preço de Compra:</label>
                         <input style="background-color: #007bff00;" id="inputPrecoCompra" type="text" readonly>
                     </div>
-                    <div class="div-precoCompra">
+                    <div id="div-estoque" class="div-precoCompra">
                         <label class="" for="">Markup %:</label>
                       <input style="background-color: #007bff00;" id="MarkupEstoque" type="text" readonly>
                       <span class="percent-symbol">%</span>
                     </div>
-                    <div class="div-precoCompra">
+                    <div id="div-estoque" class="div-precoCompra">
                         <label class="" for="">Preço de Venda:</label>
                       <input style="background-color: #007bff00;" id="precoVendaEstoque" type="text" readonly type="text">
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <div class="selectSituacao">
+                    <div id="div-estoque" class="selectSituacao">
                         <label class="labelFornecedor" for="razaoSocial">Situação do Movimento:</label>
                         <select name="" id="situacao">
                             <option value="">Selecione</option>
@@ -75,23 +75,23 @@
                             <option value="2">Saída</option>
                         </select>
                     </div>
-                    <div class="selectSituacao">
+                    <div id="div-estoque" class="selectSituacao">
                         <label class="" for="">Motivo da Movimentação:</label>
                         <select name="" id="movimento">
                             <option value="">Selecione</option>
                         </select>
                     </div>
-                    <div style="display:flex;" class="selectSituacao">
+                    <div id="div-estoque" style="display:flex;" class="selectSituacao">
                         <label class="" for="">Número da venda a ser vinculado</label>
                        <input style="background-color: #007bff00;" id="venda_id" readonly>
                     </div>
                 </div>
                 <div class="form-group">
-                    <div style="display:flex;" class="selectSituacao">
+                    <div id="div-estoque"  style="display:flex;" class="selectSituacao">
                         <label class="" for="">Chave de Identificação da Compra</label>
                        <input style="background-color: #007bff00;" id="inputqtChaveCompra" readonly>
                     </div>
-                    <div class="selectSituacao">
+                    <div id="div-estoque"  class="selectSituacao">
                         <label class="" for="">Data da Movimentação</label>
                        <input id="dateEstoque" type="date" readonly>
                     </div>

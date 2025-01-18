@@ -70,12 +70,13 @@ body {
 }
 .div-form{
     width: 100%;
+    margin-top: -1%;
 }
 
 .form-group {
     display: flex;
     gap: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 1%;
 }
 
 .form-group div {
@@ -124,8 +125,8 @@ button {
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s;
-    height: 60%;
-    margin-top: 2%;
+    height: 100%;
+    margin-top: 0%;
 }
 
 button:hover {
@@ -178,7 +179,6 @@ input[type="file"] {
     display: flex;
     justify-content: center;
     text-align: center;
-    height: auto;
 }
 
 .div-pagamento {
@@ -187,4 +187,22 @@ input[type="file"] {
     border: 1px solid #ccc;
     border-radius: 0.5rem; /* 8px em rem */
     background-color: #f9f9f9;
+}
+
+#div-Fornecedor{
+    background-color: rgb(228, 228, 228);
+    padding: 1%;
+}
+.text-area{
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+#observacoes{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    margin-left: 2%;
 }

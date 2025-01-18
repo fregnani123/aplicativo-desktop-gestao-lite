@@ -4,8 +4,6 @@ const apiLicenca = {
     getAtivacaoMysql: 'http://localhost:3000/getAtivacaoMysql',
     updateAtivacao: 'http://localhost:3000/UpdateAtivacao',
 };
-
-
 async function syncLicenca(userID, serialKey) {
     // Endpoint da API para obter os dados do MongoDB
     const getLicencaEndpoint = `http://localhost:3000/getLicenca/${userID}/${serialKey}`;
@@ -65,10 +63,8 @@ async function syncLicenca(userID, serialKey) {
     }
 
 };
-
 let ativado = false; // Padrão inicial como "não ativado"
 let divAtivar = null; // Inicializa a variável
-
 document.addEventListener('DOMContentLoaded', function () {
     divAtivar = document.querySelector('.ativar-produto'); // Seleciona a div após o DOM carregar
     if (divAtivar) {
@@ -77,10 +73,8 @@ document.addEventListener('DOMContentLoaded', function () {
     focus();
     fetchAtivacaoMysql(); // Chama após o DOM carregar
 });
-
 async function fetchAtivacaoMysql() {
     const apiUrl = apiLicenca.getAtivacaoMysql;
-
     try {
         const response = await fetch(apiUrl);
         const data = await response.json();
@@ -97,7 +91,6 @@ async function fetchAtivacaoMysql() {
         atualizarDisplay();
     }
 }
-
 const atualizarDisplay = () => {
     if (divAtivar) {
         if (ativado) {
@@ -109,11 +102,8 @@ const atualizarDisplay = () => {
         console.log('');
     }
 };
-
-
 async function verificaAtivacaoMysql() {
     const apiUrl = apiLicenca.getAtivacaoMysql;
-
     try {
         // Faz a requisição à API para obter os dados do MySQL
         const response = await fetch(apiUrl);
@@ -124,7 +114,6 @@ async function verificaAtivacaoMysql() {
         if (data.length > 0) {
             const { userID, serialKey } = data[0]; // Extrai os campos necessários
             const ativado = data[0]?.ativado === 1;
-
             // Monta a URL para buscar os dados no MongoDB
             const getLicencaEndpoint = `http://localhost:3000/getLicenca/${encodeURIComponent(userID)}/${encodeURIComponent(serialKey)}`;
 
@@ -141,7 +130,6 @@ async function verificaAtivacaoMysql() {
                 new Date(data[0].startedDate).toISOString().slice(0, 10) !== new Date(licencaData.startedDate).toISOString().slice(0, 10);
 
             console.log('Mudanças detectadas:', hasChanges);
-
             if (hasChanges) {
                 console.log('Mudanças detectadas, atualizando no MySQL...');
                 
@@ -158,7 +146,6 @@ async function verificaAtivacaoMysql() {
                         mongoID: licencaData._id, // Adiciona o ID do MongoDB para referência
                     }),
                 });
-
                 const updateResult = await updateResponse.json();
                 console.log('Resultado da atualização no MySQL:', updateResult);
                 location.reload();
@@ -176,7 +163,6 @@ async function verificaAtivacaoMysql() {
         atualizarDisplay(); // Atualiza o estado da interface
     }
 }
-
 async function verificaValidadeDate() {
     const apiUrl = apiLicenca.getAtivacaoMysql;
 

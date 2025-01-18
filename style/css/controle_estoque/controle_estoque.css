@@ -215,6 +215,11 @@ input[type="file"] {
 }
 .percent-symbol{
     position: absolute;
-    right: 43%;
+    right: 44%;
     top:46%
+}
+
+#div-estoque{
+    background-color: rgb(228, 228, 228);
+    padding: 1%;
 }
