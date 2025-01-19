@@ -5,10 +5,10 @@ const { app } = require('electron'); // Importando o Electron para acessar camin
 const {
     postAtivacao,
     getAllProdutos,
+    getFornecedor,
     findProductByBarcode,
     getGrupo,
     getSubGrupo,
-    getFornecedor,
     getTamanhoLetras,
     getTamanhoNumeros,
     getUnidadeMassa,
@@ -20,7 +20,7 @@ const {
     postNewProductGrupo,
     postNewProductSubGrupo,
     postNewFornecedor,
-    postNewSale,
+    postNewVenda,
     fetchVenda,
     getAtivacaoMysql,
     UpdateAtivacao,
@@ -29,10 +29,9 @@ const {
     historicoDeVendas,
     getVendasPorNumeroVenda,
     postControleEstoque,
-    UpdateValores
-
+    UpdateValores,
+    postNewCor
 } = require(path.join(__dirname, '../../db/model/product'));
-
 
 
 // Define o caminho de destino para salvar as imagens
@@ -273,6 +272,20 @@ const controllers = {
             res.status(500).json({ error: 'Erro ao inserir novo grupo.' });
         }
     },
+    postNewProductCor: async (req, res) => {
+        try {
+            const CorData = req.body;
+            const newCorProductId = await postNewCor(CorData);
+
+            res.json({
+                message: 'cCor inserido com sucesso!',
+                cor_produto_id: newCorProductId
+            });
+        } catch (error) {
+            console.error('Erro ao inserir nova cor:', error);
+            res.status(500).json({ error: 'Erro ao inserir nova Cor.' });
+        }
+    },
 
     postNewProductSubGrupo: async (req, res) => {
         try {
@@ -289,20 +302,22 @@ const controllers = {
         }
     },
 
-    postNewVenda: async (req, res) => {
-        try {
-            const vendaData = req.body;
-            const newVendaId = await postNewSale(vendaData);
+postNewVenda: async (req, res) => {
+    try {
+        const vendaData = req.body;
+        const newVendaId = await postNewVenda(vendaData);
+        res.json({
+            message: 'Venda inserida com sucesso!',
+            venda_id: newVendaId
+        });
+    } catch (error) {
+        console.error('Erro ao inserir a venda:', error.message);
+        // Exibindo detalhes do erro para depuração
+        console.error('Detalhes do erro:', error);
 
-            res.json({
-                message: 'Venda inserida com sucesso!',
-                venda_id: newVendaId
-            });
-        } catch (error) {
-            console.error('Erro ao inserir a venda:', error.message);
-            res.status(500).json({ error: 'Erro ao inserir a venda.' });
-        }
-    },
+        res.status(500).json({ error: 'Erro ao inserir a venda.' });
+    }
+},
 
     getVenda: async (req, res) => {
         try {
@@ -361,17 +376,27 @@ const controllers = {
     postAtivacao: async (req, res) => {
         try {
             const insertAtivacao = req.body;
+    
+            // Verificar se os dados estão no formato correto
+            if (!insertAtivacao.userID || !insertAtivacao.serialKey ||
+                !insertAtivacao.startedDate || !insertAtivacao.expirationDate ||
+                insertAtivacao.ativado === undefined) {
+                return res.status(400).json({ error: 'Dados inválidos fornecidos para a ativação.' });
+            }
+    
+            console.log('Dados fornecidos:', insertAtivacao);
+    
             await postAtivacao(insertAtivacao);
-
+    
             res.json({
-                message: 'ativação inserido com sucesso!',
+                message: 'Ativação inserida com sucesso!',
             });
-
         } catch (error) {
             console.error('Erro ao inserir a ativação:', error);
             res.status(500).json({ error: 'Erro ao inserir a ativação.' });
         }
-    },
+    }
+    ,
 
     UpdateAtivacao: async (req, res) => {
         try {

@@ -22,6 +22,7 @@ Router.post('/newSubGrupo', controllers.postNewProductSubGrupo);
 Router.post('/newFornecedor', controllers.postNewFornecedor);
 Router.post('/postControleEstoque', controllers.postNewControleEstoque);
 Router.post('/postVenda', controllers.postNewVenda);
+Router.post('/postNewCor', controllers.postNewProductCor);
 Router.get('/getVenda', controllers.getVenda);
 Router.get('/getAtivacaoMysql', controllers.getAtivacaoMysql);
 Router.post('/insertAtivacao', controllers.postAtivacao);

@@ -25,6 +25,7 @@ const btnFornecedorMenu = document.querySelector('.li-fornecedor');
 const containerRegister = document.querySelector('.container-register');
 const btnCadGrupo = document.querySelector('#add-grupo');
 const btnCadSubGrupo = document.querySelector('#add-subGrupo');
+const btnCadCor = document.querySelector('#add-cor');
 
 // Seleciona os campos de input
 const inputMarkup = document.querySelector('#inputMarkup');
@@ -237,6 +238,12 @@ btnCadSubGrupo.addEventListener('click', (e) => {
     e.preventDefault();
     containerRegister.style.display = 'flex';
     renderizarInputsSubGrupo();
+});
+
+btnCadCor.addEventListener('click', (e) => {
+    e.preventDefault();
+    containerRegister.style.display = 'flex';
+    renderizarInputsColor();
 });
 
 

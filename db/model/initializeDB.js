@@ -1,657 +1,413 @@
 
-const mysql = require('mysql2/promise');
+// Carrega as variáveis de ambiente do arquivo .env
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../../config/.env') });
-const pool = require('../db');
+const Database = require('better-sqlite3');
+
+// Caminho do arquivo do banco SQLite
+const dbPath = path.join(__dirname, '../gestaolite.db');
 
 async function initializeDB() {
-    let connection;
+    let db;
     try {
-        // Conectar ao MySQL sem especificar um banco de dados
-        connection = await mysql.createConnection({
-            host: process.env.DB_HOST,
-            user: process.env.DB_USER,
-            password: process.env.DB_PASSWORD,
-        });
+        // Conectar ao SQLite (se o arquivo não existir, ele será criado)
+        db = new Database(dbPath, { verbose: console.log });
+        console.log('Conectado ao banco de dados SQLite.');
 
         const queries = [
-            // Desabilitar checagem de chaves únicas e chaves estrangeiras temporariamente
-            `SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;`,
-            `SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;`,
-            `SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';`,
-
-            // Criar Schema gestaolite
-            `CREATE SCHEMA IF NOT EXISTS gestaolite DEFAULT CHARACTER SET utf8;`,
-            `USE gestaolite;`,
+            // Criar Schema e Tabelas (SQLite não precisa de CREATE SCHEMA)
 
             // Criar Tabela Serial_Key
             `CREATE TABLE IF NOT EXISTS Serial_Key (
-            serial_key_id INT NOT NULL AUTO_INCREMENT,
-            userID VARCHAR(150) NOT NULL,
-            serialKey VARCHAR(150) NOT NULL, 
-            startedDate DATE NOT NULL, 
-            expirationDate DATE NOT NULL, 
-            ativado BOOLEAN NOT NULL, 
-            PRIMARY KEY (serial_key_id),
-            UNIQUE (userID), 
-            UNIQUE (serialKey) 
-            ) ENGINE = InnoDB;`,
+                serial_key_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                userID TEXT NOT NULL,
+                serialKey TEXT NOT NULL, 
+                startedDate TEXT NOT NULL, 
+                expirationDate TEXT NOT NULL, 
+                ativado INTEGER NOT NULL, 
+                UNIQUE (userID), 
+                UNIQUE (serialKey)
+            );`,
 
             // Criar Tabela grupo
             `CREATE TABLE IF NOT EXISTS grupo (
-                grupo_id INT NOT NULL AUTO_INCREMENT,
-                nome_grupo VARCHAR(150) NULL,
-                PRIMARY KEY(grupo_id)
-            ) ENGINE = InnoDB;`,
+                grupo_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                nome_grupo TEXT
+            );`,
 
             // Criar Tabela sub-grupo
             `CREATE TABLE IF NOT EXISTS sub_grupo (
-                sub_grupo_id INT NOT NULL AUTO_INCREMENT,
-                nome_sub_grupo VARCHAR(150) NULL,
-                PRIMARY KEY(sub_grupo_id)
-            ) ENGINE = InnoDB;`,
+                sub_grupo_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                nome_sub_grupo TEXT
+            );`,
 
             // Criar Tabela tamanho_letras
             `CREATE TABLE IF NOT EXISTS tamanho_letras (
-                tamanho_id INT NOT NULL AUTO_INCREMENT,
-                tamanho VARCHAR(15) NULL,
-                PRIMARY KEY(tamanho_id)
-            ) ENGINE = InnoDB;`,
+                tamanho_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                tamanho TEXT
+            );`,
 
             // Criar Tabela tamanho_numero
             `CREATE TABLE IF NOT EXISTS tamanho_numero (
-                tamanho_id INT NOT NULL AUTO_INCREMENT,
-                tamanho VARCHAR(15) NULL,
-                PRIMARY KEY(tamanho_id)
-            ) ENGINE = InnoDB;`,
+            tamanho_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            tamanho TEXT
+            );
+            `,
 
             // Criar Tabela unidade_massa
             `CREATE TABLE IF NOT EXISTS unidade_massa (
-                unidade_massa_id INT NOT NULL AUTO_INCREMENT,
-                unidade_nome VARCHAR(45) NULL,
-                PRIMARY KEY(unidade_massa_id)
-            ) ENGINE = InnoDB;`,
+                unidade_massa_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                unidade_nome TEXT
+            );`,
 
             // Criar Tabela medida_volume
             `CREATE TABLE IF NOT EXISTS medida_volume (
-                medida_volume_id INT NOT NULL AUTO_INCREMENT,
-                medida_nome VARCHAR(45) NULL,
-                PRIMARY KEY(medida_volume_id)
-            ) ENGINE = InnoDB;`,
+                medida_volume_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                medida_nome TEXT
+            );`,
 
             // Criar Tabela unidade_comprimento
             `CREATE TABLE IF NOT EXISTS unidade_comprimento (
-                unidade_comprimento_id INT NOT NULL AUTO_INCREMENT,
-                unidade_nome VARCHAR(100) NULL,
-                PRIMARY KEY(unidade_comprimento_id)
-            ) ENGINE = InnoDB;`,
+                unidade_comprimento_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                unidade_nome TEXT
+            );`,
 
             // Criar Tabela unidade_estoque
             `CREATE TABLE IF NOT EXISTS unidade_estoque (
-                unidade_estoque_id INT NOT NULL AUTO_INCREMENT,
-                estoque_nome VARCHAR(45) NULL,
-                PRIMARY KEY(unidade_estoque_id)
-            ) ENGINE = InnoDB;`,
+                unidade_estoque_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                estoque_nome TEXT
+            );`,
 
-            // Criar Tabela fornecedor com as novas colunas
+            // Criar Tabela fornecedor
             `CREATE TABLE IF NOT EXISTS fornecedor (
-            fornecedor_id INT NOT NULL AUTO_INCREMENT,
-            cnpj VARCHAR(18) NULL,
-            inscricao_estadual VARCHAR(14) NULL,
-            razao_social VARCHAR(200) NULL,
-            nome_fantasia VARCHAR(200) NULL,
-            cep VARCHAR(9) NULL,
-            cidade VARCHAR(150) NULL,
-            bairro VARCHAR(150) NULL,
-            uf VARCHAR(2) NULL,
-            endereco VARCHAR(255) NULL,
-            telefone VARCHAR(15) NULL,
-            email VARCHAR(150) NULL,
-            observacoes TEXT NULL, -- Adicionando coluna para observações
-            PRIMARY KEY(fornecedor_id)
-            ) ENGINE = InnoDB;
-`,
+                fornecedor_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                cnpj TEXT,
+                inscricao_estadual TEXT,
+                razao_social TEXT,
+                nome_fantasia TEXT,
+                cep TEXT,
+                cidade TEXT,
+                bairro TEXT,
+                uf TEXT,
+                endereco TEXT,
+                telefone TEXT,
+                email TEXT,
+                observacoes TEXT
+            );`,
 
             // Criar Tabela cor produto
             `CREATE TABLE IF NOT EXISTS cor_produto (
-                cor_produto_id INT NOT NULL AUTO_INCREMENT,
-                nome_cor_produto VARCHAR(150) NULL,
-                PRIMARY KEY(cor_produto_id)
-            ) ENGINE = InnoDB;`,
+                cor_produto_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                nome_cor_produto TEXT
+            );`,
 
+            // Criar Tabela cliente
             `CREATE TABLE IF NOT EXISTS cliente (
-                cliente_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                nome VARCHAR(255) NOT NULL,
-                cpf VARCHAR(14) NOT NULL UNIQUE,
-                data_nascimento DATE NOT NULL,
-                telefone VARCHAR(20) NOT NULL,
-                email VARCHAR(255) NOT NULL UNIQUE,
-                cep VARCHAR(10) NOT NULL,
-                logradouro VARCHAR(255),
-                numero VARCHAR(10),
-                bairro VARCHAR(100),
-                estado VARCHAR(2) NOT NULL,
-                cidade VARCHAR(100) NOT NULL,
+                cliente_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                nome TEXT NOT NULL,
+                cpf TEXT NOT NULL UNIQUE,
+                data_nascimento TEXT NOT NULL,
+                telefone TEXT NOT NULL,
+                email TEXT NOT NULL UNIQUE,
+                cep TEXT NOT NULL,
+                logradouro TEXT,
+                numero TEXT,
+                bairro TEXT,
+                estado TEXT NOT NULL,
+                cidade TEXT NOT NULL,
                 observacoes TEXT,
                 data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-            ) ENGINE = InnoDB;`,
+                data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );`,
 
-
+            // Criar Tabela venda
             `CREATE TABLE IF NOT EXISTS venda (
-                venda_id INT NOT NULL AUTO_INCREMENT,
-                data_venda DATE NOT NULL,
-                cliente_id INT NULL,
-                total_liquido DECIMAL(10,2) NOT NULL,
-                valor_recebido DECIMAL(10,2) NOT NULL,
-                troco DECIMAL(10,2) NOT NULL,
-                numero_pedido VARCHAR(50) NOT NULL,
-                PRIMARY KEY (venda_id)
-            ) ENGINE = InnoDB;`,
+                venda_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                data_venda TEXT NOT NULL,
+                cliente_id INTEGER,
+                total_liquido REAL NOT NULL,
+                valor_recebido REAL NOT NULL,
+                troco REAL NOT NULL,
+                numero_pedido TEXT NOT NULL
+            );`,
 
+            // Criar Tabela forma_pagamento
             `CREATE TABLE IF NOT EXISTS forma_pagamento (
-                pagamento_id INT NOT NULL AUTO_INCREMENT,
-                venda_id INT NOT NULL,
-                tipo_pagamento VARCHAR(50) NOT NULL,
-                valor DECIMAL(10,2) NOT NULL,
-                PRIMARY KEY (pagamento_id),
+                pagamento_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                venda_id INTEGER NOT NULL,
+                tipo_pagamento TEXT NOT NULL,
+                valor REAL NOT NULL,
                 FOREIGN KEY (venda_id) REFERENCES venda(venda_id)
-            ) ENGINE = InnoDB;`,
+            );`,
 
-            `CREATE TABLE IF NOT EXISTS item_venda ( 
-            item_venda_id INT NOT NULL AUTO_INCREMENT,
-            venda_id INT NOT NULL,
-            produto_id INT NOT NULL,
-            preco DECIMAL(10,2) NOT NULL,
-            quantidade INT NOT NULL,
-            unidade_estoque_id INT NOT NULL,
-            PRIMARY KEY (item_venda_id),
-            FOREIGN KEY (venda_id) REFERENCES venda(venda_id) 
-            )  ENGINE = InnoDB;`,
+            // Criar Tabela item_venda
+            `CREATE TABLE IF NOT EXISTS item_venda (
+                item_venda_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                venda_id INTEGER NOT NULL,
+                produto_id INTEGER NOT NULL,
+                preco REAL NOT NULL,
+                quantidade INTEGER NOT NULL,
+                unidade_estoque_id INTEGER NOT NULL,
+                FOREIGN KEY (venda_id) REFERENCES venda(venda_id)
+            );`,
 
+            // Criar Tabela controle_estoque
             `CREATE TABLE IF NOT EXISTS controle_estoque (
-             controle_estoque_id INT NOT NULL AUTO_INCREMENT,
-             produto_id INT NOT NULL,
-             qtde_movimentada INT NOT NULL,
-             preco_compra_anterior DECIMAL(10,2) NOT NULL,
-             preco_compra_atual DECIMAL(10,2) NOT NULL,
-             preco_markup_anterior DECIMAL(5,2) NULL,
-             preco_markup_atual DECIMAL(5,2) NULL,
-             preco_venda_anterior DECIMAL(10,2) NOT NULL,
-             preco_venda_atual DECIMAL(10,2) NOT NULL,
-             situacao_movimento VARCHAR(70) NOT NULL,
-             motivo_movimentacao VARCHAR(70) NOT NULL,
-             numero_compra_fornecedor VARCHAR(100) NULL,
-             venda_id INT NULL,
-             data_movimentacao DATE NOT NULL,
-             PRIMARY KEY (controle_estoque_id),
-             FOREIGN KEY (produto_id) REFERENCES produto(produto_id),
-             FOREIGN KEY (venda_id) REFERENCES venda(venda_id)
-             ) ENGINE = InnoDB;
-             `,
+                controle_estoque_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                produto_id INTEGER NOT NULL,
+                qtde_movimentada INTEGER NOT NULL,
+                preco_compra_anterior REAL NOT NULL,
+                preco_compra_atual REAL NOT NULL,
+                preco_markup_anterior REAL,
+                preco_markup_atual REAL,
+                preco_venda_anterior REAL NOT NULL,
+                preco_venda_atual REAL NOT NULL,
+                situacao_movimento TEXT NOT NULL,
+                motivo_movimentacao TEXT NOT NULL,
+                numero_compra_fornecedor TEXT,
+                venda_id INTEGER,
+                data_movimentacao TEXT NOT NULL,
+                FOREIGN KEY (produto_id) REFERENCES produto(produto_id),
+                FOREIGN KEY (venda_id) REFERENCES venda(venda_id)
+            );`,
 
             // Criar Tabela produto
             `CREATE TABLE IF NOT EXISTS produto (
-                produto_id INT NOT NULL AUTO_INCREMENT,
-                codigo_ean BIGINT(13) NULL,
-                grupo_id INT NULL,
-                sub_grupo_id INT NULL,
-                nome_produto VARCHAR(200) NULL,
-                tamanho_letras_id INT NULL,
-                tamanho_num_id INT NULL,
-                unidade_massa_id INT NULL,
-                medida_volume_id INT NULL,
-                unidade_comprimento_id INT NULL,
-                quantidade_estoque INT NULL,
-                quantidade_vendido INT NULL,
-                preco_compra DECIMAL(10,2) NULL,
-                markup DECIMAL(5,2) NULL,
-                preco_venda DECIMAL(10,2) NULL,
-                unidade_estoque_id INT NULL,
-                unidade_massa_qtd BIGINT NULL,
-                medida_volume_qtd BIGINT NULL,
-                unidade_comprimento_qtd BIGINT NULL,
-                fornecedor_id INT NULL,
-                caminho_img_produto VARCHAR(280) NULL,
-                cor_produto_id INT NULL,
-                observacoes VARCHAR(390) NULL,
-                produto_ativado BOOLEAN DEFAULT TRUE,
-                PRIMARY KEY(produto_id),
-                INDEX fk_produto_categoria1_idx (grupo_id ASC) VISIBLE,
-                INDEX fk_produto_setor_produto1_idx (sub_grupo_id ASC) VISIBLE,
-                INDEX fk_produto_tamanho_letras1_idx (tamanho_letras_id ASC) VISIBLE,
-                INDEX fk_produto_tamanho_numero1_idx (tamanho_num_id ASC) VISIBLE,
-                INDEX fk_produto_unidade_massa1_idx (unidade_massa_id ASC) VISIBLE,
-                INDEX fk_produto_medida_volume1_idx (medida_volume_id ASC) VISIBLE,
-                INDEX fk_produto_unidade_comprimento1_idx (unidade_comprimento_id ASC) VISIBLE,
-                INDEX fk_produto_unidade_estoque1_idx (unidade_estoque_id ASC) VISIBLE,
-                INDEX fk_produto_fornecedor1_idx (fornecedor_id ASC) VISIBLE,
-                INDEX fk_produto_cor_produto1_idx (cor_produto_id ASC) VISIBLE,
-                CONSTRAINT fk_produto_categoria1
-                    FOREIGN KEY (grupo_id)
-                    REFERENCES gestaolite.grupo (grupo_id)
-                    ON DELETE NO ACTION
-                    ON UPDATE NO ACTION,
-                CONSTRAINT fk_produto_setor_produto1
-                    FOREIGN KEY (sub_grupo_id)
-                    REFERENCES gestaolite.sub_grupo (sub_grupo_id)
-                    ON DELETE NO ACTION
-                    ON UPDATE NO ACTION,
-                CONSTRAINT fk_produto_tamanho_letras1
-                    FOREIGN KEY (tamanho_letras_id)
-                    REFERENCES gestaolite.tamanho_letras (tamanho_id)
-                    ON DELETE NO ACTION
-                    ON UPDATE NO ACTION,
-                CONSTRAINT fk_produto_tamanho_numero1
-                    FOREIGN KEY (tamanho_num_id)
-                    REFERENCES gestaolite.tamanho_numero (tamanho_id)
-                    ON DELETE NO ACTION
-                    ON UPDATE NO ACTION,
-                CONSTRAINT fk_produto_unidade_massa1
-                    FOREIGN KEY (unidade_massa_id)
-                    REFERENCES gestaolite.unidade_massa (unidade_massa_id)
-                    ON DELETE NO ACTION
-                    ON UPDATE NO ACTION,
-                CONSTRAINT fk_produto_medida_volume1
-                    FOREIGN KEY (medida_volume_id)
-                    REFERENCES gestaolite.medida_volume (medida_volume_id)
-                    ON DELETE NO ACTION
-                    ON UPDATE NO ACTION,
-                CONSTRAINT fk_produto_unidade_comprimento1
-                    FOREIGN KEY (unidade_comprimento_id)
-                    REFERENCES gestaolite.unidade_comprimento (unidade_comprimento_id)
-                    ON DELETE NO ACTION
-                    ON UPDATE NO ACTION,
-                CONSTRAINT fk_produto_unidade_estoque1
-                    FOREIGN KEY (unidade_estoque_id)
-                    REFERENCES gestaolite.unidade_estoque (unidade_estoque_id)
-                    ON DELETE NO ACTION
-                    ON UPDATE NO ACTION,
-                CONSTRAINT fk_produto_fornecedor1
-                    FOREIGN KEY (fornecedor_id)
-                    REFERENCES gestaolite.fornecedor (fornecedor_id)
-                    ON DELETE NO ACTION
-                    ON UPDATE NO ACTION,
-                CONSTRAINT fk_produto_cor_produto1
-                    FOREIGN KEY (cor_produto_id)
-                    REFERENCES gestaolite.cor_produto (cor_produto_id)
-                    ON DELETE NO ACTION
-                    ON UPDATE NO ACTION
-            ) ENGINE = InnoDB;`,
-
-            // Reativar as verificações de chaves únicas e chaves estrangeiras
-            `SET SQL_MODE=@OLD_SQL_MODE;`,
-            `SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;`,
-            `SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;`
+                produto_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                codigo_ean TEXT,
+                grupo_id INTEGER,
+                sub_grupo_id INTEGER,
+                nome_produto TEXT,
+                tamanho_letras_id INTEGER,
+                tamanho_num_id INTEGER,
+                unidade_massa_id INTEGER,
+                medida_volume_id INTEGER,
+                unidade_comprimento_id INTEGER,
+                quantidade_estoque INTEGER,
+                quantidade_vendido INTEGER,
+                preco_compra REAL,
+                markup REAL,
+                preco_venda REAL,
+                unidade_estoque_id INTEGER,
+                unidade_massa_qtd INTEGER,
+                medida_volume_qtd INTEGER,
+                unidade_comprimento_qtd INTEGER,
+                fornecedor_id INTEGER,
+                caminho_img_produto TEXT,
+                cor_produto_id INTEGER,
+                observacoes TEXT,
+                produto_ativado INTEGER DEFAULT 1,
+                FOREIGN KEY (grupo_id) REFERENCES grupo(grupo_id),
+                FOREIGN KEY (sub_grupo_id) REFERENCES sub_grupo(sub_grupo_id),
+                FOREIGN KEY (tamanho_letras_id) REFERENCES tamanho_letras(tamanho_id),
+                FOREIGN KEY (tamanho_num_id) REFERENCES tamanho_numero(tamanho_id),
+                FOREIGN KEY (unidade_massa_id) REFERENCES unidade_massa(unidade_massa_id),
+                FOREIGN KEY (medida_volume_id) REFERENCES medida_volume(medida_volume_id),
+                FOREIGN KEY (unidade_comprimento_id) REFERENCES unidade_comprimento(unidade_comprimento_id),
+                FOREIGN KEY (unidade_estoque_id) REFERENCES unidade_estoque(unidade_estoque_id),
+                FOREIGN KEY (fornecedor_id) REFERENCES fornecedor(fornecedor_id),
+                FOREIGN KEY (cor_produto_id) REFERENCES cor_produto(cor_produto_id)
+            );`
         ];
 
-        // Execução das queries
-        for (const query of queries) {
-            await connection.query(query);
-        }
 
-        console.log("Banco de dados e tabelas criados ou já existentes.");
-    } catch (error) {
-        console.error('Erro ao inicializar o banco de dados:', error);
-        throw error;
-    } finally {
-        if (connection) await connection.end();
+        // Executar cada query para criar tabelas
+        queries.forEach(query => {
+            db.prepare(query).run();
+        });
+    } catch (err) {
+        console.error('Erro ao conectar ao banco de dados SQLite:', err.message);
+        throw err;
     }
 }
 
+// Fecha o banco de dados ao desligar o servidor
+process.on('SIGINT', () => {
+    console.log('Servidor está sendo desligado...');
+    db.close();
+    console.log('Banco de dados SQLite fechado com sucesso.');
+    process.exit(0); // Sai do processo com sucesso
+});
 
-async function insertGrupo() {
-    let connection;
+
+
+async function insertGrupo(db) {
     try {
-        connection = await pool.getConnection();
+        const query = `INSERT OR IGNORE INTO grupo (nome_grupo) VALUES ('Geral')`;
+        const info = db.prepare(query).run();
 
-        // Verifica se já existem registros na tabela
-        const [existingRecords] = await connection.query('SELECT COUNT(*) as count FROM grupo');
-        if (existingRecords[0].count > 0) {
-            console.log('As grupo de produtos já foram inseridos.');
-            return;
+        if (info.changes) {
+            console.log('Grupo de produtos inserido com sucesso.');
+            return info.changes;
+        } else {
+            console.log('Grupo de produtos já existe.');
+            return 0;
         }
-
-        const query = `INSERT INTO grupo (nome_grupo) 
-VALUES ('Geral')
-
-ON DUPLICATE KEY UPDATE nome_grupo = VALUES(nome_grupo)
-`;
-        const [result] = await connection.query(query);
-        return result;
     } catch (error) {
-        console.error('Erro ao inserir grupo de produtos no MySQL:', error);
+        console.error('Erro ao inserir grupo de produtos:', error);
         throw error;
-    } finally {
-        if (connection) connection.release();
     }
-};
-async function insertSubGrupo() {
-    let connection;
+}
+
+async function insertSubGrupo(db) {
     try {
-        connection = await pool.getConnection();
+        const query = `INSERT OR IGNORE INTO sub_grupo (nome_sub_grupo) VALUES ('Geral')`;
+        const info = db.prepare(query).run();
 
-        // Verifica se já existem registros na tabela
-        const [existingRecords] = await connection.query('SELECT COUNT(*) as count FROM sub_grupo');
-        if (existingRecords[0].count > 0) {
-            console.log('As grupo de produtos já foram inseridos.');
-            return;
+        if (info.changes) {
+            console.log('Sub-grupo de produtos inserido com sucesso.');
+            return info.changes;
+        } else {
+            console.log('Sub-grupo de produtos já existe.');
+            return 0;
         }
-
-        const query = `INSERT INTO sub_grupo (nome_sub_grupo) 
-    VALUES ('Geral')
-   
-ON DUPLICATE KEY UPDATE nome_sub_grupo = VALUES(nome_sub_grupo)
-`;
-        const [result] = await connection.query(query);
-        return result;
     } catch (error) {
-        console.error('Erro ao inserir sub_grupo de produtos no MySQL:', error);
+        console.error('Erro ao inserir sub-grupo de produtos:', error);
         throw error;
-    } finally {
-        if (connection) connection.release();
     }
-};
+}
 
-async function insertTamanhoLetras() {
-    let connection;
+async function insertTamanhoLetras(db) {
     try {
-        connection = await pool.getConnection();
+        const query = `INSERT OR IGNORE INTO tamanho_letras (tamanho) 
+        VALUES ('PP'), ('P'), ('M'), ('G'), ('GG'), ('XG'), ('XXG')`;
+        const info = db.prepare(query).run();
 
-        // Verifica se já existem registros na tabela
-        const [existingRecords] = await connection.query('SELECT COUNT(*) as count FROM tamanho_letras');
-        if (existingRecords[0].count > 0) {
-            console.log('Os tamanhos_letras dos produtos já foram inseridos.');
-            return;
-        }
-
-        const query = `INSERT INTO tamanho_letras (tamanho) 
-    VALUES 
-    ('PP'), 
-    ('P'), 
-    ('M'), 
-    ('G'), 
-    ('GG'), 
-    ('XG'), 
-    ('XXG')
-    ON DUPLICATE KEY UPDATE tamanho = VALUES(tamanho);
-`;
-
-        const [result] = await connection.query(query);
-        return result;
+        console.log('Tamanhos de letras inseridos com sucesso.');
+        return info.changes;
     } catch (error) {
-        console.error('Erro ao inserir categorias de produtos no MySQL:', error);
+        console.error('Erro ao inserir tamanhos de letras dos produtos:', error);
         throw error;
-    } finally {
-        if (connection) connection.release();
     }
-};
+}
 
-async function insertCorProduto() {
-    let connection;
+async function insertCorProduto(db) {
     try {
-        connection = await pool.getConnection();
+        const query = `INSERT OR IGNORE INTO cor_produto (nome_cor_produto) 
+        VALUES ('Vermelho'), ('Azul'), ('Verde'), ('Amarelo'), ('Preto'), ('Branco'), 
+        ('Roxo'), ('Laranja'), ('Rosa'), ('Marrom'), ('Cinza'), ('Ciano'), ('Magenta'), 
+        ('Lima'), ('Índigo'), ('Violeta'), ('Dourado'), ('Prata'), ('Bege'), ('Bordô')`;
+        const info = db.prepare(query).run();
 
-        // Verifica se já existem registros na tabela
-        const [existingRecords] = await connection.query('SELECT COUNT(*) as count FROM cor_produto');
-        if (existingRecords[0].count > 0) {
-            console.log('As cores dos produtos já foram inseridos.');
-            return;
-        }
-
-        const query = `INSERT INTO cor_produto (nome_cor_produto) 
-VALUES 
-('Vermelho'), 
-('Azul'),('Verde'), ('Amarelo'), ('Preto'), ('Branco'), ('Roxo'), ('Laranja'), 
-('Rosa'), ('Marrom'), ('Cinza'), ('Ciano'), ('Magenta'), ('Lima'), ('Índigo'),
-('Violeta'), ('Dourado'), ('Prata'), ('Bege'), ('Bordô')
-  
-    ON DUPLICATE KEY UPDATE nome_cor_produto = VALUES(nome_cor_produto);
-`;
-
-        const [result] = await connection.query(query);
-        return result;
+        console.log('Cores de produtos inseridas com sucesso.');
+        return info.changes;
     } catch (error) {
-        console.error('Erro ao inserir cores dos produtos no MySQL:', error);
+        console.error('Erro ao inserir cores dos produtos:', error);
         throw error;
-    } finally {
-        if (connection) connection.release();
     }
-};
+}
 
-
-async function insertTamanhoNumeros() {
-    let connection;
+async function insertTamanhoNumeros(db) {
     try {
-        connection = await pool.getConnection();
+        const query = `INSERT OR IGNORE INTO tamanho_numero (tamanho) 
+        VALUES ${Array.from({ length: 100 }, (_, i) => `('${i + 1}')`).join(', ')}`;
+        const info = db.prepare(query).run();
 
-        // Verifica se já existem registros na tabela
-        const [existingRecords] = await connection.query('SELECT COUNT(*) as count FROM tamanho_numero');
-        if (existingRecords[0].count > 0) {
-            console.log('Os tamanhos_numero dos produtos já foram inseridos.');
-            return;
-        }
-
-        const query = `INSERT INTO tamanho_numero (tamanho) 
-VALUES 
-    ('1'), ('2'), ('3'), ('4'), ('5'), ('6'), ('7'), ('8'), ('9'), ('10'),
-    ('11'), ('12'), ('13'), ('14'), ('15'), ('16'), ('17'), ('18'), ('19'), ('20'),
-    ('21'), ('22'), ('23'), ('24'), ('25'), ('26'), ('27'), ('28'), ('29'), ('30'),
-    ('31'), ('32'), ('33'), ('34'), ('35'), ('36'), ('37'), ('38'), ('39'), ('40'),
-    ('41'), ('42'), ('43'), ('44'), ('45'), ('46'), ('47'), ('48'), ('49'), ('50'),
-    ('51'), ('52'), ('53'), ('54'), ('55'), ('56'), ('57'), ('58'), ('59'), ('60'),
-    ('61'), ('62'), ('63'), ('64'), ('65'), ('66'), ('67'), ('68'), ('69'), ('70'),
-    ('71'), ('72'), ('73'), ('74'), ('75'), ('76'), ('77'), ('78'), ('79'), ('80'),
-    ('81'), ('82'), ('83'), ('84'), ('85'), ('86'), ('87'), ('88'), ('89'), ('90'),
-    ('91'), ('92'), ('93'), ('94'), ('95'), ('96'), ('97'), ('98'), ('99'), ('100')
-ON DUPLICATE KEY UPDATE tamanho = VALUES(tamanho);
-`;
-
-
-        const [result] = await connection.query(query);
-        return result;
+        console.log('Tamanhos numéricos inseridos com sucesso.');
+        return info.changes;
     } catch (error) {
-        console.error('Erro ao inserir tamanho_numero de produtos no MySQL:', error);
+        console.error('Erro ao inserir tamanhos numéricos dos produtos:', error);
         throw error;
-    } finally {
-        if (connection) connection.release();
     }
-};
+}
 
-async function insertUnidadeMassa() {
-    let connection;
+async function insertUnidadeMassa(db) {
     try {
-        connection = await pool.getConnection();
+        const query = `INSERT OR IGNORE INTO unidade_massa (unidade_nome)
+        VALUES ('G'), ('KG'), ('MG'), ('TON')`;
+        const info = db.prepare(query).run();
 
-        // Verifica se já existem registros na tabela
-        const [existingRecords] = await connection.query('SELECT COUNT(*) as count FROM unidade_massa');
-        if (existingRecords[0].count > 0) {
-            console.log('As unidades_massa dos produtos já foram inseridos.');
-            return;
-        }
-        const query = `INSERT INTO unidade_massa (unidade_nome)
-        VALUES 
-            ('G'),
-            ('KG'),
-            ('MG'),
-            ('TON')
-        ON DUPLICATE KEY UPDATE unidade_nome = VALUES(unidade_nome);`;        
-
-        const [result] = await connection.query(query);
-        return result;
+        console.log('Unidades de massa inseridas com sucesso.');
+        return info.changes;
     } catch (error) {
-        console.error('Erro ao inserir unidade_nome de produtos no MySQL:', error);
+        console.error('Erro ao inserir unidades de massa dos produtos:', error);
         throw error;
-    } finally {
-        if (connection) connection.release();
     }
-};
+}
 
-async function insertUnidadeVolume() {
-    let connection;
+async function insertUnidadeVolume(db) {
     try {
-        connection = await pool.getConnection();
+        const query = `INSERT OR IGNORE INTO medida_volume (medida_nome) 
+        VALUES ('ML'), ('L'), ('M³'), ('CM³')`;
+        const info = db.prepare(query).run();
 
-        // Verifica se já existem registros na tabela
-        const [existingRecords] = await connection.query('SELECT COUNT(*) as count FROM medida_volume');
-        if (existingRecords[0].count > 0) {
-            console.log('As medida_volume dos produtos já foram inseridos.');
-            return;
-        }
-
-        const query = `INSERT INTO medida_volume (medida_nome) 
-        VALUES 
-        ('ML'),
-        ('L'),
-        ('M³'),
-        ('CM³')
-        ON DUPLICATE KEY UPDATE medida_nome = VALUES(medida_nome);`;
-
-        const [result] = await connection.query(query);
-        return result;
+        console.log('Unidades de volume inseridas com sucesso.');
+        return info.changes;
     } catch (error) {
-        console.error('Erro ao inserir medida_volume de produtos no MySQL:', error);
+        console.error('Erro ao inserir unidades de volume dos produtos:', error);
         throw error;
-    } finally {
-        if (connection) connection.release();
     }
-};
+}
 
-async function insertUnidadeComprimento() {
-    let connection;
+async function insertUnidadeComprimento(db) {
     try {
-        connection = await pool.getConnection();
+        const query = `INSERT OR IGNORE INTO unidade_comprimento (unidade_nome) 
+        VALUES ('MM'), ('CM'), ('M')`;
+        const info = db.prepare(query).run();
 
-        // Verifica se já existem registros na tabela
-        const [existingRecords] = await connection.query('SELECT COUNT(*) as count FROM unidade_comprimento');
-        if (existingRecords[0].count > 0) {
-            console.log('As unidade_comprimento dos produtos já foram inseridos.');
-            return;
-        }
-        const query = `INSERT INTO unidade_comprimento (unidade_nome) 
-        VALUES 
-            ('MM'),
-            ('CM'),
-            ('M')
-        ON DUPLICATE KEY UPDATE unidade_nome = VALUES(unidade_nome);`;
-        
-
-        const [result] = await connection.query(query);
-        return result;
+        console.log('Unidades de comprimento inseridas com sucesso.');
+        return info.changes;
     } catch (error) {
-        console.error('Erro ao inserir unidade_comprimento de produtos no MySQL:', error);
+        console.error('Erro ao inserir unidades de comprimento dos produtos:', error);
         throw error;
-    } finally {
-        if (connection) connection.release();
     }
-};
+}
 
-async function insertUnidadeEstoque() {
-    let connection;
+async function insertUnidadeEstoque(db) {
     try {
-        connection = await pool.getConnection();
+        const query = `INSERT OR IGNORE INTO unidade_estoque (estoque_nome) 
+        VALUES ('un'), ('cx'), ('rolo'), ('pc')`;
+        const info = db.prepare(query).run();
 
-        // Verifica se já existem registros na tabela
-        const [existingRecords] = await connection.query('SELECT COUNT(*) as count FROM unidade_estoque');
-        if (existingRecords[0].count > 0) {
-            console.log('As unidades de estoque dos produtos já foram inseridas.');
-            return;
-        }
-
-        const query = `INSERT INTO unidade_estoque (estoque_nome) 
-    VALUES 
-        ('un'),
-        ('cx'),
-        ('rolo'),
-        ('pc')
-        ON DUPLICATE KEY UPDATE estoque_nome = VALUES(estoque_nome);
-    `;
-
-        const [result] = await connection.query(query);
-        return result;
+        console.log('Unidades de estoque inseridas com sucesso.');
+        return info.changes;
     } catch (error) {
-        console.error('Erro ao inserir unidade de estoque de produtos no MySQL:', error);
+        console.error('Erro ao inserir unidades de estoque dos produtos:', error);
         throw error;
-    } finally {
-        if (connection) connection.release();
     }
-};
+}
 
-async function insertFornecedorPadrao() {
-    let connection;
+async function insertFornecedorPadrao(db) {
     try {
-        connection = await pool.getConnection();
+        const query = `INSERT OR IGNORE INTO fornecedor (nome_fantasia) 
+        VALUES ('Fornecedor não Cadastrado')`;
+        const info = db.prepare(query).run();
 
-        // Verifica se já existem registros na tabela
-        const [existingRecords] = await connection.query('SELECT COUNT(*) as count FROM fornecedor');
-        if (existingRecords[0].count > 0) {
-            console.log('Fornecedores dos produtos já foram inseridas.');
-            return;
-        }
-
-        const query = `INSERT INTO fornecedor (nome_fantasia) 
-    VALUES 
-        ('Fornecedor não Cadastrado')
-        ON DUPLICATE KEY UPDATE nome_fantasia = VALUES(nome_fantasia);
-    `;
-
-        const [result] = await connection.query(query);
-        return result;
+        console.log('Fornecedor padrão inserido com sucesso.');
+        return info.changes;
     } catch (error) {
-        console.error('Erro ao inserir fornecedor_nome do produtos no MySQL:', error);
+        console.error('Erro ao inserir fornecedor padrão:', error);
         throw error;
-    } finally {
-        if (connection) connection.release();
     }
-};
+}
 
-async function insertClienteDefault() {
-    let connection;
+async function insertClienteDefault(db) {
     try {
-        connection = await pool.getConnection();
+        const query = `INSERT OR IGNORE INTO cliente (nome, cpf, telefone, email, cep, estado, cidade, data_nascimento) 
+        VALUES ('Consumidor Final', '000.000.000-00', '', '', '', 'SP', 'São Paulo', CURRENT_TIMESTAMP)`;
+        const info = db.prepare(query).run();
 
-        // Verifica se o cliente padrão já existe
-        const [existingRecords] = await connection.query(
-            "SELECT COUNT(*) as count FROM cliente WHERE nome = 'Consumidor Final'"
-        );
-        if (existingRecords[0].count > 0) {
-            console.log('Cliente Default já existe.');
-            return;
-        }
-
-        // Insere o cliente padrão
-        const query = `
-    INSERT INTO cliente (
-        nome, cpf, telefone, email, cep, estado, cidade, data_nascimento
-    ) VALUES (
-        'Consumidor Final', '000.000.000-00', '', '', '', 'SP', 'São Paulo', NOW()
-    );
-`;
-        const [result] = await connection.query(query);
-        console.log('Cliente Default inserido com sucesso. ID:', result.insertId);
-        return result;
+        console.log('Cliente padrão inserido com sucesso.');
+        return info.changes;
     } catch (error) {
-        console.error('Erro ao inserir Cliente Default no MySQL:', error);
+        console.error('Erro ao inserir cliente padrão:', error);
         throw error;
-    } finally {
-        if (connection) connection.release();
     }
-};
-
+}
 
 module.exports = {
-    initializeDB,
     insertGrupo,
     insertSubGrupo,
     insertTamanhoLetras,
+    insertCorProduto,
     insertTamanhoNumeros,
     insertUnidadeMassa,
     insertUnidadeVolume,
     insertUnidadeComprimento,
     insertUnidadeEstoque,
     insertFornecedorPadrao,
-    insertCorProduto,
-    insertClienteDefault
+    insertClienteDefault,
+    initializeDB
 };
 
 
@@ -667,120 +423,3 @@ module.exports = {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const situacaoSelect = document.getElementById('situacao');
-// const movimentoSelect = document.getElementById('movimento');
-// const dateEstoque = document.getElementById('dateEstoque');
-// const alterarPreco = document.getElementById('alterarPreco');
-// const inputPrecoCompra = document.getElementById('inputPrecoCompra');
-// const inputMarkupEstoque = document.getElementById('MarkupEstoque');
-// const inputprecoVendaEstoque = document.getElementById('precoVendaEstoque');
-// const inputCodigoEanBuscar = document.getElementById('CodigoEanBuscar');
-// const inputprodutoEncontrado = document.getElementById('produtoEncontrado');
-// const inputqtdeMovimentacao = document.getElementById('qtdeMovimentacao');
-// const inputqtvenda_id = document.getElementById('venda_id');
-// const inputqtCompraFornecedor = document.getElementById('inputqtCompraFornecedor');
-
-// const btnEstoque = document.getElementById('btn-estoque');
-
-// document.addEventListener('DOMContentLoaded', () => {
-//   const inputElement = inputCodigoEanBuscar;
-//   if (inputElement) {
-//     inputElement.focus();
-//   }
-// });
-
-// inputCodigoEanBuscar.addEventListener('input', (e) => {
-//   // Remove non-numeric characters and limit the input to 13 characters
-//   e.target.value = e.target.value.replace(/\D/g, '').slice(0, 13);
-//   if (e.target.value.length === 13) {
-//     getProdutoEstoque(e.target.value);
-//   } else if (e.target.value.length === 0) {
-//     resetInputs();
-//   }
-// });
-
-
-// // Obter a data atual
-// const today = new Date();
-
-// // Formatar a data no formato "YYYY-MM-DD"
-// const formattedDate = today.toISOString().split('T')[0];
-
-// // Definir o valor no campo de entrada
-// dateEstoque.value = formattedDate;
-
-
-// // Objeto contendo os motivos para cada situação
-// const motivos = {
-//   "1": ["Compra de estoque", "Devolução de venda", "Ajuste de inventário"],
-//   "2": ["Venda de produto", "Transferência", "Perda de estoque"],
-// };
-
-// situacaoSelect.addEventListener('change', SituaçaoMovimento);
-// alterarPreco.addEventListener('change', liberarInputs);
-// btnEstoque.addEventListener('click', alterarEstoque);
-
-// function formatDateToMySQL(date) {
-//   const year = date.getFullYear();
-//   const month = String(date.getMonth() + 1).padStart(2, '0'); // Meses começam do zero
-//   const day = String(date.getDate()).padStart(2, '0');
-//   const hours = String(date.getHours()).padStart(2, '0');
-//   const minutes = String(date.getMinutes()).padStart(2, '0');
-//   const seconds = String(date.getSeconds()).padStart(2, '0');
-//   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-// }
-
-
-// async function alterarEstoque(e) {
-//       e.preventDefault(); 
-
-//       const movimentacaoEstoque = {
-//         produto_id: produtoID,
-//         qtde_movimentada: inputqtdeMovimentacao.value,
-//         preco_compra_anterior: preco_compra_anterior,
-//         preco_compra_atual: inputPrecoCompra.value,
-//         preco_markup_anterior: markup_anterior,
-//         preco_markup_atual: inputMarkupEstoque.value,
-//         preco_venda_anterior: preco_venda_anterior,
-//         preco_venda_atual: inputprecoVendaEstoque.value,
-//         situacao_movimento: situacaoSelect.value,
-//         motivo_movimentacao: inputqtdeMovimentacao.value,
-//         numero_compra_fornecedor: inputqtCompraFornecedor.value || null,
-//         venda_id: inputqtvenda_id || null,
-//         data_movimentacao: "2025-01-05"
-//     };
-    
-
-// try{
-//  await postMovimentarEstoque(movimentacaoEstoque);
-//         alertMsg('Estoque alterado com sucesso!','success', 5000)
-// }catch{
-//       alertMsg('Alteração do estoque não concluída. Por favor, verifique se todos os campos foram preenchidos corretamente!','warning',6000);
-//       return
-// }
-
-// }

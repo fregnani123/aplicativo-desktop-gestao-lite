@@ -13,6 +13,7 @@ function parseCurrency(value) {
 
 
 async function FinalizarVenda(){
+    imgProduto.src = ''
     if (carrinho.length === 0) {
         alertMsg("Seu carrinho está vazio. Adicione itens antes de concluir a venda.", 'warning', 4000);
         return;
@@ -56,7 +57,7 @@ async function FinalizarVenda(){
 
         // Busca os dados do pedido registrado e imprime
         await imprimirVenda(numeroPedido.value);
-        imgProduto.src = '../../style/img/img/produto.png';
+       imgProduto.src = '../../style/img/carrinho-de-compras.png';
         
 
     } catch (error) {
@@ -106,7 +107,7 @@ function limparCampos() {
         codigoEan.value = '';
         codigoEan.focus(); // Certifique-se de aplicar foco após todas as ações
         div_qtd.style.backgroundColor = '';
-      
+        imgProduto.src = '../../style/img/carrinho-de-compras.png';
 
         // AQUI você pode adicionar uma linha para não tocar no relógio
         console.log('Todos os campos foram limpos.');

@@ -149,7 +149,7 @@ function showOnlyThisDiv(targetDiv) {
                         carrinho.splice(index, 1);
                         calCarrinho(carrinho, converteMoeda, inputTotalLiquido, textSelecionarQtd);
                         rendererCarrinho(carrinho, ulDescricaoProduto, createSpan);
-                        imgProduto.src="../style/img/produto.png";
+                        imgProduto.src="../../style/img/carrinho-de-compras.png";
                         alertMsg(`Item ${index + 1} removido do carrinho.`,'warning',3000);
                     }
                     alertRemoverItem.style.display = 'none';

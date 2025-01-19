@@ -5,7 +5,8 @@
   "scripts": {
     "start": "electron .",
     "pack": "electron-packager .",
-    "dist": "electron-builder"
+    "dist": "electron-builder",
+    "rebuild": "electron-rebuild -f -w better-sqlite3"
   },
   "author": "",
   "license": "ISC",
@@ -13,45 +14,54 @@
   "devDependencies": {
     "electron": "^31.2.1",
     "electron-builder": "^24.7.0",
-    "electron-packager": "^15.5.0"
+    "electron-packager": "^15.5.0",
+    "electron-rebuild": "^3.2.9"
   },
   "dependencies": {
+    "better-sqlite3": "^11.8.1",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "mongoose": "^8.9.1",
     "multer": "^1.4.5-lts.1",
-    "mysql": "^2.18.1",
-    "mysql2": "^3.10.3"
+    "mysql2": "^3.12.0"
   },
   "build": {
-  "appId": "com.gestaolite",
-  "productName": "Gestão Lite",
-  "directories": {
-    "output": "dist"
-  },
-  "files": [
-    "config/**/*",
-    "db/**/*",
-    "img/**/*",
-    "node_modules/**/*",
-    "public/**/*",
-    "Renderer/**/*",
-    "Server/**/*",
-    "services/**/*",
-    "src/**/*",
-    "style/**/*",
-    "package.json"
-  ],
-  "win": {
-    "icon": "./style/img/menu-aberto.png"
-  },
-  "mac": {
-    "icon": "./style/img/menu-aberto.png"
-  },
-  "linux": {
-    "icon": "./style/img/menu-aberto.png"
+    "appId": "com.gestaolite",
+    "productName": "Gestão Lite",
+    "asar": false,
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "config/**/*",
+      "db/**/*",
+      "img/**/*",
+      "node_modules/**/*",
+      "public/**/*",
+      "Renderer/**/*",
+      "Server/**/*",
+      "services/**/*",
+      "src/**/*",
+      "style/**/*",
+      "package.json"
+    ],
+    "win": {
+      "icon": "./style/img/menu-aberto.png",
+      "target": [
+        "nsis"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "mac": {
+      "icon": "./style/img/menu-aberto.png"
+    },
+    "linux": {
+      "icon": "./style/img/menu-aberto.png"
+    }
   }
-}
 }

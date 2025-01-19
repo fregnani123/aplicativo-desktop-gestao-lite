@@ -4,13 +4,12 @@ const apiLicenca = {
     getAtivacaoMysql: 'http://localhost:3000/getAtivacaoMysql',
     updateAtivacao: 'http://localhost:3000/UpdateAtivacao',
 };
+
 async function syncLicenca(userID, serialKey) {
-    // Endpoint da API para obter os dados do MongoDB
     const getLicencaEndpoint = `http://localhost:3000/getLicenca/${userID}/${serialKey}`;
-    const postAtivacaoDbEndpoint = apiLicenca.postAtivacao; // Endpoint para inserir no MySQL
+    const postAtivacaoDbEndpoint = apiLicenca.postAtivacao;
 
     try {
-        // Passo 1: Buscar os dados do MongoDB
         const response = await fetch(getLicencaEndpoint, {
             method: 'GET',
             headers: {
@@ -25,9 +24,7 @@ async function syncLicenca(userID, serialKey) {
         const mongoData = await response.json();
         console.log('Dados obtidos do MongoDB:', mongoData);
 
-        // Passo 2: Preparar os dados para o MySQL
         const formatDate = (date) => {
-            // Converte a data para o formato YYYY-MM-DD
             const d = new Date(date);
             return `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')}`;
         };
@@ -35,12 +32,13 @@ async function syncLicenca(userID, serialKey) {
         const ativacaoData = {
             userID: mongoData.userID,
             serialKey: mongoData.serialKey,
-            startedDate: formatDate(mongoData.startedDate), // Formata a data para o formato aceito pelo MySQL
-            expirationDate: formatDate(mongoData.expirationDate), // Formata a data para o formato aceito pelo 
-            ativado: mongoData.ativado,
+            startedDate: formatDate(mongoData.startedDate),
+            expirationDate: formatDate(mongoData.expirationDate),
+            ativado: mongoData.ativado ? 1 : 0, // Converter booleano para inteiro
         };
 
-        // Passo 3: Inserir os dados no MySQL
+        console.log('Dados formatados para a ativação:', ativacaoData);
+
         const postResponse = await fetch(postAtivacaoDbEndpoint, {
             method: 'POST',
             headers: {
@@ -55,42 +53,42 @@ async function syncLicenca(userID, serialKey) {
 
         const mysqlData = await postResponse.json();
         console.log('Ativação registrada no MySQL com sucesso:', mysqlData);
-      //Atualiza a tela de login ao validar a chave serial.
         location.reload();
 
     } catch (error) {
         console.error('Erro ao sincronizar licença:', error);
     }
+}
 
-};
-let ativado = false; // Padrão inicial como "não ativado"
-let divAtivar = null; // Inicializa a variável
+let ativado = false;
+let divAtivar = null;
 document.addEventListener('DOMContentLoaded', function () {
-    divAtivar = document.querySelector('.ativar-produto'); // Seleciona a div após o DOM carregar
+    divAtivar = document.querySelector('.ativar-produto');
     if (divAtivar) {
-        divAtivar.style.display = 'none'; // Esconde por padrão
+        divAtivar.style.display = 'none';
     }
     focus();
-    fetchAtivacaoMysql(); // Chama após o DOM carregar
+    fetchAtivacaoMysql();
 });
+
 async function fetchAtivacaoMysql() {
     const apiUrl = apiLicenca.getAtivacaoMysql;
     try {
         const response = await fetch(apiUrl);
         const data = await response.json();
-     console.log(data)
-        // Verifica se há dados e define `ativado` como true ou false
+        console.log(data);
+
         ativado = data.length > 0 && data[0]?.ativado === 1;
 
-        atualizarDisplay(); // Atualiza o estado da div com base no valor de `ativado`
+        atualizarDisplay();
     } catch (error) {
         console.error('Erro ao buscar dados:', error);
 
-        // Em caso de erro, considere como "não ativado"
         ativado = false;
         atualizarDisplay();
     }
 }
+
 const atualizarDisplay = () => {
     if (divAtivar) {
         if (ativado) {

@@ -49,7 +49,32 @@ async function postNewSubGrupoProduto(newSubGrupoData) {
         .catch(error => {
             console.error('Error adding Sub-Grupo:', error);
         });
-}
+};
+
+async function postNewCorProduto(newCorData) {
+    const postNewCorProdutoData = apiEndpoints.postNewCorProduto;
+    fetch(postNewCorProdutoData, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newCorData),
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Cor added successfully:', data);
+            // Atualiza os subgrupos a partir da API
+            getCorProduto(selectCorProduto);
+        })
+        .catch(error => {
+            console.error('Error adding Cor:', error);
+        });
+};
 
 
 
@@ -149,6 +174,37 @@ function renderizarInputsSubGrupo() {
             inputNewSubGrupo.value = ''; // Limpa o campo após o envio
             // Limpa as opções atuais do select e redefine a primeira como "Selecione"
             selectSubGrupo.innerHTML = '<option value="">Selecione</option>';
+        },
+        (e) => {
+            e.preventDefault();
+            containerRegister.style.display = 'none';
+        }
+    );
+}
+
+function renderizarInputsColor() {
+    const tipo = 'Cor';
+
+    const inputNewCor = criarEstruturaFormulario(
+        containerRegister,
+        tipo,
+        '',
+        (e) => {
+            e.preventDefault();
+        
+            const newCor = {
+                nome_cor_produto: inputNewCor.value.trim()
+            };
+
+            if (!inputNewCor.value.trim()) {
+                alertMsg('O campo nome da cor não pode estar vazio!','orange',4000);
+                inputNewCor.focus();
+                return;
+            }
+            postNewCorProduto(newCor);
+            inputNewCor.value = ''; // Limpa o campo após o envio
+            // Limpa as opções atuais do select e redefine a primeira como "Selecione"
+            selectCorProduto.innerHTML = '<option value="">Selecione</option>';
         },
         (e) => {
             e.preventDefault();

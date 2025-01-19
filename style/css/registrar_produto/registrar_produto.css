@@ -209,7 +209,7 @@ input[type="file"] {
     display: none;
 }
 
-.div-grupo,.div-subGrupo{
+.div-grupo,.div-subGrupo,.div-Cor{
     position: absolute;
     z-index: 9999;
     top: 40%;
@@ -225,7 +225,7 @@ input[type="file"] {
     font-size: 1.3rem;
     }
 
-.newGrupo,.newSubGrupo{
+.newGrupo,.newSubGrupo,.newCor{
     margin: 3%;
 }
 #btn-exit{

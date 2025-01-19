@@ -13,17 +13,22 @@ const apiEndpoints = {
     postNewProduto: 'http://localhost:3000/postNewProduto',
     postNewGrupoProduto: 'http://localhost:3000/newGrupo',
     postNewSubGrupoProduto: 'http://localhost:3000/newSubGrupo',
+    postNewCorProduto: 'http://localhost:3000/postNewCor',
     getVendaPorNumeroPedido: 'http://localhost:3000/getVendaPorNumeroPedido'
 };
 
 
 function getGrupo(renderer) {
     const getGrupo = apiEndpoints.getGrupo;
+
     fetch(getGrupo)
         .then(response => response.json())
         .then(data => {
-            const grupo = data;
-            grupo.forEach((grupo) => {
+            // Ordenar os dados em ordem alfabética com base no nome do grupo
+            data.sort((a, b) => a.nome_grupo.localeCompare(b.nome_grupo));
+
+            // Adicionar as opções ao select
+            data.forEach(grupo => {
                 const option = document.createElement('option');
                 option.innerHTML = grupo.nome_grupo;
                 option.value = grupo.grupo_id;
@@ -34,8 +39,7 @@ function getGrupo(renderer) {
         .catch(error => {
             console.error('Erro ao buscar dados:', error);
         });
-};
-
+}
 
 function getSubGrupo(renderer) {
     const getSubGrupo = apiEndpoints.getSubGrupo;
@@ -43,8 +47,11 @@ function getSubGrupo(renderer) {
     fetch(getSubGrupo)
         .then(response => response.json())
         .then(data => {
-            const subGrupo = data;
-            subGrupo.forEach((subGrupo) => {
+            // Ordenar os subgrupos em ordem alfabética com base no nome do subgrupo
+            data.sort((a, b) => a.nome_sub_grupo.localeCompare(b.nome_sub_grupo));
+
+            // Adicionar as opções ao select
+            data.forEach(subGrupo => {
                 const option = document.createElement('option');
                 option.innerHTML = subGrupo.nome_sub_grupo;
                 option.value = subGrupo.sub_grupo_id;
@@ -55,8 +62,7 @@ function getSubGrupo(renderer) {
         .catch(error => {
             console.error('Erro ao buscar dados:', error);
         });
-};
-
+}
 
 function getunidadeEstoque(renderer) {
     const getEstoque = apiEndpoints.getunidadeEstoque;
@@ -218,7 +224,11 @@ function getCorProduto(renderer) {
     fetch(getCorProduto)
         .then(response => response.json())
         .then(data => {
-            data.forEach((cor) => {
+            // Ordenar os dados em ordem alfabética com base no nome da cor
+            data.sort((a, b) => a.nome_cor_produto.localeCompare(b.nome_cor_produto));
+
+            // Adicionar as opções ao select
+            data.forEach(cor => {
                 const option = document.createElement('option');
                 option.innerHTML = cor.nome_cor_produto;
                 option.value = cor.cor_produto_id;
@@ -229,7 +239,7 @@ function getCorProduto(renderer) {
         .catch(error => {
             console.error('Erro ao buscar dados:', error);
         });
-};
+}
 
 
 // Função para envio do produto e imagem

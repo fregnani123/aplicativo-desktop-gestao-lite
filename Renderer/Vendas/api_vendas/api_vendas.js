@@ -5,8 +5,6 @@ const apiEndpoints = {
     getVenda: 'http://localhost:3000/getVenda',
     postVenda: 'http://localhost:3000/postVenda',
     updateEstoque: 'http://localhost:3000/UpdateEstoque',
-    // getHistoricoVendas: 'http://localhost:3000/getHistoricoVendas',
-    getVendaPorNumeroPedido: 'http://localhost:3000/getVendaPorNumeroPedido'
 };
 
 
@@ -70,7 +68,7 @@ async function getProduto(descricaoElement, codigoDeBarras, precoVendaElement) {
             imgProduto.onload = () => console.log("Imagem carregada com sucesso");
             imgProduto.onerror = () => {
                 console.log(`Erro ao carregar a imagem de: ${imgPath}, usando imagem padrão`);
-                imgProduto.src = path.join(__dirname, '../style/img/produto.png');
+                imgProduto.src = path.join(__dirname, '../style/img/carrinho-de-compras.png');
             };
         } else {
             console.error('Propriedade nome_produto ou produto_id não encontrada na resposta da API');
